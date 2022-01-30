@@ -1,0 +1,7 @@
+
+db:
+  host: localhost
+  port: 5000
+  username: postgres
+  password: cloudelves
+  name: postgres
