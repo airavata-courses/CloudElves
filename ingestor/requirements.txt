@@ -1,0 +1,2 @@
+!pip3 install django nexradaws datetime matplotlib requests tempfile arm_pyart pytz rest_framework
+
