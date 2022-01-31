@@ -34,7 +34,7 @@ public class AppLogController {
             ArrayList<AppLogResponse> appLogList = new ArrayList<>();
             appLogs.forEach(x -> appLogList.add(AppLogResponse.builder().userId(x.getUser().getUserId()).id(x.getId())
                                                               .serviceId(x.getServiceId()).timestamp(x.getLogTimestamp().toString())
-                                                              .comments(x.getComments()).status(x.getStatus())
+                                                              .comments(x.getComments()).status(x.getStatus()).action(x.getAction())
                                                               .build()));
             return ResponseEntity.ok(appLogList);
         } catch (Exception e) {
@@ -54,8 +54,8 @@ public class AppLogController {
                 return ResponseEntity.badRequest().body(error);
             }
             Date timestamp = new Date(Long.parseLong(appLogRequest.getTimestamp()));
-            AppLog appLog = new AppLog(UUID.randomUUID().toString(), userDetailsOpt.get(), appLogRequest.getServiceId(), timestamp,
-                                       appLogRequest.getStatus(), appLogRequest.getComments());
+            AppLog appLog = new AppLog(UUID.randomUUID().toString(), userDetailsOpt.get(), appLogRequest.getServiceId(),
+                                       appLogRequest.getAction(), timestamp, appLogRequest.getStatus(), appLogRequest.getComments());
             appLogRepository.save(appLog);
             return ResponseEntity.ok(
                     DefaultSuccess.builder().message("successfully persisted log").statusCode(HttpStatus.CREATED.toString()).build());

@@ -1,4 +1,4 @@
-package com.cloudelves.forecast.registry.model.request;
+package com.cloudelves.forecast.gateway.model.ingestor.request;
 
 import lombok.*;
 

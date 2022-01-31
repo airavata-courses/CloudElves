@@ -1,4 +1,4 @@
-package com.cloudelves.forecast.registry.model.request;
+package com.cloudelves.forecast.gateway.model.ingestor.response;
 
 import lombok.*;
 
@@ -7,8 +7,9 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class UserDetailsRequest {
+public class UserDetailsResponse {
 
     private String userId, userEmail, name, timestamp;
+    private boolean active;
 
 }

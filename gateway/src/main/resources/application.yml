@@ -1,0 +1,20 @@
+server:
+  port: 8082
+
+ingestor:
+  baseUrl: http://localhost:8000
+  apiPath:
+    getData: /getData
+    getImage: /getImage
+
+registry:
+  baseUrl: http://localhost:8080
+  apiPath:
+    getUser: /getUser?userId={userId}
+    getAllUsers: /getUsers
+    addUser: /addUser
+    getAppLog: /getAppLog?userId={userId}
+    addAppLog: /addAppLog
+
+google:
+  tokenUrl: https://oauth2.googleapis.com/tokeninfo?id_token={token}

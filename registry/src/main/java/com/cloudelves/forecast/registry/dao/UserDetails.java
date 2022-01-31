@@ -26,6 +26,9 @@ public class UserDetails {
     @Column(name = "user_email")
     private String userEmail;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "register_timestamp")
     private Date registerTimestamp;
 

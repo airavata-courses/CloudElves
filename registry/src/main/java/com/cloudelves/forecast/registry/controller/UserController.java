@@ -35,20 +35,20 @@ public class UserController {
         List<UserDetailsResponse> userDetailsList = new ArrayList<>();
         userDetailsOpt.forEach(userDetails -> userDetailsList.add(
                 UserDetailsResponse.builder().userId(userDetails.getUserId()).userEmail(userDetails.getUserEmail())
-                                   .active(userDetails.isActive())
+                                   .active(userDetails.isActive()).name(userDetails.getUserName())
                                    .timestamp(userDetails.getRegisterTimestamp().toString()).build()));
         return ResponseEntity.ok(userDetailsList);
     }
 
-    @GetMapping(value = "/getUser/{userId}")
-    public ResponseEntity getUser(@PathVariable String userId) {
+    @GetMapping(value = "/getUser")
+    public ResponseEntity getUser(@RequestParam("userId") String userId) {
         Optional<UserDetails> userDetailsOpt = userDetailsRepository.findById(userId);
         if (userDetailsOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
             UserDetails userDetails = userDetailsOpt.get();
             return ResponseEntity.ok(UserDetailsResponse.builder().userId(userDetails.getUserId()).userEmail(userDetails.getUserEmail())
-                                                        .active(userDetails.isActive())
+                                                        .active(userDetails.isActive()).name(userDetails.getUserName())
                                                         .timestamp(userDetails.getRegisterTimestamp().toString()).build());
         }
     }
@@ -64,7 +64,8 @@ public class UserController {
             }
             Date timestamp = new Date(Long.parseLong(userDetailsRequest.getTimestamp()));
             UserDetails userDetails = UserDetails.builder().userId(userDetailsRequest.getUserId())
-                                                 .userEmail(userDetailsRequest.getUserEmail()).registerTimestamp(timestamp).active(true)
+                                                 .userEmail(userDetailsRequest.getUserEmail()).userName(userDetailsRequest.getName())
+                                                 .registerTimestamp(timestamp).active(true)
                                                  .build();
             userDetailsRepository.save(userDetails);
             return ResponseEntity.ok(

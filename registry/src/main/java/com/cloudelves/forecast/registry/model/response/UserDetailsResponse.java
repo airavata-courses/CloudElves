@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 public class UserDetailsResponse {
 
-    private String userId, userEmail, timestamp;
+    private String userId, userEmail, name, timestamp;
     private boolean active;
 
 }
