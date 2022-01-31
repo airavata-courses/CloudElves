@@ -77,6 +77,7 @@ def ingest(request):
         print("downloaded data")
         services.plot_data(request.GET['id'], downloaded_data)
         print("data plotted")
+        return HttpResponse("success")
     # multipart response
 
     except Exception as e:
