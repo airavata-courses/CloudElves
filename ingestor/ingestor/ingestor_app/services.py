@@ -9,10 +9,12 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 
 conn = nexradaws.NexradAwsInterface()
-templocation = './images/'
+templocation = './downloaded_data/'
+templocation2 = './plotted_data/'
 if not os.path.exists(templocation):
     os.mkdir(templocation)
-
+if not os.path.exists(templocation2):
+    os.mkdir(templocation2)
 
 def validate_input(requested_year, requested_month, requested_day, requested_radar):
     print("Starting Validation")
@@ -80,7 +82,7 @@ def plot_data(requested_id, results):
     #     display.plot('velocity', 1, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
     #     display.set_limits((-150, 150), (-150, 150), ax=ax)
 
-    fig.savefig(templocation + requested_id + ".png")
+    fig.savefig(templocation2 + requested_id + ".png")
     return requested_id + ".png"
 
 

@@ -1,6 +1,10 @@
 
 from django.http import HttpResponse, JsonResponse
 from . import services
+import os
+from .services import templocation
+import shutil
+
 
 
 def ingest(request):
@@ -9,6 +13,8 @@ def ingest(request):
         if key not in request.GET:
             return HttpResponse("Bad request: {} not available".format(key))
     try:
+        if os.listdir(templocation):
+            shutil.rmtree(templocation)
         services.validate_input(request.GET['year'], request.GET['month'], request.GET['day'], request.GET['radar'])
         print("validated data")
         downloaded_data = services.download_data(int(request.GET['year']), int(request.GET['month']),
