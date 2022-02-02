@@ -1,23 +1,25 @@
 // Import required libraries.
-import React, { useState, createContext } from "react";
+import React, { useContext } from "react";
 // Import required components.
 import Login from "./Login";
 import Dashboard from "./Dashboard";
+import History from "./History";
 import Navbar from "./Navbar";
-
-export const UserContext = createContext(null); // Create context for user session management.
+import { UserContext } from "./Context";
 
 const Home = () => {
-    const [user, setUser] = useState("");
+    const renderSwitch= {"home": <Dashboard />, "history":<History/>}
+    
+    const { userAuthDetails, currPage } = useContext(UserContext);
     // console.log("User value:", user);
-
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+    
             <div className="home-page">
-                <Navbar /> {/* Navbar component */}
-                {user ? <Dashboard /> : <Login />}
+
+                <Navbar /> 
+                {userAuthDetails ? renderSwitch[currPage] : <Login />}
             </div>
-        </UserContext.Provider>
+      
     );
 };
 

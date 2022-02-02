@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Navbar, Container } from "react-bootstrap";
 import { GoogleLogout } from "react-google-login";
-import { UserContext } from "./Home";
+import { UserContext } from "./Context";
 
 const NavbarStatic = () => {
-    const { user, setUser } = useContext(UserContext);
-
+    const {userAuthDetails, setUser, setPage} = useContext(UserContext);
+    console.log(userAuthDetails);
     const onSignoutSuccess = async () => {
         alert("You have been logged out successfully");
         await setUser(null);
@@ -14,18 +14,18 @@ const NavbarStatic = () => {
     return (
         <Navbar bg="light">
             <Container>
-                <Navbar.Brand href="/login">
+                <Navbar.Brand onClick={()=>setPage("home")}>
                     Cloud Weather Application
                 </Navbar.Brand>
-                {user ? (
+                {userAuthDetails ? (
                     <div>
-                        <a href="/history">History</a>
-                    <GoogleLogout
-                    clientId={process.env.REACT_APP_clientId}
-                    buttonText="Sign Out"
-                    onLogoutSuccess={onSignoutSuccess}
-                ></GoogleLogout></div>
-                    
+                        <button  onClick={()=>setPage("history")}>History</button>
+                        <GoogleLogout
+                        clientId={process.env.REACT_APP_clientId}
+                        buttonText="Sign Out"
+                        onLogoutSuccess={onSignoutSuccess}
+                        />
+                    </div> 
                 ) : null}
             </Container>
         </Navbar>

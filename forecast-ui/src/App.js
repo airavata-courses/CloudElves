@@ -6,20 +6,21 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
+
 // Import required components.
 import Home from "./components/Home";
-import Login from "./components/Login";
-import UserActivity from "./components/UserAc";
+import { UserContextProvider } from "./components/Context";
 
 function App() {
+    // const [userAuthDetails, setUser] = useState("");
     return (
         <div className="App">
             <Router>
                 <Routes>
                     <Route path="/" element={<Navigate replace to="/home" />} />
-                    <Route path="/home/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-					<Route path="/history" element={<UserActivity />} />
+                    <Route path="/home" element={<UserContextProvider><Home /></UserContextProvider>} />
+                    {/* <Route path="/login" element={<Login />} />
+					<Route path="/history" element={<UserActivity />} /> */}
                 </Routes>
             </Router>
         </div>
