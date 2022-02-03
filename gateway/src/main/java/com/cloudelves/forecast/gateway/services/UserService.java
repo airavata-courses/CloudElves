@@ -1,7 +1,6 @@
 package com.cloudelves.forecast.gateway.services;
 
-import com.cloudelves.forecast.gateway.model.ingestor.request.UserDetailsRequest;
-import com.cloudelves.forecast.gateway.model.ingestor.response.UserDetailsResponse;
+import com.cloudelves.forecast.gateway.model.registry.request.UserDetailsRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

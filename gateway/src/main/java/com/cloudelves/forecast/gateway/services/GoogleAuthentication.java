@@ -24,6 +24,7 @@ public class GoogleAuthentication implements IAuthenticate {
     private String tokenUrl;
 
     public boolean verifyToken(String token, String username, String email) throws AuthenticationException {
+        log.info("token: ", token);
         Map<String, String> requestParams = Collections.singletonMap("token", token);
         try {
             String response = restService.makeRestCall(tokenUrl, null, String.class, requestParams, HttpMethod.GET);

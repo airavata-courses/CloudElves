@@ -6,9 +6,11 @@ import com.cloudelves.forecast.gateway.model.response.DefaultError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
+@ControllerAdvice
 public class DefaultHandler {
 
     @ExceptionHandler(value = {AuthenticationException.class})
@@ -20,6 +22,13 @@ public class DefaultHandler {
 
     @ExceptionHandler(value = {BaseException.class})
     public ResponseEntity handleBaseException(BaseException e) {
+        log.error("error while handling request: ", e);
+        DefaultError error = DefaultError.builder().error(e.getMessage()).statusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString()).build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity handleException(Exception e) {
         log.error("error while handling request: ", e);
         DefaultError error = DefaultError.builder().error(e.getMessage()).statusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString()).build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);

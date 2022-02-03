@@ -1,7 +1,7 @@
 package com.cloudelves.forecast.gateway.services;
 
 import com.cloudelves.forecast.gateway.exception.BaseException;
-import com.cloudelves.forecast.gateway.model.ingestor.request.AppLogRequest;
+import com.cloudelves.forecast.gateway.model.registry.request.AppLogRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
