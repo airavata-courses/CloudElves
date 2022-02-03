@@ -28,7 +28,7 @@ def ingest(request):
 
     except Exception as e:
         print(e)
-        return HttpResponse(e)
+        return JsonResponse({'error': e.value})
 
 
 def image(request):
@@ -39,4 +39,4 @@ def image(request):
         print("got filename")
     except Exception as e:
         print(e)
-        return HttpResponse(e)
+        return JsonResponse({'error': e.value})
