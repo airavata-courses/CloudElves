@@ -9,8 +9,8 @@ const History = () => {
   const {userAuthDetails} = useContext(UserContext);
   const url = `http://localhost:8082/getLogs?userId=${userAuthDetails["name"]}`;
 
-  const getDummy = async (url) => {
-    await fetch(url, {
+  const getDummy = async () => {
+    await fetch('http://localhost:8082/getLogs', {
 		method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -29,14 +29,15 @@ const History = () => {
 		}
 	);
   }
-  console.log(userAuthDetails);
-  console.log(url);
-  getDummy(url);
-  console.log(dummy);
+//   console.log(userAuthDetails);
+//   console.log(url);
+//   getDummy(url);
+//   console.log(dummy);
 return(
   <div>
     Table here
-    <ul>{listItems}</ul>
+	<div onClick={getDummy}>Fetch</div> 
+    {/* <ul>{listItems}</ul> */}
   </div>
 );
 

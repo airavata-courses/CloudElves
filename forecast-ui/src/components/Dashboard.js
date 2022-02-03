@@ -12,7 +12,7 @@ const Dashboard = () => {
     const fetchData = async (input) =>{
         console.log("data to generate url",input);
         let url = `http://localhost:8000/getdata?year=${input.year}&month=${input.month}&day=${input.day}&starttime=${input.startTime}&endtime=${input.endTime}&radar=${input.radarStation}&id=292`;
-        url = `localhost:8082/data`;
+        url = `http://localhost:8082/data`;
         console.log(url);
         const response = await fetch(url, {
             method: "POST",
