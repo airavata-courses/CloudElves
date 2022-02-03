@@ -22,7 +22,6 @@ ADD . /forecaster/
 
 # Install any needed packages specified in requirements.txt
 # RUN pip3 install -r requirements.txt
-RUN pip3 install numpy pandas
 RUN python3 -m pip install --user -r requirements.txt
 
-ENTRYPOINT ["python3","ingestor/manage.py", "runserver"]
+ENTRYPOINT ["python3","forecast/manage.py", "runserver"]

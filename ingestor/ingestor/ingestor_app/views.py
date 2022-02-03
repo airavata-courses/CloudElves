@@ -1,8 +1,10 @@
 
 from django.http import HttpResponse, JsonResponse
+from rest_framework import status
+
 from . import services
 import os
-from .services import templocation
+from .services import download_loc
 import shutil
 
 
@@ -11,10 +13,8 @@ def ingest(request):
     keys = ['year', 'month', 'day', 'radar']
     for key in keys:
         if key not in request.GET:
-            return HttpResponse("Bad request: {} not available".format(key))
+            return JsonResponse({'error': 'Bad request: {} not available'.format(key)}, status=status.HTTP_400_BAD_REQUEST)
     try:
-        if os.listdir(templocation):
-            shutil.rmtree(templocation)
         services.validate_input(request.GET['year'], request.GET['month'], request.GET['day'], request.GET['radar'])
         print("validated data")
         downloaded_data = services.download_data(int(request.GET['year']), int(request.GET['month']),
@@ -27,8 +27,7 @@ def ingest(request):
     # multipart response
 
     except Exception as e:
-        print(e)
-        return JsonResponse({'error': e.value})
+        return JsonResponse({'error':  str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def image(request):
@@ -36,7 +35,5 @@ def image(request):
         # services.get_image(request.GET['filename'])
         print(request.GET['filename'])
         return services.get_image(request.GET['filename'])
-        print("got filename")
     except Exception as e:
-        print(e)
-        return JsonResponse({'error': e.value})
+        return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

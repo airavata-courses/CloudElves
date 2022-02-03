@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 
 from . import services1
 
+weather_description = ['clear', 'rainy', 'thunderstorms', 'snow']
 
 def stormclustering_controller(request):
     try:
@@ -16,6 +17,7 @@ def stormclustering_controller(request):
 def forecast_controller(request):
     minimum = random.randint(1, 60)
     maximum = random.randint(90, 130)
-    response = {'weather data': {'min_temp': minimum, 'max_temp': maximum, 'pressure': minimum % 10,
-                                 'humidity': maximum % 10 * 20}}
+    weather_desc_index = minimum % 4
+    response = {'min_temp': minimum, 'max_temp': maximum, 'pressure': minimum % 10,
+                                 'humidity': maximum % 10 * 20, 'weather_description': weather_description[weather_desc_index]}
     return JsonResponse(response)

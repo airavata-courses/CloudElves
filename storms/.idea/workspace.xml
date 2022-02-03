@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec4e04ff-a330-4f5a-9bf0-30e2a1b187a4" name="Changes" comment="">
+    <list default="true" id="564553d4-6db2-49dd-a05d-6a3936ccc22a" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/../ingestor/ingestor/plotted_data/default.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forecast/forecast/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/forecast/forecast/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ingestor/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ingestor/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ingestor/.idea/test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../ingestor/.idea/test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ingestor/ingestor/downloaded_data/KTLX20040529_000952.gz" beforeDir="false" />
@@ -30,14 +23,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="249lfMo3pGe9buwU74XSgEl8KNl" />
+  <component name="ProjectId" id="24a8vdIAzcs6IeGEowmpxAZyOKu" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -46,21 +32,16 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="jdk.selected.JAVA_MODULE" value="JavaSE-15" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../forecast" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ec4e04ff-a330-4f5a-9bf0-30e2a1b187a4" name="Changes" comment="" />
-      <created>1643050788416</created>
+      <changelist id="564553d4-6db2-49dd-a05d-6a3936ccc22a" name="Changes" comment="" />
+      <created>1643857569624</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1643050788416</updated>
+      <updated>1643857569624</updated>
     </task>
     <servers />
   </component>
