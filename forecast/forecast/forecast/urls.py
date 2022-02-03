@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('stormclustering/', views.stormclustering_controller),
     path('forecast/', views.forecast_controller),
+    path('health/', views.health),
 ]

@@ -25,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('getdata/', views.ingest),
     path('getimage/', views.image),
+    path('health/', views.health),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

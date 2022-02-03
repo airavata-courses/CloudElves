@@ -1,4 +1,5 @@
 import os
+import shutil
 from logging import exception
 import pytz
 import pyart
@@ -9,12 +10,11 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer
 
 conn = nexradaws.NexradAwsInterface()
-templocation = './downloaded_data/'
-templocation2 = './plotted_data/'
-if not os.path.exists(templocation):
-    os.mkdir(templocation)
-if not os.path.exists(templocation2):
-    os.mkdir(templocation2)
+download_loc = './downloaded_data/'
+image_loc = './plotted_data/'
+
+if not os.path.exists(image_loc):
+    os.mkdir(image_loc)
 
 def validate_input(requested_year, requested_month, requested_day, requested_radar):
     print("Starting Validation")
@@ -45,6 +45,9 @@ def validate_input(requested_year, requested_month, requested_day, requested_rad
 
 def download_data(requested_year, requested_month, requested_day, requested_starttime, requested_endtime,
                   requested_radar):
+    if os.path.exists(download_loc):
+        shutil.rmtree(download_loc)
+    os.mkdir(download_loc)
     central_timezone = pytz.timezone('US/Central')
     radar_id = requested_radar
     # start = central_timezone.localize(datetime(requested_year, requested_month, requested_day, requested_starttime, requested_endtime))
@@ -53,7 +56,7 @@ def download_data(requested_year, requested_month, requested_day, requested_star
     scans = conn.get_avail_scans(requested_year, requested_month, requested_day, requested_radar)
     # print("There are {} scans available between {} and {}\n".format(len(scans), start, end))
     print(scans[0:4])
-    results = conn.download(scans[0:4], templocation)
+    results = conn.download(scans[0:4], download_loc)
     print(results.success)
     for scan in results.iter_success():
         print("{} volume scan time {}".format(scan.radar_id, scan.scan_time))
@@ -65,35 +68,30 @@ def download_data(requested_year, requested_month, requested_day, requested_star
 
 def plot_data(requested_id, results):
     # plotting storms
-    fig = plt.figure(figsize=(16, 12))
-    for i, scan in enumerate(results.iter_success(), start=1):
-        ax = fig.add_subplot(2, 2, i)
-        radar = scan.open_pyart()
-        display = pyart.graph.RadarDisplay(radar)
-        display.plot('reflectivity', 0, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
-        display.set_limits((-150, 150), (-150, 150), ax=ax)
+    try:
+        fig = plt.figure(figsize=(16, 12))
+        for i, scan in enumerate(results.iter_success(), start=1):
+            ax = fig.add_subplot(2, 2, i)
+            radar = scan.open_pyart()
+            display = pyart.graph.RadarDisplay(radar)
+            display.plot('reflectivity', 0, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
+            display.set_limits((-150, 150), (-150, 150), ax=ax)
 
-    # # plotting velocity scans
-    # fig2 = plt.figure(figsize=(16, 12))
-    # for i, scan in enumerate(results.iter_success(), start=1):
-    #     ax = fig2.add_subplot(2, 2, i)
-    #     radar = scan.open_pyart()
-    #     display = pyart.graph.RadarDisplay(radar)
-    #     display.plot('velocity', 1, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
-    #     display.set_limits((-150, 150), (-150, 150), ax=ax)
-
-    fig.savefig(templocation2 + requested_id + ".png")
-    return requested_id + ".png"
+        fig.savefig(image_loc + requested_id + ".png")
+        return requested_id + ".png"
+    except:
+        return "default.png"
 
 
 # create an api, that when a fig.png is requested by madhavan; return a file; returning a file as an api response in django
 
 @renderer_classes([JSONRenderer])
 def get_image(filename):
-    file_path = './images/'+filename
+    file_path = image_loc+filename
     FilePointer = open(file_path, "rb")
     print("got file")
     response = HttpResponse(FilePointer, content_type='image/png')
     response['Content-Disposition'] = 'attachment; filename=NameOfFile'
 
     return response
+
