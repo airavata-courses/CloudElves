@@ -1,9 +1,14 @@
-# CloudElves
-Spring 2022 Project
+## Forecast Microservice
 
-### Team:
-			 1) Ayush Sanghavi
-			 2) Madhavan KR
-			 3) Navkar Shah
 
-CloudElves is a weather prediction distributed-system built using microservice architecture
+```
+docker build -t cloud-elves/forecast .
+```
+
+The docker image can be executed with the following command
+
+```
+docker run -d --net=host --name forecast  cloud-elves/forecast
+```
+
+**PS: above command will run forecast microservice on port 8001, you can verify by hitting the [health endpoint](http://localhost:8001/health)**
