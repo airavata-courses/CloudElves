@@ -4,11 +4,13 @@ import { Card } from "react-bootstrap";
 import "../templates/login.css";
 import { UserContext } from "./Context";
 
+// This function handles Sign in with Google.
 const Login = () => {
+	
 	const {setUser} = useContext(UserContext);
 	const onLoginSuccess = async (res) => {
-	console.log("Login Success:", res);
-	await setUser({"id_token":res.accessToken, "name":res.profileObj["givenName"], "email":res.profileObj["email"]});
+		console.log("Login Success:", res);
+		await setUser({"id_token":res.accessToken, "name":res.profileObj["givenName"], "email":res.profileObj["email"]});
 	};
 
 	const onLoginFailure = (error) => {
