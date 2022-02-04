@@ -1,9 +1,14 @@
-# CloudElves
-Spring 2022 Project
+## Ingestor Microservice
 
-### Team:
-			 1) Ayush Sanghavi
-			 2) Madhavan KR
-			 3) Navkar Shah
 
-CloudElves is a weather prediction distributed-system built using microservice architecture
+```
+docker build -t cloud-elves/ingestor .
+```
+
+The docker image can be executed with the following command
+
+```
+docker run -d --net=host --name ingestor  cloud-elves/ingestor
+```
+
+**PS: above command will run ingestor microservice on port 8000, you can verify by hitting the [health endpoint](http://localhost:8000/health)**
