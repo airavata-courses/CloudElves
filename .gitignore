@@ -1,2 +1,4 @@
 /*/mvn
 *.pyc
+ingestor/ingestor/downloaded_data/
+ingestor/ingestor/plotted_data/

@@ -2,10 +2,6 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 
 from . import services
-import os
-from .services import download_loc
-import shutil
-
 
 def ingest(request):
     keys = ['year', 'month', 'day', 'radar']
