@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
-import { Navbar, Container } from "react-bootstrap";
+import { Navbar, Container, Form, Button} from "react-bootstrap";
 import { GoogleLogout } from "react-google-login";
+// Import required components.
 import { UserContext } from "./Context";
 
+// This function renders navigation bar component.
 const NavbarStatic = () => {
     const {userAuthDetails, setUser, setPage} = useContext(UserContext);
     console.log(userAuthDetails);
+
     const onSignoutSuccess = async () => {
         alert("You have been logged out successfully");
         await setUser(null);
@@ -14,18 +17,21 @@ const NavbarStatic = () => {
     return (
         <Navbar bg="light">
             <Container>
-                <Navbar.Brand onClick={()=>setPage("home")}>
-                    Cloud Weather Application
+                <Navbar.Brand onClick={()=>setPage("home")} href="#">
+                    <b>Cloud Weather Application</b>
                 </Navbar.Brand>
                 {userAuthDetails ? (
-                    <div>
-                        <button  onClick={()=>setPage("history")}>History</button>
-                        <GoogleLogout
-                        clientId={process.env.REACT_APP_clientId}
-                        buttonText="Sign Out"
-                        onLogoutSuccess={onSignoutSuccess}
-                        />
-                    </div> 
+                <Form className="d-flex">
+                    <Button variant="outline-success" onClick={()=>setPage("home")} style={{marginRight:"20px"}}>Home</Button>
+                    <Button variant="outline-success" onClick={()=>setPage("history")} style={{marginRight:"20px"}}>History</Button>
+
+                    <GoogleLogout
+                    clientId={process.env.REACT_APP_clientId}
+                    buttonText="Sign Out"
+                    onLogoutSuccess={onSignoutSuccess}
+                    variant="outline-success"
+                    />
+                </Form> 
                 ) : null}
             </Container>
         </Navbar>

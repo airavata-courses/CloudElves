@@ -7,19 +7,17 @@ import History from "./History";
 import Navbar from "./Navbar";
 import { UserContext } from "./Context";
 
+// This is the home component where all the children components are rendered.
 const Home = () => {
+    
     const renderSwitch= {"home": <Dashboard />, "history":<History/>}
-    
     const { userAuthDetails, currPage } = useContext(UserContext);
-    // console.log("User value:", user);
-    return (
-    
-            <div className="home-page">
 
-                <Navbar /> 
-                {userAuthDetails ? renderSwitch[currPage] : <Login />}
-            </div>
-      
+    return (
+        <div className="home-page">
+            <Navbar /> 
+            {userAuthDetails ? renderSwitch[currPage] : <Login />}
+        </div>
     );
 };
 

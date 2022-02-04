@@ -1,46 +1,55 @@
-
 import React, {useContext, useState} from 'react';
+import { Button } from 'react-bootstrap';
 import {UserContext} from './Context';
 
+// This function is used to fetch user activity by API call to gateway.
 const History = () => {
-  const numbers = ['TPHX', 'TPIT', 'TRDU', 'TSDF', 'TSLC', 'TSTL', 'TTPA', 'TTUL'];
-  const [dummy, setDummy] = useState([]);
-  const listItems = numbers.map((number) => <li>{number}</li>);
-  const {userAuthDetails} = useContext(UserContext);
-  const url = `http://localhost:8082/getLogs?userId=${userAuthDetails["name"]}`;
+	const [logs, setLogs] = useState(null);
+	const {userAuthDetails} = useContext(UserContext);
 
-  const getDummy = async () => {
-    await fetch('http://localhost:8082/getLogs', {
-		method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				"id_token": userAuthDetails.id_token,
-				"name": userAuthDetails.name,
-				"email": userAuthDetails.email
-			}
+  	const getLogs = async () => {
+		await fetch('http://localhost:8082/getLogs', {
+			method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					"id_token": userAuthDetails.id_token,
+					"name": userAuthDetails.name,
+					"email": userAuthDetails.email
+				}
 			})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log("Success:", data);
-			setDummy(data);
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-		}
-	);
-  }
-//   console.log(userAuthDetails);
-//   console.log(url);
-//   getDummy(url);
-//   console.log(dummy);
-return(
-  <div>
-    Table here
-	<div onClick={getDummy}>Fetch</div> 
-    {/* <ul>{listItems}</ul> */}
-  </div>
-);
-
-}
+			.then((response) => response.json())
+			.then((data) => {
+				setLogs({"success":data});
+			})
+			.catch((error) => {
+				setLogs({"error":error});
+			}
+		);
+  	}
+	
+	if (!logs){
+		return <Button variant="outline-success" onClick={getLogs} style={{marginRight:"20px"}}>Fetch</Button>
+	}
+	else if (logs.error){
+		return (
+		<div>
+			<Button variant="outline-success" onClick={getLogs} style={{marginRight:"20px"}}>Fetch</Button>
+			<div>There was some error in fetching data, please try again.</div>
+		</div>)
+	}
+	else if (logs.success){
+		let list = logs.success;
+		<table>
+			<tr key={"header"}>
+				{Object.keys(list[0]).map((key) => ( <th>{key}</th>	))}
+			</tr>
+			{list.map((item) => (
+				<tr key={item.id}>
+				{Object.values(item).map((val) => (	<td>{val}</td>	))}
+				</tr>
+			))}
+    	</table>
+	}
+};
 
 export default History;

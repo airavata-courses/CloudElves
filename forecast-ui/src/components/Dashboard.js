@@ -1,19 +1,41 @@
 import React, {useContext, useEffect, useState} from "react";
-
+// Import required components.
 import Input from "./Input";
 import Plot from "./Plot";
 import { UserContext } from "./Context";
+
+// This function renders dashboard components in Home page.
 const Dashboard = () => {
     const {userAuthDetails} = useContext(UserContext);
     const [loading, setLoading] = useState(true);
     const [submit, didSubmit] = useState(false);
     const [plot, setPlot] = useState("helo");
     
-    const fetchData = async (input) =>{
-        console.log("data to generate url",input);
-        let url = `http://localhost:8000/getdata?year=${input.year}&month=${input.month}&day=${input.day}&starttime=${input.startTime}&endtime=${input.endTime}&radar=${input.radarStation}&id=292`;
-        url = `http://localhost:8082/data`;
-        console.log(url);
+    useEffect(() => {
+        if (!loading && submit) setLoading(false);
+    }, [loading, submit]);
+
+    const InputProcessor = (userInput) => {
+        didSubmit(true);
+        const reqObject = {
+            "year":userInput.date.getFullYear(),
+            "month": userInput.date.getMonth()+1,
+            "day": userInput.date.getDate(),
+            "startTime": userInput.time,
+            "endTime": userInput.time,
+            "radarStation": userInput.radarStation
+        };
+
+        fetchData(reqObject);
+        setInterval(() => {
+            setLoading(false);
+        }, 2000);
+    };
+
+    const fetchData = async (input) => {
+
+        let url = `http://localhost:8082/data`;
+
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -23,44 +45,22 @@ const Dashboard = () => {
                 "email": userAuthDetails.email
             },
             body: JSON.stringify(input),
-        })
+            })
             .then((response) => response.json())
             .then((data) => {
-                console.log("Success:", data);
-                return data;
+                return {"success":data};
             })
             .catch((error) => {
-                console.error("Error:", error);
+                return {"error":error};
             });
-        console.log(response);
+
         setPlot(response);
     }
-    useEffect(() => {
-        if (!loading && submit) {
-            setLoading(false);
-        }
-    }, [loading, submit]);
-    const InputProcessor = async (userInput) => {
-        setLoading(true);
-        didSubmit(true);
-        const reqObject = {
-            "year":userInput.date.getFullYear(),
-            "month": userInput.date.getMonth()+1,
-            "day": userInput.date.getDate(),
-            "startTime": userInput.time.getTime(),
-            "endTime": userInput.time.getTime(),
-            "radarStation": userInput.radarStation
-        };
-        await fetchData(reqObject);
-        setInterval(() => {
-            setLoading(false);
-        }, 2000);
-    };
 
     return (
         <div className="dashboard">
             <Input InputCollector={InputProcessor} />
-            {!submit ? (<div>Init</div>) : loading ? (<div>Loading</div>) : (<Plot partochild={plot} />)}
+            {!submit ? (<div>Please provide some inputs to get weather forecast.</div>) : loading ? (<div>Loading</div>) : (<Plot partochild={plot} />)}
         </div>
     );
 };
