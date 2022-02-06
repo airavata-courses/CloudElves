@@ -19,6 +19,7 @@ const History = () => {
 			})
 			.then((response) => response.json())
 			.then((data) => {
+				console.log(data);
 				setLogs({"success":data});
 			})
 			.catch((error) => {
@@ -39,7 +40,9 @@ const History = () => {
 	}
 	else if (logs.success){
 		let list = logs.success;
-		<table>
+		return (
+		<div>
+		<table style={{'border': '3px solid black'}}>
 			<tr key={"header"}>
 				{Object.keys(list[0]).map((key) => ( <th>{key}</th>	))}
 			</tr>
@@ -49,6 +52,9 @@ const History = () => {
 				</tr>
 			))}
     	</table>
+		<Button variant="outline-success" onClick={getLogs} style={{marginRight:"20px"}}>Fetch</Button>
+		</div>
+		);
 	}
 };
 
