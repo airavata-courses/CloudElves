@@ -21,10 +21,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -124,13 +124,12 @@ public class IngestorController {
         requestParams.put("year", dataRequest.getYear().toString());
         requestParams.put("month", monthString);
         requestParams.put("day", dayString);
-        requestParams.put("startTime", dataRequest.getStartTime().toString());
-        requestParams.put("endTime", dataRequest.getEndTime().toString());
-        requestParams.put("radar", dataRequest.getRadarStation().toString());
+        requestParams.put("startTime", dataRequest.getStartTime());
+        requestParams.put("endTime", dataRequest.getEndTime());
+        requestParams.put("radar", dataRequest.getRadarStation());
         requestParams.put("id", UUID.randomUUID().toString());
         log.info("requestParameters: {}", requestParams);
         return requestParams;
     }
-
-
+    
 }

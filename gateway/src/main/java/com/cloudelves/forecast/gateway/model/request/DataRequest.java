@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataRequest {
     private Integer year, month, day;
-    private Long startTime, endTime;
+    private String startTime, endTime;
     private String radarStation;
 }

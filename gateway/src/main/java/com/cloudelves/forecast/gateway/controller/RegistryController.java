@@ -68,11 +68,12 @@ public class RegistryController {
     @CrossOrigin(origins = "http://localhost:3001")
     @GetMapping(value = "/getLogs")
     public ResponseEntity getLogs(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
-        log.info("headers: ", headers);
+        log.info("headers: {}", headers);
         String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");
         String defaultToken = headers.get(Constants.TOKEN_HEADER);
         String username = headers.get(Constants.USERNAME_HEADER);
         String email = headers.get(Constants.EMAIL_HEADER);
+        log.info("user: {}, email: {}", username, email);
         authenticationService.verifyToken(token, username, email);
         userService.checkAndAddUser(username, username, email);
         try {
