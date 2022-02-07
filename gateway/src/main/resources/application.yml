@@ -6,19 +6,22 @@ server:
   port: 8082
 
 ingestor:
-  baseUrl: http://localhost:8000
+  host: ingestor
+  port: 8000
   apiPath:
     getData: /getdata?year={year}&month={month}&day={day}&radar={radar}&id={id}&starttime={startTime}&endtime={endTime}
     getImage: /getimage
 
 forecaster:
-  baseUrl: http://localhost:8001
+  host: forecaster
+  port: 8001
   apiPath:
     forecast: /forecast
     storm: /stormclustering
 
 registry:
-  baseUrl: http://localhost:8080
+  host: registry
+  port: 8080
   apiPath:
     getUser: /getUser?userId={userId}
     getAllUsers: /getUsers

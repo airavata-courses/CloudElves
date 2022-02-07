@@ -19,11 +19,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 @RestController
 @Slf4j
 public class RegistryController {
 
-    @Value("${registry.baseUrl}")
+    @Value("${registry.host}")
+    private String host;
+
+    @Value("${registry.port}")
+    private String port;
+
     private String baseUrl;
 
     @Value("${registry.apiPath.getUser}")
@@ -44,7 +51,13 @@ public class RegistryController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:3001")
+    @PostConstruct
+    public void setBaseUrl() {
+        baseUrl = String.format("http://{}.{}", host, port);
+        log.info("set baseUrl: {}", baseUrl);
+    }
+
+    @CrossOrigin(origins = "http://ui:3001", "http://localhost:3001")
     @GetMapping(value = "/getUser")
     public ResponseEntity getUser(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
         String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");

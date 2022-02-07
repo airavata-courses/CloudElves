@@ -26,12 +26,26 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 
+import javax.annotation.PostConstruct;
+
 @RestController
 @Slf4j
 public class IngestorController {
 
-    @Value("${ingestor.baseUrl}")
+    @Value("${ingestor.host}")
+    private String ingestorHost;
+
+    @Value("${ingestor.port}")
+    private String ingestorPort;
+
+    @Value("${forecaster.host}")
+    private String forecasterHost;
+
+    @Value("${forecaster.port}")
+    private String forecasterPort;
+
     private String ingestorBaseUrl;
+    private String forecasterBaseUrl;
 
     @Value("${ingestor.apiPath.getData}")
     private String getDataPath;
@@ -39,8 +53,6 @@ public class IngestorController {
     @Value("${ingestor.apiPath.getImage}")
     private String getImagePath;
 
-    @Value("${forecaster.baseUrl}")
-    private String forecasterBaseUrl;
 
     @Value("${forecaster.apiPath.storm}")
     private String stormPath;
@@ -59,6 +71,14 @@ public class IngestorController {
 
     @Autowired
     private UserService userService;
+
+    @PostConstruct
+    public void setBaseUrl() {
+        ingestorBaseUrl = String.format("http://{}.{}", ingestorHost, ingestorPort);
+        forecasterBaseUrl = String.format("http://{}.{}", forecasterHost, forecasterPort);
+        log.info("set ingestorBaseUrl: {}", ingestorBaseUrl);
+        log.info("set forecasterBaseUrl: {}", forecasterBaseUrl);
+    }
 
     @CrossOrigin(origins = "http://localhost:3001")
     @PostMapping(value = "/data")
