@@ -2,10 +2,9 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/circleci-python
+    working_directory: ~/registry
     docker:
       - image: "cimg/openjdk:11.0.13"
-    working_directory: ~/registry
     steps:
       - checkout
       - run: mvn package -Dmaven.test.skip
