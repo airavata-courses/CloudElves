@@ -2,8 +2,8 @@ jobs:
   build:
     working_directory: ~/forecast
     docker:
-      - image: "circleci/python:3.6.4"
+      - image: "circleci/python:3.10.1"
     steps:
       - checkout
-      - run: pip3 install -r forecast/requirements.txt
+      - run: sudo pip3 install -r forecast/requirements.txt
       - run: python3 forecast/forecast/manage.py runserver
