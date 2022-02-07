@@ -6,4 +6,4 @@ jobs:
     steps:
       - checkout
       - run: sudo pip3 install -r forecast/requirements.txt
-      - run: python3 forecast/forecast/manage.py runserver
+      - run: python3 forecast/forecast/manage.py test
