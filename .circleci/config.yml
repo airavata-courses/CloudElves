@@ -1,4 +1,4 @@
-obs:
+jobs:
   build:
     working_directory: ~/forecast
     docker:
