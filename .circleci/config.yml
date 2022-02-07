@@ -1,0 +1,11 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: ~/gateway
+    docker:
+      - image: "cimg/openjdk:11.0.13"
+    steps:
+      - checkout
+      - run: ls -lrt
+      - run: mvn package -Dmaven.test.skip -f gateway/pom.xml
