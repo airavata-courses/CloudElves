@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 @Service
@@ -17,11 +18,22 @@ public class LogService {
     @Autowired
     private RestService restService;
 
-    @Value("${registry.baseUrl}")
-    private String baseUrl;
-
     @Value("${registry.apiPath.addAppLog}")
     private String addLogPath;
+
+    @Value("${registry.host}")
+    private String host;
+
+    @Value("${registry.port}")
+    private String port;
+
+    private String baseUrl;
+
+    @PostConstruct
+    public void setBaseUrl() {
+        baseUrl = String.format("http://%s:%s", host, port);
+        log.info("set baseUrl: {}", baseUrl);
+    }
 
     public void logEvent(String userId, String serviceId, String action, int status, String comments) {
         String url = baseUrl + addLogPath;

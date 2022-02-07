@@ -74,13 +74,13 @@ public class IngestorController {
 
     @PostConstruct
     public void setBaseUrl() {
-        ingestorBaseUrl = String.format("http://{}.{}", ingestorHost, ingestorPort);
-        forecasterBaseUrl = String.format("http://{}.{}", forecasterHost, forecasterPort);
+        ingestorBaseUrl = String.format("http://%s:%s", ingestorHost, ingestorPort);
+        forecasterBaseUrl = String.format("http://%s:%s", forecasterHost, forecasterPort);
         log.info("set ingestorBaseUrl: {}", ingestorBaseUrl);
         log.info("set forecasterBaseUrl: {}", forecasterBaseUrl);
     }
 
-    @CrossOrigin(origins = "http://localhost:3001")
+    @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @PostMapping(value = "/data")
     public ResponseEntity getUser(@RequestHeader Map<String, String> headers, @RequestBody
             DataRequest dataRequest) throws BaseException, AuthenticationException {

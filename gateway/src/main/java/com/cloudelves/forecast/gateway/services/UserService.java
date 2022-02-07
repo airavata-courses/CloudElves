@@ -7,14 +7,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 @Slf4j
 @Service
 public class UserService {
 
-    @Value("${registry.baseUrl}")
+    @Value("${registry.host}")
+    private String host;
+
+    @Value("${registry.port}")
+    private String port;
+
     private String baseUrl;
+
+    @PostConstruct
+    public void setBaseUrl() {
+        baseUrl = String.format("http://%s:%s", host, port);
+        log.info("set baseUrl: {}", baseUrl);
+    }
 
     @Value("${registry.apiPath.addUser}")
     private String addUserPath;

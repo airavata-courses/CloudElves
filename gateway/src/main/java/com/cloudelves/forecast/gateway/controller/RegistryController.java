@@ -53,11 +53,11 @@ public class RegistryController {
 
     @PostConstruct
     public void setBaseUrl() {
-        baseUrl = String.format("http://{}.{}", host, port);
+        baseUrl = String.format("http://%s:%s", host, port);
         log.info("set baseUrl: {}", baseUrl);
     }
 
-    @CrossOrigin(origins = "http://ui:3001", "http://localhost:3001")
+    @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @GetMapping(value = "/getUser")
     public ResponseEntity getUser(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
         String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");
@@ -78,7 +78,7 @@ public class RegistryController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3001")
+    @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @GetMapping(value = "/getLogs")
     public ResponseEntity getLogs(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
         log.info("headers: {}", headers);
