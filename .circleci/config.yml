@@ -8,4 +8,4 @@ jobs:
     steps:
       - checkout
       - run: ls -lrt
-      - run: mvn package -Dmaven.test.skip
+      - run: mvn package -Dmaven.test.skip -f registry/pom.xml
