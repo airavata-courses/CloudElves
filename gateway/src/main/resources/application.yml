@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: default
+
+server:
+  port: 8082
+
+ingestor:
+  host: ingestor
+  port: 8000
+  apiPath:
+    getData: /getdata?year={year}&month={month}&day={day}&radar={radar}&id={id}&starttime={startTime}&endtime={endTime}
+    getImage: /getimage
+
+forecaster:
+  host: forecaster
+  port: 8001
+  apiPath:
+    forecast: /forecast
+    storm: /stormclustering
+
+registry:
+  host: registry
+  port: 8080
+  apiPath:
+    getUser: /getUser?userId={userId}
+    getAllUsers: /getUsers
+    addUser: /addUser
+    getAppLog: /getAppLog?userId={userId}
+    addAppLog: /addAppLog
+
+google:
+  tokenUrl: https://oauth2.googleapis.com/tokeninfo?id_token={token}
