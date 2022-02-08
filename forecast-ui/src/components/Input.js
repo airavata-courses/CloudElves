@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 // This function handles user inputs for fetching the weather plots.
 const Input = (props) => {
-    const stationList = ['FOP1', 'KABR', 'KABX', 'KAKQ', 'KAMA', 'KAMX', 'KAPX', 'KARX', 'KATX', 'KBBX', 'KBGM', 'KBHX', 'KBIS', 'KBLX', 'KBMX', 'KBOX', 'KBRO', 'KBUF', 'KBYX', 'KCAE', 'KCBW', 'KCBX', 'KCCX', 'KCLE', 'KCLX', 'KCRP', 'KCXX', 'KCYS', 'KDAX', 'KDDC', 'KDFX', 'KDGX', 'KDIX', 'KDLH', 'KDMX', 'KDOX', 'KDTX', 'KDVN', 'KDYX', 'KEAX', 'KEMX', 'KENX', 'KEOX', 'KEPZ', 'KESX', 'KEVX', 'KEWX', 'KEYX', 'KFCX', 'KFDR', 'KFDX', 'KFFC', 'KFSD', 'KFSX', 'KFTG', 'KFWS', 'KGGW', 'KGJX', 'KGLD', 'KGRB', 'KGRK', 'KGRR', 'KGSP', 'KGWX', 'KGYX', 'KHDX', 'KHGX', 'KHNX', 'KHPX', 'KHTX', 'KICT', 'KICX', 'KILN', 'KILX', 'KIND', 'KINX', 'KIWA', 'KIWX', 'KJAX', 'KJGX', 'KJKL', 'KLBB', 'KLCH', 'KLGX', 'KLIX', 'KLNX', 'KLOT', 'KLRX', 'KLSX', 'KLTX', 'KLVX', 'KLWX', 'KLZK', 'KMAF', 'KMAX', 'KMBX', 'KMHX', 'KMKX', 'KMLB', 'KMOB', 'KMPX', 'KMQT', 'KMRX', 'KMSX', 'KMTX', 'KMUX', 'KMVX', 'KMXX', 'KNKX', 'KNQA', 'KOAX', 'KOHX', 'KOKX', 'KOTX', 'KPAH', 'KPBZ', 'KPDT', 'KPOE', 'KPUX', 'KRAX', 'KRGX', 'KRIW', 'KRLX', 'KRTX', 'KSFX', 'KSGF', 'KSHV', 'KSJT', 'KSOX', 'KSRX', 'KTBW', 'KTFX', 'KTLH', 'KTLX', 'KTWX', 'KTYX', 'KUDX', 'KUEX', 'KVAX', 'KVBX', 'KVNX', 'KVTX', 'KVWX', 'KYUX', 'PABC', 'PACG', 'PAEC', 'PAHG', 'PAIH', 'PAKC', 'PAPD', 'PHKI', 'PHKM', 'PHMO', 'PHWA', 'RKJK', 'RKSG', 'RODN', 'TADW', 'TBNA', 'TBOS', 'TBWI', 'TCLT', 'TCMH', 'TCVG', 'TDAL', 'TDAY', 'TDCA', 'TDEN', 'TDFW', 'TDTW', 'TEWR', 'TFLL', 'THOU', 'TIAD', 'TIAH', 'TICH', 'TIDS', 'TJFK', 'TJUA', 'TLAS', 'TLVE', 'TMCI', 'TMCO', 'TMDW', 'TMEM', 'TMIA', 'TMKE', 'TMSP', 'TMSY', 'TOKC', 'TORD', 'TPBI', 'TPHL', 'TPHX', 'TPIT', 'TRDU', 'TSDF', 'TSLC', 'TSTL', 'TTPA', 'TTUL'];
+    const stationList = ['KABR', 'KABX', 'KAKQ', 'KAMA', 'KAMX', 'KAPX', 'KARX', 'KATX', 'KBBX', 'KBGM', 'KBHX', 'KBIS', 'KBLX', 'KBMX', 'KBOX', 'KBRO', 'KBUF', 'KBYX', 'KCAE', 'KCBW', 'KCBX', 'KCCX', 'KCLE', 'KCLX', 'KCRP', 'KCXX', 'KCYS', 'KDAX', 'KDDC', 'KDFX', 'KDGX', 'KDIX', 'KDLH', 'KDMX', 'KDOX', 'KDTX', 'KDVN', 'KDYX', 'KEAX', 'KEMX', 'KENX', 'KEOX', 'KEPZ', 'KESX', 'KEVX', 'KEWX', 'KEYX', 'KFCX', 'KFDR', 'KFDX', 'KFFC', 'KFSD', 'KFSX', 'KFTG', 'KFWS', 'KGGW', 'KGJX', 'KGLD', 'KGRB', 'KGRK', 'KGRR', 'KGSP', 'KGWX', 'KGYX', 'KHDX', 'KHGX', 'KHNX', 'KHPX', 'KHTX', 'KICT', 'KICX', 'KILN', 'KILX', 'KIND', 'KINX', 'KIWA', 'KIWX', 'KJAX', 'KJGX', 'KJKL', 'KLBB', 'KLCH', 'KLGX', 'KLIX', 'KLNX', 'KLOT', 'KLRX', 'KLSX', 'KLTX', 'KLVX', 'KLWX', 'KLZK', 'KMAF', 'KMAX', 'KMBX', 'KMHX', 'KMKX', 'KMLB', 'KMOB', 'KMPX', 'KMQT', 'KMRX', 'KMSX', 'KMTX', 'KMUX', 'KMVX', 'KMXX', 'KNKX', 'KNQA', 'KOAX', 'KOHX', 'KOKX', 'KOTX', 'KPAH', 'KPBZ', 'KPDT', 'KPOE', 'KPUX', 'KRAX', 'KRGX', 'KRIW', 'KRLX', 'KRTX', 'KSFX', 'KSGF', 'KSHV', 'KSJT', 'KSOX', 'KSRX', 'KTBW', 'KTFX', 'KTLH', 'KTLX', 'KTWX', 'KTYX', 'KUDX', 'KUEX', 'KVAX', 'KVBX', 'KVNX', 'KVTX', 'KVWX', 'KYUX', 'PABC', 'PACG', 'PAEC', 'PAHG', 'PAIH', 'PAKC', 'PAPD', 'PHKI', 'PHKM', 'PHMO', 'PHWA', 'RKJK', 'RKSG', 'RODN', 'TADW', 'TBNA', 'TBOS', 'TBWI', 'TCLT', 'TCMH', 'TCVG', 'TDAL', 'TDAY', 'TDCA', 'TDEN', 'TDFW', 'TDTW', 'TEWR', 'TFLL', 'THOU', 'TIAD', 'TIAH', 'TICH', 'TIDS', 'TJFK', 'TJUA', 'TLAS', 'TLVE', 'TMCI', 'TMCO', 'TMDW', 'TMEM', 'TMIA', 'TMKE', 'TMSP', 'TMSY', 'TOKC', 'TORD', 'TPBI', 'TPHL', 'TPHX', 'TPIT', 'TRDU', 'TSDF', 'TSLC', 'TSTL', 'TTPA', 'TTUL'];
 	const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date().getTime());
     const [radarStation, setStation] = useState(stationList[0]);
@@ -17,7 +17,7 @@ const Input = (props) => {
         setStation(event.target.value);
       };
 	
-	const InputHandler = async(event) =>{
+	const InputHandler = (event) =>{
 		event.preventDefault();
 		props.InputCollector({"date":date, "time": time, "radarStation": radarStation});
 	}
@@ -44,7 +44,7 @@ const Input = (props) => {
                         required
                         label="Select Time"
                         value={time}
-                        onChange={(newValue) => {setTime(newValue); }}
+                        onChange={(newValue) => {setTime(Date.parse(newValue)); }}
                         renderInput={(params) => <TextField {...params} />}/>
                 </LocalizationProvider>
                 </div>

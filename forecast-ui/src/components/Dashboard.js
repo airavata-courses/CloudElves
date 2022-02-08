@@ -9,8 +9,8 @@ const Dashboard = () => {
     const {userAuthDetails} = useContext(UserContext);
     const [loading, setLoading] = useState(true);
     const [submit, didSubmit] = useState(false);
-    const [plot, setPlot] = useState("helo");
-    
+    const [plot, setPlot] = useState(null);
+        
     useEffect(() => {
         if (!loading && submit) setLoading(false);
     }, [loading, submit]);
@@ -27,16 +27,16 @@ const Dashboard = () => {
         };
 
         fetchData(reqObject);
-        setInterval(() => {
-            setLoading(false);
-        }, 2000);
+        // setInterval(() => {
+        //     setLoading(false);
+        // }, 2000);
     };
 
     const fetchData = async (input) => {
 
         let url = `http://localhost:8082/data`;
 
-        const response = await fetch(url, {
+        await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,13 +48,19 @@ const Dashboard = () => {
             })
             .then((response) => response.json())
             .then((data) => {
-                return {"success":data};
+                console.log(data);
+                setPlot({"success":data});
+                setLoading(false);
+                // return {"success":data};
             })
             .catch((error) => {
-                return {"error":error};
+                console.log("error: ", error);
+                setPlot({"error":error});
+                setLoading(false);
+                // return {"error":error};return {"error":error};
             });
 
-        setPlot(response);
+        // setPlot(response);
     }
 
     return (
