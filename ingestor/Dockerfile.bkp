@@ -22,10 +22,7 @@ ADD . /ingestor/
 
 # Install any needed packages specified in requirements.txt
 # RUN pip3 install -r requirements.txt
-RUN pip3 install numpy pandas scipy matplotlib requests
-RUN apt-get install -y libhdf5-dev libnetcdf-dev
-RUN ln -s /usr/include/hdf5/serial /usr/include/hdf5/include
-RUN export HDF5_DIR=/usr/include/hdf5
-RUN pip3 install netCDF4 arm_pyart djangorestframework django nexradaws datetime pytz
+RUN pip3 install numpy pandas
+RUN python3 -m pip install --user -r requirements.txt
 
 ENTRYPOINT ["python3","ingestor/manage.py", "runserver"]
