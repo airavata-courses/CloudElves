@@ -9,5 +9,6 @@ jobs:
     steps:
       - checkout
       - run: cd forecast-ui
+      - run: ls -lrt
       - run: yarn install
       - run: yarn build
