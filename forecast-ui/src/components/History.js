@@ -41,8 +41,8 @@ const History = () => {
 	else if (logs.success){
 		let list = logs.success;
 		return (
-			<div>
-			<table style={{'border': '3px solid black'}}>
+		<div>
+		<table style={{'border': '3px solid black'}}>
 			<tr key={"header"}>
 				{Object.keys(list[0]).map((key) => ( <th>{key}</th>	))}
 			</tr>
