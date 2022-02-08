@@ -1,0 +1,10 @@
+jobs:
+  build:
+    working_directory: ~/ingestor
+    docker:
+      - image: "circleci/python:3.10.1"
+    steps:
+      - checkout
+      - run: sudo pip3 install numpy pandas
+      - run: sudo pip3 install -r ingestor/requirements.txt
+      - run: python3 ingestor/ingestor/manage.py test ingestor_app
