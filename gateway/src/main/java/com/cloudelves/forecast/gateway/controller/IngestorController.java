@@ -105,7 +105,7 @@ public class IngestorController {
             throw e;
         }
 
-        imageUrl = ingestorBaseUrl + getImagePath + "?filename=" + ingestorResponse.getData();
+        imageUrl = "http://localhost:8000" + getImagePath + "?filename=" + ingestorResponse.getData();
         DataResponse responseBody = DataResponse.builder().imageUrl(imageUrl).build();
 
         try {
