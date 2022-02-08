@@ -24,4 +24,4 @@ ADD . /forecaster/
 # RUN pip3 install -r requirements.txt
 RUN python3 -m pip install --user -r requirements.txt
 
-ENTRYPOINT ["python3","forecast/manage.py", "runserver"]
+ENTRYPOINT ["python3","forecast/manage.py", "runserver", "0.0.0.0:8001"]
