@@ -28,4 +28,4 @@ RUN ln -s /usr/include/hdf5/serial /usr/include/hdf5/include
 RUN export HDF5_DIR=/usr/include/hdf5
 RUN pip3 install netCDF4 arm_pyart djangorestframework django nexradaws datetime pytz
 
-ENTRYPOINT ["python3","ingestor/manage.py", "runserver"]
+ENTRYPOINT ["python3","ingestor/manage.py", "runserver", "0.0.0.0:8000"]
