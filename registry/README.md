@@ -4,6 +4,7 @@
 ```
 mvn clean package
 ```
+
 this will create a runnable jar in the target/ folder
 
 create the docker image with the following command:

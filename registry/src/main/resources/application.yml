@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+db:
+  host: localhost
+  port: 5001
+  username: postgres
+  password: cloudelves
+  name: postgres
