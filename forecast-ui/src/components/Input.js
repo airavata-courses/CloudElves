@@ -17,7 +17,7 @@ const Input = (props) => {
         setStation(event.target.value);
       };
 	
-	const InputHandler = async(event) =>{
+	const InputHandler = (event) =>{
 		event.preventDefault();
 		props.InputCollector({"date":date, "time": time, "radarStation": radarStation});
 	}
