@@ -10,7 +10,6 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [submit, didSubmit] = useState(false);
     const [plot, setPlot] = useState(null);
-        
     useEffect(() => {
         if (!loading && submit) setLoading(false);
         // if (submit) {
@@ -60,7 +59,6 @@ const Dashboard = () => {
                 console.log("error: ", error);
                 setPlot({"error":error});
                 setLoading(false);
-                
             });
     }
 
