@@ -31,8 +31,8 @@ const Input = (props) => {
                     <DatePicker
                         label="Select Date"
                         value={date}
-                        onChange={(newValue) => { setDate(newValue);}}
-                        maxDate={date}
+                        onChange={(newValue) => { setDate(new Date(newValue));}}
+                        maxDate={new Date()}
                         required
                         renderInput={(params) => <TextField {...params} />} />
                 </LocalizationProvider>

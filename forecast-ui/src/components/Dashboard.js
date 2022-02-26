@@ -13,10 +13,17 @@ const Dashboard = () => {
         
     useEffect(() => {
         if (!loading && submit) setLoading(false);
+        // if (submit) {
+        //     if (loading) {
+
+        //     }
+        // }
     }, [loading, submit]);
 
     const InputProcessor = (userInput) => {
-        didSubmit(true);
+        if (submit) setLoading(true);
+        else didSubmit(true);
+        
         const reqObject = {
             "year":userInput.date.getFullYear(),
             "month": userInput.date.getMonth()+1,
@@ -27,14 +34,11 @@ const Dashboard = () => {
         };
 
         fetchData(reqObject);
-        // setInterval(() => {
-        //     setLoading(false);
-        // }, 2000);
     };
 
     const fetchData = async (input) => {
 
-        let url = `http://localhost:8082/data`;
+        const url = `http://localhost:8082/data`;
 
         await fetch(url, {
             method: "POST",
@@ -51,16 +55,13 @@ const Dashboard = () => {
                 console.log(data);
                 setPlot({"success":data});
                 setLoading(false);
-                // return {"success":data};
             })
             .catch((error) => {
                 console.log("error: ", error);
                 setPlot({"error":error});
                 setLoading(false);
-                // return {"error":error};return {"error":error};
+                
             });
-
-        // setPlot(response);
     }
 
     return (
