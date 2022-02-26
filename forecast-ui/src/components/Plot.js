@@ -12,10 +12,11 @@ const Plot = ({partochild}) => {
         let forecast = partochild.success;
         return (
             <div className="plot">
-                <img src={forecast.imageUrl} alt="Weather plots"/>
                 { forecast.stormExist ? (<div><div>Possibility of storm</div><div>{forecast.weatherForecas["humidity"]}</div></div>)
                     :(<div><div>No possibility of a storm</div></div>)
                 }
+                <img src={forecast.imageUrl} alt="Weather plots"/>
+                
             </div>
         );
     }
