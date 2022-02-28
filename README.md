@@ -1,12 +1,8 @@
-# CloudElves
-Spring 2022 Project
-
-### Team:
-			 1) Ayush Sanghavi
-			 2) Madhavan KR
-			 3) Navkar Shah
-
-CloudElves is a weather prediction distributed-system built using microservice architecture
-
-
-Visit https://github.com/airavata-courses/CloudElves/wiki/Homework-1---Weather-Forecast link for setup.
+# RabbitMQ setup for Cloud Elves Weather App
+* RabbitMQ is a message broker service which handles the asynchronous message transfer of messages between different components of a system.
+* It supports multiple messaging protocols, message queuing, delivery acknowledgement, and flexible routing to multiple queues.
+* It is available for development across platforms such as JAVA, Python, JavaScript, Go and many more, which makes it a perfect match for handling inter process communication for our application which has components implemented in different langugages.
+* RabbitMQ is cloud-friendly and can be deployed as clusters for high availability and throughput.
+<br><br>
+Follow the steps given below to enable RabbitMQ service:
+...
