@@ -8,6 +8,7 @@
   "datacontenttype" : "application/json",
   "data" : {
     "id":  "sample-id",
+    "userId": "sample-userId",
     "image": "image encoded",
     "comments": "commnets",
     "status": 0
