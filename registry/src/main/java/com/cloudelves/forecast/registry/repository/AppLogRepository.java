@@ -15,4 +15,10 @@ public interface AppLogRepository extends CrudRepository<AppLog, String> {
     @Query(value = "select * from applog a where a.user_id=:userId", nativeQuery = true)
     List<AppLog> findByUserId(@Param("userId") String userId);
 
+    @Query(value = "select * from applog a where a.user_id=:userId order by log_timestamp desc limit 20", nativeQuery = true)
+    List<AppLog> findByUserIdLatest(@Param("userId") String userId);
+
+    @Query(value = "select * from applog a where a.id=:id order by log_timestamp desc", nativeQuery = true)
+    List<AppLog> findByTransactionId(@Param("id") String id);
+
 }

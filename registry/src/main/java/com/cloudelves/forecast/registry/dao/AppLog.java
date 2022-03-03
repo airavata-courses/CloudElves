@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "applog")
@@ -28,7 +29,7 @@ public class AppLog {
     private String action;
 
     @Column(name = "log_timestamp")
-    private Date logTimestamp;
+    private Timestamp logTimestamp;
 
     @Column(name = "status")
     private int status;

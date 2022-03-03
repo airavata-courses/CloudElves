@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: release-0.0.1
+      author: Madhavan Kalkunte Ramachandra
+      changes:
+        -  tagDatabase:
+             tag: 0.0.2
+  - changeSet:
+      id: 1
+      author: Madhavan Kalkunte Ramachandra
+      comment: Initial creation of database schema
+      changes:
+        - sqlFile:
+            path: create.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: rollback.sql
+            relativeToChangelogFile: true
+

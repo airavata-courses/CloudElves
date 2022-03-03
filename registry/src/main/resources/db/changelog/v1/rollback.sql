@@ -1,1 +1,2 @@
-drop table sample;
+drop table UserDetails;
+drop table AppLog;

@@ -1,0 +1,1 @@
+create table plots(id text, image text, primary key(id), foreign key(id) references AppLog(id));

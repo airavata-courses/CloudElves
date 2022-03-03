@@ -7,3 +7,18 @@ db:
   username: postgres
   password: cloudelves
   name: postgres
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: elves
+    password: cloudelves
+
+rmq:
+  consumerCount: 10
+  exchange: elvesExchange
+  input:
+    applog: elves.registry.applog.in
+    userdetails: elves.registry.userdetails.in
+    ingestor: elves.registry.ingestor.in
