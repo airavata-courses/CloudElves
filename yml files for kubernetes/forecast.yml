@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: deployments
+metadata:
+  name: forecast
+spec:
+  containers:
+  - name: forecast
+    image: ayush3103/forecast-http:7
+    ports:
+    - containerPort: 8001
