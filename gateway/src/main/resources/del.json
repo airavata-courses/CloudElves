@@ -1,0 +1,18 @@
+{
+  "data": {
+    "id": "e928247f-aadb-4fa2-b5f3-5647824d565d",
+    "userId": "madhkr",
+    "serviceId": "registry",
+    "action": "addUser",
+    "timestamp": "1646299402427",
+    "comments": "error while making rest call: I/O error on POST request for \"http://localhost:8080/addUser\": Connection refused (Connection refused); nested exception is java.net.ConnectException: Connection refused (Connection refused)",
+    "status": 1
+  },
+  "specVersion": null,
+  "type": "elves.registry.applog",
+  "source": "gateway",
+  "subject": null,
+  "id": "e928247f-aadb-4fa2-b5f3-5647824d565d",
+  "time": "1646299402428",
+  "datacontenttype": "application/json"
+}

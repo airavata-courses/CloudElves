@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 public class AppLogRequest {
 
-    private String userId, serviceId, action, timestamp, comments;
+    private String id, userId, serviceId, action, timestamp, comments;
     private int status;
 
 }

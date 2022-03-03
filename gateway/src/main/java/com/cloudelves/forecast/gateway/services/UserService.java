@@ -37,18 +37,18 @@ public class UserService {
     @Autowired
     private RestService restService;
 
-    public void checkAndAddUser(String userId, String username, String email) {
+    public void checkAndAddUser(String id, String userId, String username, String email) {
         String url = baseUrl + addUserPath;
         String timestamp = String.format("%d", new Date().getTime());
         UserDetailsRequest requestBody = UserDetailsRequest.builder().userId(userId).userEmail(email).name(username).timestamp(timestamp)
                                                            .build();
         try {
             restService.makeRestCall(url, requestBody, String.class, null, HttpMethod.POST);
-            logService.logEvent(userId, "registry", "addUser", 0, "successfully added user");
+            logService.logEvent(id, userId, "registry", "addUser", 0, "successfully added user");
         } catch (Exception e) {
             if (!e.getMessage().contains("user already registered")) {
                 log.error("error while registering user: ", e);
-                logService.logEvent(userId, "registry", "addUser", 1, e.getMessage());
+                logService.logEvent(id, userId, "registry", "addUser", 1, e.getMessage());
             }
         }
     }

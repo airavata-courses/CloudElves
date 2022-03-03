@@ -1,6 +1,5 @@
 package com.cloudelves.forecast.gateway.model.response;
 
-import com.cloudelves.forecast.gateway.model.forecaster.response.ForecastResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DataResponse {
-    private String id;
+public class GetDataStatusResponse {
+    private String id, image, error;
+    private int status;
 }

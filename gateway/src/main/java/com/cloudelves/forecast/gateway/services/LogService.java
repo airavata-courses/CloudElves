@@ -1,6 +1,8 @@
 package com.cloudelves.forecast.gateway.services;
 
+import com.cloudelves.forecast.gateway.constants.Constants;
 import com.cloudelves.forecast.gateway.exception.BaseException;
+import com.cloudelves.forecast.gateway.model.events.LogEvent;
 import com.cloudelves.forecast.gateway.model.registry.request.AppLogRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,35 +18,21 @@ import java.util.Date;
 public class LogService {
 
     @Autowired
-    private RestService restService;
+    private RMQProducer rmqProducer;
 
-    @Value("${registry.apiPath.addAppLog}")
-    private String addLogPath;
+    @Value("${rmq.output.registry}")
+    private String registryQueue;
 
-    @Value("${registry.host}")
-    private String host;
-
-    @Value("${registry.port}")
-    private String port;
-
-    private String baseUrl;
-
-    @PostConstruct
-    public void setBaseUrl() {
-        baseUrl = String.format("http://%s:%s", host, port);
-        log.info("set baseUrl: {}", baseUrl);
-    }
-
-    public void logEvent(String userId, String serviceId, String action, int status, String comments) {
-        String url = baseUrl + addLogPath;
+    public void logEvent(String id, String userId, String serviceId, String action, int status, String comments) {
+        AppLogRequest logRequest = AppLogRequest.builder().serviceId(serviceId).userId(userId).action(action).status(status).id(id)
+                                                .timestamp(String.valueOf(new Date().getTime())).comments(comments).build();
+        LogEvent logEvent = LogEvent.builder().source(Constants.SOURCE_GATEWAY).datacontentType(Constants.DATA_CONTENT_TYPE).id(id)
+                                    .type(Constants.REGISTRY_APPLOG).time(String.valueOf(new Date().getTime())).data(logRequest).build();
         String timestamp = String.format("%d", new Date().getTime());
-        AppLogRequest appLogRequest = AppLogRequest.builder().userId(userId).serviceId(serviceId).action(action).status(status)
-                                                   .timestamp(timestamp).comments(comments).build();
         try {
-            restService.makeRestCall(url, appLogRequest, String.class, null, HttpMethod.POST);
-            log.error("successfully logged event");
+            rmqProducer.produceMessage(registryQueue, logEvent);
         } catch (BaseException e) {
-            log.error("error while logging: ", e);
+            log.error("error while logging event: ", e);
         }
     }
 

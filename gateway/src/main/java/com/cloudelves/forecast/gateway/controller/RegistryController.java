@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -64,40 +66,46 @@ public class RegistryController {
         String username = headers.get(Constants.USERNAME_HEADER);
         String email = headers.get(Constants.EMAIL_HEADER);
         authenticationService.verifyToken(token, username, email);
-        userService.checkAndAddUser(username, username, email);
+        String id = UUID.randomUUID().toString();
+        userService.checkAndAddUser(id, username, username, email);
         try {
             String url = baseUrl + getUserPath;
             Map<String, String> requestParams = Collections.singletonMap("userId", username);
             UserDetailsResponse responseBody = restService.makeRestCall(url, null, UserDetailsResponse.class, requestParams,
                                                                         HttpMethod.GET);
-            logService.logEvent(username, "registry", "getUser", 0, "successfully queried user details");
+            logService.logEvent(id, username, "registry", "getUser", 0, "successfully queried user details");
             return ResponseEntity.ok(responseBody);
         } catch (BaseException e) {
-            logService.logEvent(username, "registry", "getUser", 1, e.getMessage());
+            logService.logEvent(id, username, "registry", "getUser", 2, e.getMessage());
             throw e;
         }
     }
 
     @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @GetMapping(value = "/getLogs")
-    public ResponseEntity getLogs(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
+    public ResponseEntity getLogs(@RequestHeader Map<String, String> headers,
+                                  @RequestParam(value = "all", required = false, defaultValue = "false")
+                                          boolean all) throws BaseException, AuthenticationException {
         log.info("headers: {}", headers);
         String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");
         String defaultToken = headers.get(Constants.TOKEN_HEADER);
         String username = headers.get(Constants.USERNAME_HEADER);
         String email = headers.get(Constants.EMAIL_HEADER);
+        String id = UUID.randomUUID().toString();
         log.info("user: {}, email: {}", username, email);
         authenticationService.verifyToken(token, username, email);
-        userService.checkAndAddUser(username, username, email);
+        userService.checkAndAddUser(id, username, username, email);
         try {
             String url = baseUrl + getAppLogPath;
-            Map<String, String> requestParams = Collections.singletonMap("userId", username);
+            Map<String, String> requestParams = new HashMap<>();
+            requestParams.put("userId", username);
+            requestParams.put("all", String.valueOf(all));
             AppLogResponse[] responseBody = restService.makeRestCall(url, null, AppLogResponse[].class, requestParams,
-                                                                        HttpMethod.GET);
-            logService.logEvent(username, "registry", "getAppLogs", 0, "successfully queried logs");
+                                                                     HttpMethod.GET);
+            logService.logEvent(id, username, "registry", "getAppLogs", 0, "successfully queried logs");
             return ResponseEntity.ok(responseBody);
         } catch (BaseException e) {
-            logService.logEvent(username, "registry", "getAppLogs", 1, e.getMessage());
+            logService.logEvent(id, username, "registry", "getAppLogs", 1, e.getMessage());
             throw e;
         }
     }

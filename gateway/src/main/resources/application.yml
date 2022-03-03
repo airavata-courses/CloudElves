@@ -1,4 +1,9 @@
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: elves
+    password: cloudelves
   profiles:
     active: default
 
@@ -20,7 +25,7 @@ forecaster:
     storm: /stormclustering
 
 registry:
-  host: registry
+  host: localhost
   port: 8080
   apiPath:
     getUser: /getUser?userId={userId}
@@ -28,6 +33,14 @@ registry:
     addUser: /addUser
     getAppLog: /getAppLog?userId={userId}
     addAppLog: /addAppLog
+    getLogById: /getLogs?id={id}
+    getPlot: /getPlot?id={id}
+
+rmq:
+  exchange: elvesExchange
+  output:
+    registry: elves.registry.applog.in
+    ingestor: elves.ingestor.data.in
 
 google:
   tokenUrl: https://oauth2.googleapis.com/tokeninfo?id_token={token}
