@@ -3,10 +3,6 @@ pandas
 scipy
 netCDF4
 arm_pyart
-djangorestframework
-django
 nexradaws
-datetime
 matplotlib
-requests
-pytz
+pika
