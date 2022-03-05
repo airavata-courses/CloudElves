@@ -1,0 +1,61 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1646408001279,2980,getdata_request,200,OK,gateway_req 1-1,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=ac3fd302-9fad-4592-b9d4-2c0da5d079ee,22,0,9
+1646408001279,24,getdata_request-0,301,Moved Permanently,gateway_req 1-1,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=ac3fd302-9fad-4592-b9d4-2c0da5d079ee,22,0,9
+1646408001303,2956,getdata_request-1,200,OK,gateway_req 1-1,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=ac3fd302-9fad-4592-b9d4-2c0da5d079ee,2956,0,0
+1646408004262,11,getimage_request,200,OK,gateway_req 1-1,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=ac3fd302-9fad-4592-b9d4-2c0da5d079ee.png,2,0,0
+1646408004262,2,getimage_request-0,301,Moved Permanently,gateway_req 1-1,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=ac3fd302-9fad-4592-b9d4-2c0da5d079ee.png,2,0,0
+1646408004264,9,getimage_request-1,200,OK,gateway_req 1-1,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=ac3fd302-9fad-4592-b9d4-2c0da5d079ee.png,3,0,0
+1646408005241,4607,getdata_request,200,OK,gateway_req 1-2,text,true,,721,449,2,2,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=20d1a703-7757-487c-8004-72026988005e,9,0,1
+1646408005241,9,getdata_request-0,301,Moved Permanently,gateway_req 1-2,text,true,,395,224,2,2,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=20d1a703-7757-487c-8004-72026988005e,9,0,1
+1646408005250,4598,getdata_request-1,200,OK,gateway_req 1-2,text,true,,326,225,2,2,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=20d1a703-7757-487c-8004-72026988005e,4598,0,0
+1646408009848,14,getimage_request,200,OK,gateway_req 1-2,bin,true,,302080,349,2,2,http://localhost:8000/getimage/?filename=20d1a703-7757-487c-8004-72026988005e.png,2,0,0
+1646408009848,2,getimage_request-0,301,Moved Permanently,gateway_req 1-2,text,true,,345,174,2,2,http://localhost:8000/getimage?filename=20d1a703-7757-487c-8004-72026988005e.png,2,0,0
+1646408009850,12,getimage_request-1,200,OK,gateway_req 1-2,bin,true,,301735,175,2,2,http://localhost:8000/getimage/?filename=20d1a703-7757-487c-8004-72026988005e.png,4,0,0
+1646408009242,3761,getdata_request,200,OK,gateway_req 1-3,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=160b42bc-7fcc-4c71-837b-b1bc13bde2f1,36,0,2
+1646408009242,36,getdata_request-0,301,Moved Permanently,gateway_req 1-3,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=160b42bc-7fcc-4c71-837b-b1bc13bde2f1,36,0,2
+1646408009278,3725,getdata_request-1,200,OK,gateway_req 1-3,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=160b42bc-7fcc-4c71-837b-b1bc13bde2f1,3725,0,0
+1646408013006,12,getimage_request,200,OK,gateway_req 1-3,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=160b42bc-7fcc-4c71-837b-b1bc13bde2f1.png,2,0,0
+1646408013006,2,getimage_request-0,301,Moved Permanently,gateway_req 1-3,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=160b42bc-7fcc-4c71-837b-b1bc13bde2f1.png,2,0,0
+1646408013008,10,getimage_request-1,200,OK,gateway_req 1-3,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=160b42bc-7fcc-4c71-837b-b1bc13bde2f1.png,3,0,0
+1646408013244,2433,getdata_request,200,OK,gateway_req 1-4,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=6420240a-7927-48a1-b78c-8af57d92fce1,8,0,2
+1646408013244,8,getdata_request-0,301,Moved Permanently,gateway_req 1-4,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=6420240a-7927-48a1-b78c-8af57d92fce1,8,0,2
+1646408013252,2425,getdata_request-1,200,OK,gateway_req 1-4,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=6420240a-7927-48a1-b78c-8af57d92fce1,2425,0,0
+1646408015678,16,getimage_request,200,OK,gateway_req 1-4,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=6420240a-7927-48a1-b78c-8af57d92fce1.png,2,0,0
+1646408015678,2,getimage_request-0,301,Moved Permanently,gateway_req 1-4,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=6420240a-7927-48a1-b78c-8af57d92fce1.png,2,0,0
+1646408015680,14,getimage_request-1,200,OK,gateway_req 1-4,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=6420240a-7927-48a1-b78c-8af57d92fce1.png,4,0,0
+1646408017244,2613,getdata_request,200,OK,gateway_req 1-5,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=f9b0fefa-e279-49d0-bf57-698e211db815,9,0,2
+1646408017244,9,getdata_request-0,301,Moved Permanently,gateway_req 1-5,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=f9b0fefa-e279-49d0-bf57-698e211db815,9,0,2
+1646408017254,2603,getdata_request-1,200,OK,gateway_req 1-5,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=f9b0fefa-e279-49d0-bf57-698e211db815,2603,0,0
+1646408019857,20,getimage_request,200,OK,gateway_req 1-5,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=f9b0fefa-e279-49d0-bf57-698e211db815.png,4,0,0
+1646408019857,4,getimage_request-0,301,Moved Permanently,gateway_req 1-5,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=f9b0fefa-e279-49d0-bf57-698e211db815.png,4,0,0
+1646408019861,16,getimage_request-1,200,OK,gateway_req 1-5,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=f9b0fefa-e279-49d0-bf57-698e211db815.png,3,0,0
+1646408021243,2588,getdata_request,200,OK,gateway_req 1-6,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=4cf9aff3-f778-41a4-8072-03706b60d554,7,0,2
+1646408021243,7,getdata_request-0,301,Moved Permanently,gateway_req 1-6,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=4cf9aff3-f778-41a4-8072-03706b60d554,7,0,2
+1646408021250,2581,getdata_request-1,200,OK,gateway_req 1-6,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=4cf9aff3-f778-41a4-8072-03706b60d554,2581,0,0
+1646408023832,14,getimage_request,200,OK,gateway_req 1-6,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=4cf9aff3-f778-41a4-8072-03706b60d554.png,3,0,0
+1646408023832,3,getimage_request-0,301,Moved Permanently,gateway_req 1-6,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=4cf9aff3-f778-41a4-8072-03706b60d554.png,3,0,0
+1646408023835,11,getimage_request-1,200,OK,gateway_req 1-6,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=4cf9aff3-f778-41a4-8072-03706b60d554.png,3,0,0
+1646408025240,2732,getdata_request,200,OK,gateway_req 1-7,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=aec23f0b-f110-43e3-9e68-eba094640527,11,0,1
+1646408025240,11,getdata_request-0,301,Moved Permanently,gateway_req 1-7,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=aec23f0b-f110-43e3-9e68-eba094640527,11,0,1
+1646408025252,2720,getdata_request-1,200,OK,gateway_req 1-7,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=aec23f0b-f110-43e3-9e68-eba094640527,2720,0,0
+1646408027972,15,getimage_request,200,OK,gateway_req 1-7,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=aec23f0b-f110-43e3-9e68-eba094640527.png,3,0,0
+1646408027972,3,getimage_request-0,301,Moved Permanently,gateway_req 1-7,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=aec23f0b-f110-43e3-9e68-eba094640527.png,3,0,0
+1646408027975,12,getimage_request-1,200,OK,gateway_req 1-7,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=aec23f0b-f110-43e3-9e68-eba094640527.png,3,0,0
+1646408029239,2464,getdata_request,200,OK,gateway_req 1-8,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=80ae0e66-57d2-48b4-bba5-01a767cb1b28,8,0,1
+1646408029239,8,getdata_request-0,301,Moved Permanently,gateway_req 1-8,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=80ae0e66-57d2-48b4-bba5-01a767cb1b28,8,0,1
+1646408029247,2456,getdata_request-1,200,OK,gateway_req 1-8,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=80ae0e66-57d2-48b4-bba5-01a767cb1b28,2456,0,0
+1646408031704,13,getimage_request,200,OK,gateway_req 1-8,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=80ae0e66-57d2-48b4-bba5-01a767cb1b28.png,2,0,0
+1646408031704,2,getimage_request-0,301,Moved Permanently,gateway_req 1-8,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=80ae0e66-57d2-48b4-bba5-01a767cb1b28.png,2,0,0
+1646408031706,11,getimage_request-1,200,OK,gateway_req 1-8,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=80ae0e66-57d2-48b4-bba5-01a767cb1b28.png,3,0,0
+1646408033245,4870,getdata_request,200,OK,gateway_req 1-9,text,true,,721,449,2,2,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=de50d9e6-0a58-483b-acc5-0d8640e75653,9,0,3
+1646408033245,9,getdata_request-0,301,Moved Permanently,gateway_req 1-9,text,true,,395,224,2,2,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=de50d9e6-0a58-483b-acc5-0d8640e75653,9,0,3
+1646408033255,4860,getdata_request-1,200,OK,gateway_req 1-9,text,true,,326,225,2,2,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=de50d9e6-0a58-483b-acc5-0d8640e75653,4859,0,0
+1646408038115,14,getimage_request,200,OK,gateway_req 1-9,bin,true,,302080,349,2,2,http://localhost:8000/getimage/?filename=de50d9e6-0a58-483b-acc5-0d8640e75653.png,2,0,0
+1646408038115,2,getimage_request-0,301,Moved Permanently,gateway_req 1-9,text,true,,345,174,2,2,http://localhost:8000/getimage?filename=de50d9e6-0a58-483b-acc5-0d8640e75653.png,2,0,0
+1646408038118,11,getimage_request-1,200,OK,gateway_req 1-9,bin,true,,301735,175,2,2,http://localhost:8000/getimage/?filename=de50d9e6-0a58-483b-acc5-0d8640e75653.png,3,0,0
+1646408037242,4170,getdata_request,200,OK,gateway_req 1-10,text,true,,721,449,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=9ac252f6-c674-49e5-84f1-fc55f153419d,6,0,1
+1646408037242,6,getdata_request-0,301,Moved Permanently,gateway_req 1-10,text,true,,395,224,1,1,http://localhost:8000/getdata?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=9ac252f6-c674-49e5-84f1-fc55f153419d,6,0,1
+1646408037248,4164,getdata_request-1,200,OK,gateway_req 1-10,text,true,,326,225,1,1,http://localhost:8000/getdata/?year=2000&month=03&day=31&starttime=17&endtime=19&radar=KABR&id=9ac252f6-c674-49e5-84f1-fc55f153419d,4164,0,0
+1646408041414,21,getimage_request,200,OK,gateway_req 1-10,bin,true,,302080,349,1,1,http://localhost:8000/getimage/?filename=9ac252f6-c674-49e5-84f1-fc55f153419d.png,4,0,0
+1646408041414,4,getimage_request-0,301,Moved Permanently,gateway_req 1-10,text,true,,345,174,1,1,http://localhost:8000/getimage?filename=9ac252f6-c674-49e5-84f1-fc55f153419d.png,4,0,0
+1646408041419,16,getimage_request-1,200,OK,gateway_req 1-10,bin,true,,301735,175,1,1,http://localhost:8000/getimage/?filename=9ac252f6-c674-49e5-84f1-fc55f153419d.png,3,0,0
