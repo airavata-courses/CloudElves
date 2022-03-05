@@ -3,3 +3,7 @@
 ingestor/ingestor/downloaded_data/
 ingestor/ingestor/plotted_data/
 **/.DS_Store
+radar_data/
+venv/
+pyvenv.cfg
+sample.html
