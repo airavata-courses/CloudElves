@@ -5,6 +5,9 @@ ip=$(minikube ip)
 # create elves namespace
 kubectl create namespace elves
 
+# add bitnami repository to helm
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
 # install rabbitmq service
 helm install mu-rabbit bitnami/rabbitmq --namespace elves
 
