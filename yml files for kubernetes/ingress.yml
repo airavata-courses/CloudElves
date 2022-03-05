@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: happy-ingress
+  annotations:
+    INGRESS.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: happy.k8s.io
+    http:
+      paths:
+      - path: /gateway
+        backend:
+          serviceName: my-service
+          servicePort: 8080

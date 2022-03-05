@@ -1,10 +1,26 @@
-apiVersion: v1
-kind: deployments
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: forecast
+  namespace: elves
 spec:
-  containers:
-  - name: forecast
-    image: ayush3103/forecast-http:7
-    ports:
-    - containerPort: 8001
+  replicas: 1
+  selector:
+    matchLabels:
+      run: forecast
+      app: forecast
+  template:
+    metadata:
+      labels:
+        run: forecast
+        app: forecast
+    spec:
+      containers:
+        - name: forecast
+          image: docker.io/madhavankr/elves-forecast:latest
+          imagePullPolicy: Always
+          ports:
+          - name: forecast
+            containerPort: 8080
+            protocol: TCP
+

@@ -1,24 +1,24 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: gateway
+  name: registry
   namespace: elves
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: gateway
-      app: gateway
+      run: registry
+      app: registry
   template:
     metadata:
       labels:
-        run: gateway
-        app: gateway
+        run: registry
+        app: registry
     spec:
       containers:
-        - name: gateway
-          image: docker.io/madhavankr/elves-gateway:latest
-          imagePullPolicy: Always
+        - name: registry
+          image: docker.io/madhavankr/elves-registry:latest
+          imagePullPolicy: IfNotPresent
           env:
           - name: server.port
             value: "8080"
@@ -28,15 +28,22 @@ spec:
             value: "5672"
           - name: spring.rabbitmq.username
             value: "user"
+          - name: db.host
+            value: postgres-postgresql.elves.svc.cluster.local
+          - name: db.port
+            value: "5432"
           - name: spring.rabbitmq.password
             valueFrom:
               secretKeyRef:
                 name: mu-rabbit-rabbitmq
                 key: rabbitmq-password
-          - name: registry.serviceName
-            value: REGISTRY_SERVICE
+          - name: db.password
+            valueFrom:
+              secretKeyRef:
+                name: postgres-postgresql
+                key: postgres-password
+
           ports:
-          - name: gateway
+          - name: registry
             containerPort: 8080
             protocol: TCP
-
