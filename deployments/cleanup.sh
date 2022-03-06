@@ -1,5 +1,7 @@
-helm uninstall mu-rabbit -n elves
+# helm uninstall mu-rabbit -n elves
 helm uninstall postgres -n elves
+
+kubectl delete -f rabbitmq.yml
 
 kubectl delete -f forecast.yml
 kubectl delete -f forecast-service.yml
