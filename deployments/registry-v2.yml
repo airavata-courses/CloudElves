@@ -1,0 +1,40 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: registry
+  namespace: elves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: registry
+      app: registry
+  template:
+    metadata:
+      labels:
+        run: registry
+        app: registry
+    spec:
+      containers:
+        - name: registry
+          image: docker.io/madhavankr/elves-registry:latest
+          imagePullPolicy: Always
+          env:
+          - name: rmq.serviceName
+            value: RABBITMQ_SERVICE
+          - name: server.port
+            value: "8080"
+          - name: db.host
+            value: elves-postgres-postgresql.elves.svc.cluster.local
+          - name: db.port
+            value: "5432"
+          - name: db.password
+            valueFrom:
+              secretKeyRef:
+                name: elves-postgres-postgresql
+                key: postgres-password
+
+          ports:
+          - name: registry
+            containerPort: 8080
+            protocol: TCP

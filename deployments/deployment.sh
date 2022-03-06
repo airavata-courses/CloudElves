@@ -9,13 +9,14 @@ kubectl create namespace elves
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
 # install rabbitmq service
-helm install mu-rabbit bitnami/rabbitmq --namespace elves
+# helm install mu-rabbit bitnami/rabbitmq --namespace elves
+kubectl apply -f rabbmitmq.yml -n elves
 
 # install postgres service
 helm install postgres bitnami/postgresql --namespace elves
 
 # deploy registry service
-kubectl apply -f registry.yml
+kubectl apply -f registry-v2.yml
 
 # expose registry as a Nodeport
 kubectl apply -f registry-service.yml
@@ -27,7 +28,7 @@ kubectl apply -f gateway.yml
 kubectl apply -f gateway-service.yml
 
 # deploy ingestor service
-kubectl apply -f ingestor.yml
+kubectl apply -f ingestor-v2.yml
 
 # deploy forecast service
 kubectl apply -f forecast.yml
