@@ -13,7 +13,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 kubectl apply -f rabbmitmq.yml -n elves
 
 # install postgres service
-helm install postgres bitnami/postgresql --namespace elves
+helm install elves-postgres bitnami/postgresql --namespace elves
 
 # deploy registry service
 kubectl apply -f registry-v2.yml
