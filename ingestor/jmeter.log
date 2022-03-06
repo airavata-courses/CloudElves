@@ -1,237 +1,92 @@
-2022-03-04 10:46:25,510 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
-2022-03-04 10:46:25,522 INFO o.a.j.JMeter: Loading user properties from: /opt/homebrew/Cellar/jmeter/5.4.3/libexec/bin/user.properties
-2022-03-04 10:46:25,523 INFO o.a.j.JMeter: Loading system properties from: /opt/homebrew/Cellar/jmeter/5.4.3/libexec/bin/system.properties
-2022-03-04 10:46:25,525 INFO o.a.j.JMeter: Copyright (c) 1998-2021 The Apache Software Foundation
-2022-03-04 10:46:25,525 INFO o.a.j.JMeter: Version 5.4.3
-2022-03-04 10:46:25,525 INFO o.a.j.JMeter: java.version=17.0.2
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: os.name=Mac OS X
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: os.arch=aarch64
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: os.version=12.1
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: file.encoding=UTF-8
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: java.awt.headless=true
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: Max memory     =1073741824
-2022-03-04 10:46:25,526 INFO o.a.j.JMeter: Available Processors =8
-2022-03-04 10:46:25,530 INFO o.a.j.JMeter: Default Locale=English (EN)
-2022-03-04 10:46:25,530 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
-2022-03-04 10:46:25,530 INFO o.a.j.JMeter: JMeterHome=/opt/homebrew/Cellar/jmeter/5.4.3/libexec
-2022-03-04 10:46:25,530 INFO o.a.j.JMeter: user.dir  =/Users/navkar14/Desktop/ADS/jmeter
-2022-03-04 10:46:25,530 INFO o.a.j.JMeter: PWD       =/Users/navkar14/Desktop/ADS/jmeter
-2022-03-04 10:46:25,553 INFO o.a.j.JMeter: IP: 192.168.0.137 Name: Navkars-MacBook-Pro.local FullName: 192.168.0.137
-2022-03-04 10:46:25,557 INFO o.a.j.s.FileServer: Default base='/Users/navkar14/Desktop/ADS/jmeter'
-2022-03-04 10:46:25,557 INFO o.a.j.s.FileServer: Set new base='/Users/navkar14/Desktop/ADS/jmeter'
-2022-03-04 10:46:25,625 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
-2022-03-04 10:46:25,640 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
-2022-03-04 10:46:25,641 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
-2022-03-04 10:46:25,642 INFO o.a.j.s.SaveService: Loading file: ingestor_test_60.jmx
-2022-03-04 10:46:25,663 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-03-04 10:46:25,663 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-03-04 10:46:25,663 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-03-04 10:46:25,663 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-03-04 10:46:25,664 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
-2022-03-04 10:46:25,664 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
-2022-03-04 10:46:25,675 INFO o.a.j.JMeter: Creating summariser <summary>
-2022-03-04 10:46:25,677 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2022-03-04 10:46:25,678 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2022-03-04 10:46:25,678 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2022-03-04 10:46:25,679 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
-2022-03-04 10:46:25,679 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
-2022-03-04 10:46:25,710 INFO o.a.j.JMeter: Running test (1646408785710)
-2022-03-04 10:46:25,721 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : gateway_req
-2022-03-04 10:46:25,722 INFO o.a.j.e.StandardJMeterEngine: Starting 60 threads for group gateway_req.
-2022-03-04 10:46:25,722 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
-2022-03-04 10:46:25,722 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=60 ramp-up=40 delayedStart=false
-2022-03-04 10:46:25,725 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-1
-2022-03-04 10:46:25,732 INFO o.a.j.t.ThreadGroup: Started thread group number 1
-2022-03-04 10:46:25,733 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2022-03-04 10:46:25,733 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = Navkars-MacBook-Pro.local
-2022-03-04 10:46:25,736 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
-2022-03-04 10:46:25,737 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
-2022-03-04 10:46:25,737 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
-2022-03-04 10:46:25,737 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
-2022-03-04 10:46:25,737 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
-2022-03-04 10:46:26,396 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-2
-2022-03-04 10:46:27,062 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-3
-2022-03-04 10:46:27,668 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-1
-2022-03-04 10:46:27,668 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-1
-2022-03-04 10:46:27,725 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-4
-2022-03-04 10:46:28,392 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-5
-2022-03-04 10:46:28,448 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-2
-2022-03-04 10:46:28,448 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-2
-2022-03-04 10:46:29,060 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-6
-2022-03-04 10:46:29,104 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-4
-2022-03-04 10:46:29,105 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-4
-2022-03-04 10:46:29,151 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-3
-2022-03-04 10:46:29,151 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-3
-2022-03-04 10:46:29,705 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-5
-2022-03-04 10:46:29,705 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-5
-2022-03-04 10:46:29,726 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-7
-2022-03-04 10:46:30,392 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-8
-2022-03-04 10:46:31,064 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-9
-2022-03-04 10:46:31,727 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-10
-2022-03-04 10:46:32,189 INFO o.a.j.r.Summariser: summary +     11 in 00:00:06 =    1.7/s Avg:   834 Min:     4 Max:  2034 Err:     6 (54.55%) Active: 5 Started: 10 Finished: 5
-2022-03-04 10:46:32,249 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-6
-2022-03-04 10:46:32,249 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-6
-2022-03-04 10:46:32,251 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-10
-2022-03-04 10:46:32,251 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-10
-2022-03-04 10:46:32,398 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-11
-2022-03-04 10:46:32,956 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-7
-2022-03-04 10:46:32,979 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-7
-2022-03-04 10:46:33,060 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-12
-2022-03-04 10:46:33,728 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-13
-2022-03-04 10:46:33,751 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-8
-2022-03-04 10:46:33,752 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-8
-2022-03-04 10:46:34,398 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-14
-2022-03-04 10:46:34,407 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-9
-2022-03-04 10:46:34,407 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-9
-2022-03-04 10:46:35,066 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-15
-2022-03-04 10:46:35,235 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-13
-2022-03-04 10:46:35,235 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-13
-2022-03-04 10:46:35,724 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-15
-2022-03-04 10:46:35,725 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-15
-2022-03-04 10:46:35,733 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-16
-2022-03-04 10:46:36,395 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-17
-2022-03-04 10:46:36,668 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-14
-2022-03-04 10:46:36,668 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-14
-2022-03-04 10:46:36,700 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-11
-2022-03-04 10:46:36,700 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-11
-2022-03-04 10:46:37,063 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-18
-2022-03-04 10:46:37,360 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-12
-2022-03-04 10:46:37,360 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-12
-2022-03-04 10:46:37,730 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-19
-2022-03-04 10:46:38,015 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-16
-2022-03-04 10:46:38,015 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-16
-2022-03-04 10:46:38,059 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-17
-2022-03-04 10:46:38,059 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-17
-2022-03-04 10:46:38,400 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-20
-2022-03-04 10:46:38,884 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-19
-2022-03-04 10:46:38,884 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-19
-2022-03-04 10:46:39,057 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-18
-2022-03-04 10:46:39,057 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-18
-2022-03-04 10:46:39,065 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-21
-2022-03-04 10:46:39,724 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-20
-2022-03-04 10:46:39,724 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-20
-2022-03-04 10:46:39,731 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-22
-2022-03-04 10:46:40,397 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-23
-2022-03-04 10:46:40,417 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-21
-2022-03-04 10:46:40,418 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-21
-2022-03-04 10:46:40,859 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-22
-2022-03-04 10:46:40,859 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-22
-2022-03-04 10:46:41,067 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-24
-2022-03-04 10:46:41,734 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-25
-2022-03-04 10:46:41,793 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-23
-2022-03-04 10:46:41,793 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-23
-2022-03-04 10:46:42,401 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-26
-2022-03-04 10:46:43,069 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-27
-2022-03-04 10:46:43,129 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-24
-2022-03-04 10:46:43,129 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-24
-2022-03-04 10:46:43,259 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-25
-2022-03-04 10:46:43,259 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-25
-2022-03-04 10:46:43,586 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-26
-2022-03-04 10:46:43,586 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-26
-2022-03-04 10:46:43,734 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-28
-2022-03-04 10:46:44,403 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-29
-2022-03-04 10:46:44,477 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-27
-2022-03-04 10:46:44,477 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-27
-2022-03-04 10:46:45,070 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-30
-2022-03-04 10:46:45,100 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-28
-2022-03-04 10:46:45,100 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-28
-2022-03-04 10:46:45,713 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-29
-2022-03-04 10:46:45,714 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-29
-2022-03-04 10:46:45,732 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-31
-2022-03-04 10:46:46,209 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-30
-2022-03-04 10:46:46,209 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-30
-2022-03-04 10:46:46,404 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-32
-2022-03-04 10:46:47,068 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-33
-2022-03-04 10:46:47,076 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-31
-2022-03-04 10:46:47,076 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-31
-2022-03-04 10:46:47,539 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-32
-2022-03-04 10:46:47,539 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-32
-2022-03-04 10:46:47,736 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-34
-2022-03-04 10:46:48,395 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-33
-2022-03-04 10:46:48,395 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-33
-2022-03-04 10:46:48,406 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-35
-2022-03-04 10:46:49,057 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-34
-2022-03-04 10:46:49,057 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-34
-2022-03-04 10:46:49,073 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-36
-2022-03-04 10:46:49,685 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-35
-2022-03-04 10:46:49,685 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-35
-2022-03-04 10:46:49,736 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-37
-2022-03-04 10:46:50,332 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-36
-2022-03-04 10:46:50,333 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-36
-2022-03-04 10:46:50,404 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-38
-2022-03-04 10:46:50,878 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-37
-2022-03-04 10:46:50,878 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-37
-2022-03-04 10:46:51,069 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-39
-2022-03-04 10:46:51,696 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-38
-2022-03-04 10:46:51,696 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-38
-2022-03-04 10:46:51,738 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-40
-2022-03-04 10:46:52,404 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-41
-2022-03-04 10:46:52,524 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-39
-2022-03-04 10:46:52,524 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-39
-2022-03-04 10:46:53,073 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-42
-2022-03-04 10:46:53,576 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-41
-2022-03-04 10:46:53,577 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-41
-2022-03-04 10:46:53,744 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-43
-2022-03-04 10:46:54,404 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-44
-2022-03-04 10:46:54,560 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-40
-2022-03-04 10:46:54,560 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-40
-2022-03-04 10:46:54,596 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-42
-2022-03-04 10:46:54,596 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-42
-2022-03-04 10:46:55,074 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-45
-2022-03-04 10:46:55,743 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-46
-2022-03-04 10:46:56,409 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-47
-2022-03-04 10:46:57,075 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-48
-2022-03-04 10:46:57,616 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-43
-2022-03-04 10:46:57,616 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-43
-2022-03-04 10:46:57,742 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-49
-2022-03-04 10:46:58,396 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-44
-2022-03-04 10:46:58,396 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-44
-2022-03-04 10:46:58,407 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-50
-2022-03-04 10:46:59,074 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-51
-2022-03-04 10:46:59,613 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-51
-2022-03-04 10:46:59,613 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-51
-2022-03-04 10:46:59,745 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-52
-2022-03-04 10:47:00,407 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-53
-2022-03-04 10:47:00,521 INFO o.a.j.r.Summariser: summary +     80 in 00:00:28 =    2.8/s Avg:   933 Min:     3 Max:  4277 Err:    41 (51.25%) Active: 8 Started: 53 Finished: 45
-2022-03-04 10:47:00,521 INFO o.a.j.r.Summariser: summary =     91 in 00:00:35 =    2.6/s Avg:   921 Min:     3 Max:  4277 Err:    47 (51.65%)
-2022-03-04 10:47:00,597 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-52
-2022-03-04 10:47:00,598 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-52
-2022-03-04 10:47:01,074 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-54
-2022-03-04 10:47:01,124 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-45
-2022-03-04 10:47:01,124 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-45
-2022-03-04 10:47:01,233 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-46
-2022-03-04 10:47:01,233 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-46
-2022-03-04 10:47:01,321 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-49
-2022-03-04 10:47:01,321 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-49
-2022-03-04 10:47:01,484 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-50
-2022-03-04 10:47:01,485 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-50
-2022-03-04 10:47:01,486 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-48
-2022-03-04 10:47:01,486 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-48
-2022-03-04 10:47:01,491 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-47
-2022-03-04 10:47:01,491 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-47
-2022-03-04 10:47:01,742 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-55
-2022-03-04 10:47:01,875 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-53
-2022-03-04 10:47:01,875 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-53
-2022-03-04 10:47:02,410 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-56
-2022-03-04 10:47:02,449 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-54
-2022-03-04 10:47:02,449 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-54
-2022-03-04 10:47:03,080 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-57
-2022-03-04 10:47:03,107 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-55
-2022-03-04 10:47:03,108 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-55
-2022-03-04 10:47:03,673 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-56
-2022-03-04 10:47:03,674 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-56
-2022-03-04 10:47:03,744 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-58
-2022-03-04 10:47:04,410 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-59
-2022-03-04 10:47:04,675 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-57
-2022-03-04 10:47:04,675 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-57
-2022-03-04 10:47:05,080 INFO o.a.j.t.JMeterThread: Thread started: gateway_req 1-60
-2022-03-04 10:47:05,541 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-58
-2022-03-04 10:47:05,542 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-58
-2022-03-04 10:47:05,547 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-59
-2022-03-04 10:47:05,547 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-59
-2022-03-04 10:47:07,914 INFO o.a.j.t.JMeterThread: Thread is done: gateway_req 1-60
-2022-03-04 10:47:07,915 INFO o.a.j.t.JMeterThread: Thread finished: gateway_req 1-60
-2022-03-04 10:47:07,915 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2022-03-04 10:47:07,917 INFO o.a.j.r.Summariser: summary +     29 in 00:00:07 =    3.9/s Avg:  1398 Min:     4 Max:  5970 Err:    13 (44.83%) Active: 0 Started: 60 Finished: 60
-2022-03-04 10:47:07,918 INFO o.a.j.r.Summariser: summary =    120 in 00:00:42 =    2.8/s Avg:  1036 Min:     3 Max:  5970 Err:    60 (50.00%)
+2022-03-05 07:00:07,347 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2022-03-05 07:00:07,363 INFO o.a.j.JMeter: Loading user properties from: /home/madhavan/Downloads/softwares/apache-jmeter-5.4.3/bin/user.properties
+2022-03-05 07:00:07,363 INFO o.a.j.JMeter: Loading system properties from: /home/madhavan/Downloads/softwares/apache-jmeter-5.4.3/bin/system.properties
+2022-03-05 07:00:07,367 INFO o.a.j.JMeter: Copyright (c) 1998-2021 The Apache Software Foundation
+2022-03-05 07:00:07,367 INFO o.a.j.JMeter: Version 5.4.3
+2022-03-05 07:00:07,367 INFO o.a.j.JMeter: java.version=11.0.13
+2022-03-05 07:00:07,367 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2022-03-05 07:00:07,367 INFO o.a.j.JMeter: os.name=Linux
+2022-03-05 07:00:07,367 INFO o.a.j.JMeter: os.arch=amd64
+2022-03-05 07:00:07,368 INFO o.a.j.JMeter: os.version=5.13.0-30-generic
+2022-03-05 07:00:07,368 INFO o.a.j.JMeter: file.encoding=UTF-8
+2022-03-05 07:00:07,368 INFO o.a.j.JMeter: java.awt.headless=true
+2022-03-05 07:00:07,368 INFO o.a.j.JMeter: Max memory     =1073741824
+2022-03-05 07:00:07,368 INFO o.a.j.JMeter: Available Processors =16
+2022-03-05 07:00:07,373 INFO o.a.j.JMeter: Default Locale=English (EN)
+2022-03-05 07:00:07,373 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2022-03-05 07:00:07,373 INFO o.a.j.JMeter: JMeterHome=/home/madhavan/Downloads/softwares/apache-jmeter-5.4.3
+2022-03-05 07:00:07,374 INFO o.a.j.JMeter: user.dir  =/home/madhavan/649-ADS/load-testing/ingestor
+2022-03-05 07:00:07,374 INFO o.a.j.JMeter: PWD       =/home/madhavan/649-ADS/load-testing/ingestor
+2022-03-05 07:00:07,393 INFO o.a.j.JMeter: IP: 192.168.1.7 Name: swamiji FullName: swamiji
+2022-03-05 07:00:07,395 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'/home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result'
+2022-03-05 07:00:07,398 INFO o.a.j.r.d.ReportGenerator: ReportGenerator will use for Parsing the separator: ','
+2022-03-05 07:00:07,398 INFO o.a.j.r.d.ReportGenerator: Will only generate report from results file: lt_ingestor_60_4.log
+2022-03-05 07:00:07,398 INFO o.a.j.r.d.ReportGenerator: Reading report generator properties from: /home/madhavan/Downloads/softwares/apache-jmeter-5.4.3/bin/reportgenerator.properties
+2022-03-05 07:00:07,398 INFO o.a.j.r.d.ReportGenerator: Merging with JMeter properties
+2022-03-05 07:00:07,401 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.temp_dir' not found, using default value 'temp' instead.
+2022-03-05 07:00:07,403 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.apdex_per_transaction' not found, using default value 'null' instead.
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: apdex_per_transaction is empty, not APDEX per transaction customization
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.sample_filter' not found, using default value 'null' instead.
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.report_title' not found, using default value 'null' instead.
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.start_date' not found, using default value 'null' instead.
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.end_date' not found, using default value 'null' instead.
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.date_format' not found, using default value 'null' instead.
+2022-03-05 07:00:07,407 INFO o.a.j.r.c.ReportGeneratorConfiguration: Will use date range start date: null, end date: null
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.totalTPS.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.activeThreadsOverTime.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.timeVsThreads.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimeDistribution.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.transactionsPerSecond.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentiles.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,410 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimePercentilesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,411 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.responseTimesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,411 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.connectTimeOverTime.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,411 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.graph.latenciesOverTime.exclude_controllers' not found, using default value 'false' instead.
+2022-03-05 07:00:07,411 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.filters_only_sample_series' not found, using default value 'true' instead.
+2022-03-05 07:00:07,411 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.series_filter' not found, using default value '' instead.
+2022-03-05 07:00:07,411 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.json.show_controllers_only' not found, using default value 'false' instead.
+2022-03-05 07:00:07,412 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.filters_only_sample_series' not found, using default value 'true' instead.
+2022-03-05 07:00:07,412 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.series_filter' not found, using default value '' instead.
+2022-03-05 07:00:07,412 INFO o.a.j.r.c.ReportGeneratorConfiguration: Property 'jmeter.reportgenerator.exporter.html.show_controllers_only' not found, using default value 'false' instead.
+2022-03-05 07:00:07,513 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2022-03-05 07:00:07,525 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2022-03-05 07:00:07,528 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2022-03-05 07:00:07,546 INFO o.a.j.r.p.NormalizerSampleConsumer: Using format, 'ms', to parse timeStamp field
+2022-03-05 07:00:07,623 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): beginDate produced 0 samples
+2022-03-05 07:00:07,623 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.AggregateConsumer#stopProducing(): endDate produced 0 samples
+2022-03-05 07:00:07,624 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ApdexSummaryConsumer#stopProducing(): apdexSummary produced 0 samples
+2022-03-05 07:00:07,624 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.RequestsSummaryConsumer#stopProducing(): requestsSummary produced 0 samples
+2022-03-05 07:00:07,627 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.StatisticsSummaryConsumer#stopProducing(): statisticsSummary produced 0 samples
+2022-03-05 07:00:07,629 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.Top5ErrorsBySamplerConsumer#stopProducing(): top5ErrorsBySampler produced 0 samples
+2022-03-05 07:00:07,629 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.ErrorsSummaryConsumer#stopProducing(): errorsSummary produced 0 samples
+2022-03-05 07:00:07,629 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.HitsPerSecondGraphConsumer#stopProducing(): hitsPerSecond produced 0 samples
+2022-03-05 07:00:07,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyVSRequestGraphConsumer#stopProducing(): latencyVsRequest produced 0 samples
+2022-03-05 07:00:07,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.SyntheticResponseTimeDistributionGraphConsumer#stopProducing(): syntheticResponseTimeDistribution produced 0 samples
+2022-03-05 07:00:07,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.BytesThroughputGraphConsumer#stopProducing(): bytesThroughputOverTime produced 0 samples
+2022-03-05 07:00:07,639 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.CodesPerSecondGraphConsumer#stopProducing(): codesPerSecond produced 0 samples
+2022-03-05 07:00:07,650 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeVSRequestGraphConsumer#stopProducing(): responseTimeVsRequest produced 0 samples
+2022-03-05 07:00:07,650 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): startIntervalControlerFilter produced 1974 samples
+2022-03-05 07:00:07,650 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TotalTPSGraphConsumer#stopProducing(): totalTPS produced 0 samples
+2022-03-05 07:00:07,650 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ActiveThreadsGraphConsumer#stopProducing(): activeThreadsOverTime produced 0 samples
+2022-03-05 07:00:07,650 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TimeVSThreadGraphConsumer#stopProducing(): timeVsThreads produced 0 samples
+2022-03-05 07:00:07,651 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeDistributionGraphConsumer#stopProducing(): responseTimeDistribution produced 0 samples
+2022-03-05 07:00:07,651 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.TransactionsPerSecondGraphConsumer#stopProducing(): transactionsPerSecond produced 0 samples
+2022-03-05 07:00:07,651 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesGraphConsumer#stopProducing(): responseTimePercentiles produced 0 samples
+2022-03-05 07:00:07,653 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimePercentilesOverTimeGraphConsumer#stopProducing(): responseTimePercentilesOverTime produced 0 samples
+2022-03-05 07:00:07,653 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ResponseTimeOverTimeGraphConsumer#stopProducing(): responseTimesOverTime produced 0 samples
+2022-03-05 07:00:07,653 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.ConnectTimeOverTimeGraphConsumer#stopProducing(): connectTimeOverTime produced 0 samples
+2022-03-05 07:00:07,654 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.graph.impl.LatencyOverTimeGraphConsumer#stopProducing(): latenciesOverTime produced 0 samples
+2022-03-05 07:00:07,654 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): nameFilter produced 4230 samples
+2022-03-05 07:00:07,654 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.FilterConsumer#stopProducing(): dateRangeFilter produced 846 samples
+2022-03-05 07:00:07,654 INFO o.a.j.r.p.AbstractSampleConsumer: class org.apache.jmeter.report.processor.NormalizerSampleConsumer#stopProducing(): normalizer produced 282 samples
+2022-03-05 07:00:07,654 INFO o.a.j.r.p.CsvFileSampleSource: produce(): 282 samples produced in 93ms on channel 0
+2022-03-05 07:00:07,654 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'json' of className:'org.apache.jmeter.report.dashboard.JsonExporter'
+2022-03-05 07:00:07,729 INFO o.a.j.r.d.JsonExporter: Found data for consumer statisticsSummary in context
+2022-03-05 07:00:07,729 INFO o.a.j.r.d.JsonExporter: Creating statistics for overall
+2022-03-05 07:00:07,729 INFO o.a.j.r.d.JsonExporter: Creating statistics for other transactions
+2022-03-05 07:00:07,730 INFO o.a.j.r.d.JsonExporter: Checking output folder
+2022-03-05 07:00:07,730 INFO o.a.j.r.d.JsonExporter: Writing statistics JSON to /home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result/statistics.json
+2022-03-05 07:00:07,754 INFO o.a.j.r.d.ReportGenerator: Exporting data using exporter:'html' of className:'org.apache.jmeter.report.dashboard.HtmlTemplateExporter'
+2022-03-05 07:00:07,756 INFO o.a.j.r.d.HtmlTemplateExporter: Will generate dashboard in folder: /home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result
+2022-03-05 07:00:07,829 INFO o.a.j.r.d.HtmlTemplateExporter: Report will be generated in: /home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result, creating folder structure
+2022-03-05 07:00:07,831 INFO o.a.j.r.d.TemplateVisitor: Copying folder from '/home/madhavan/Downloads/softwares/apache-jmeter-5.4.3/bin/report-template' to '/home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result', got message: /home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result, found non empty folder with following content [/home/madhavan/649-ADS/load-testing/ingestor/ingestor-4gb-60users-result/statistics.json], will be ignored

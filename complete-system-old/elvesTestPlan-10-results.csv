@@ -1,0 +1,22 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1646415165463,127,getData Request,200,,getHistory 2-1,text,true,,17654,192,1,2,http://localhost:8082/getLogs,127,0,1
+1646415166467,70,getData Request,200,,getHistory 2-2,text,true,,17837,192,2,4,http://localhost:8082/getLogs,70,0,1
+1646415167466,90,getData Request,200,,getHistory 2-3,text,true,,18020,192,2,5,http://localhost:8082/getLogs,89,0,1
+1646415168468,69,getData Request,200,,getHistory 2-4,text,true,,18203,192,2,6,http://localhost:8082/getLogs,69,0,2
+1646415169467,74,getData Request,200,,getHistory 2-5,text,true,,18386,192,2,7,http://localhost:8082/getLogs,74,0,1
+1646415170467,39,getData Request,200,,getHistory 2-6,text,true,,18569,192,2,8,http://localhost:8082/getLogs,38,0,1
+1646415171464,44,getData Request,200,,getHistory 2-1,text,true,,18752,192,2,9,http://localhost:8082/getLogs,41,0,0
+1646415171467,45,getData Request,200,,getHistory 2-7,text,true,,18752,192,1,8,http://localhost:8082/getLogs,45,0,0
+1646415172467,62,getData Request,200,,getHistory 2-8,text,true,,19118,192,1,9,http://localhost:8082/getLogs,62,0,1
+1646415173467,73,getData Request,200,,getHistory 2-9,text,true,,19301,192,1,10,http://localhost:8082/getLogs,72,0,1
+1646415174464,51,getData Request,200,,getHistory 2-10,text,true,,19484,192,1,11,http://localhost:8082/getLogs,51,0,2
+1646415172463,12126,getData Request,500,,getData 1-8,text,false,,405,345,10,10,http://localhost:8082/data,12126,0,1
+1646415170465,16020,getData Request,200,,getData 1-6,text,true,,370,345,9,9,http://localhost:8082/data,16020,0,1
+1646415166467,21074,getData Request,500,,getData 1-2,text,false,,405,345,8,8,http://localhost:8082/data,21074,0,1
+1646415167466,20387,getData Request,500,,getData 1-3,text,false,,405,345,7,7,http://localhost:8082/data,20386,0,1
+1646415165463,22700,getData Request,500,,getData 1-1,text,false,,405,345,6,6,http://localhost:8082/data,22700,0,2
+1646415168468,20792,getData Request,500,,getData 1-4,text,false,,405,345,5,5,http://localhost:8082/data,20791,0,2
+1646415169467,20092,getData Request,500,,getData 1-5,text,false,,405,345,4,4,http://localhost:8082/data,20092,0,1
+1646415171467,20787,getData Request,200,,getData 1-7,text,true,,399,345,3,3,http://localhost:8082/data,20787,0,0
+1646415173467,23986,getData Request,200,,getData 1-9,text,true,,399,345,2,2,http://localhost:8082/data,23985,0,2
+1646415174466,24192,getData Request,200,,getData 1-10,text,true,,399,345,1,1,http://localhost:8082/data,24192,0,1
