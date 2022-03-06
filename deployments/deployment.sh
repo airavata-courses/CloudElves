@@ -10,7 +10,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 
 # install rabbitmq service
 # helm install mu-rabbit bitnami/rabbitmq --namespace elves
-kubectl apply -f rabbmitmq.yml -n elves
+kubectl apply -f rabbitmq.yml -n elves
 
 # install postgres service
 helm install elves-postgres bitnami/postgresql --namespace elves
