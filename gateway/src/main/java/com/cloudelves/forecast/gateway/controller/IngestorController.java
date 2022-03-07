@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class IngestorController {
 
     @Value("${rmq.output.ingestor}")
@@ -49,7 +50,6 @@ public class IngestorController {
     @Autowired
     private RegistryService registryService;
 
-    @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @PostMapping(value = "/data")
     public ResponseEntity getData(@RequestHeader Map<String, String> headers, @RequestBody
             IngestorRequest ingestorRequest) throws BaseException, AuthenticationException {
@@ -57,7 +57,8 @@ public class IngestorController {
         String username = headers.get(Constants.USERNAME_HEADER);
         String email = headers.get(Constants.EMAIL_HEADER);
         authenticationService.verifyToken(token, username, email);
-
+        ingestorRequest.setUserId(username);
+        validateIngestorRequest(ingestorRequest);
         String id = UUID.randomUUID().toString();
         userService.checkAndAddUser(id, username, username, email);
 
@@ -80,5 +81,11 @@ public class IngestorController {
         return ResponseEntity.ok(registryService.getDataStatusResponse(id));
     }
 
+    private void validateIngestorRequest(IngestorRequest ingestorRequest) {
+        String day = ingestorRequest.getDay().length() == 1 ? "0" + ingestorRequest.getDay() : ingestorRequest.getDay();
+        String month = ingestorRequest.getMonth().length() == 1 ? "0" + ingestorRequest.getMonth() : ingestorRequest.getMonth();
+        ingestorRequest.setDay(day);
+        ingestorRequest.setMonth(month);
+    }
 
 }

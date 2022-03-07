@@ -15,16 +15,27 @@ import java.util.Date;
 public class UserService {
 
     @Value("${registry.host}")
-    private String host;
+    private String registryHost;
 
     @Value("${registry.port}")
-    private String port;
+    private String registryPort;
+
+    @Value("${registry.serviceName}")
+    private String registryServiceName;
 
     private String baseUrl;
 
     @PostConstruct
     public void setBaseUrl() {
-        baseUrl = String.format("http://%s:%s", host, port);
+        String kubernetesIp = System.getenv(registryServiceName+"_SERVICE_HOST");
+        String kubernetesPort = System.getenv(registryServiceName+"_SERVICE_PORT");
+        if(kubernetesIp != null && kubernetesPort!=null) {
+            log.info("pointing to kube cluster");
+            this.baseUrl = String.format("http://%s:%s", kubernetesIp, kubernetesPort);
+        } else {
+            log.info("pointing to local");
+            this.baseUrl = String.format("http://%s:%s", registryHost, registryPort);
+        }
         log.info("set baseUrl: {}", baseUrl);
     }
 

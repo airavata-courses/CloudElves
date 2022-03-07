@@ -5,6 +5,7 @@ import com.cloudelves.forecast.gateway.exception.BaseException;
 import com.cloudelves.forecast.gateway.model.registry.response.AppLogResponse;
 import com.cloudelves.forecast.gateway.model.registry.response.PlotsResponse;
 import com.cloudelves.forecast.gateway.model.response.GetDataStatusResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.Map;
 
 @Service
+@Slf4j
 public class RegistryService {
 
     @Value("${registry.host}")
@@ -21,6 +24,9 @@ public class RegistryService {
 
     @Value("${registry.port}")
     private String registryPort;
+
+    @Value("${registry.serviceName}")
+    private String registryServiceName;
 
     @Value("${registry.apiPath.getLogById}")
     private String getLogByIdPath;
@@ -35,7 +41,22 @@ public class RegistryService {
 
     @PostConstruct
     public void constructBaseUrl() {
-        this.baseUrl = String.format("http://%s:%s", registryHost, registryPort);
+//        Map<String, String> env = System.getenv();
+//        for(String key: env.keySet()) {
+//            log.info("{}: {}", key, env.get(key));
+//        }
+        log.info("{}", registryServiceName+"_SERVICE_HOST");
+        log.info("{}", registryServiceName+"_SERVICE_PORT");
+        String kubernetesIp = System.getenv(registryServiceName+"_SERVICE_HOST");
+        String kubernetesPort = System.getenv(registryServiceName+"_SERVICE_PORT");
+        log.info("kubernetesIp: {} and kubernetesPort: {}", kubernetesIp, kubernetesPort);
+        if(kubernetesIp != null && kubernetesPort!=null) {
+            log.info("pointing to kube cluster");
+            this.baseUrl = String.format("http://%s:%s", kubernetesIp, kubernetesPort);
+        } else {
+            log.info("pointing to local");
+            this.baseUrl = String.format("http://%s:%s", registryHost, registryPort);
+        }
         this.getLogByIdUrl = this.baseUrl + this.getLogByIdPath;
         this.getPlotUrl = this.baseUrl + this.getPlotPath;
     }

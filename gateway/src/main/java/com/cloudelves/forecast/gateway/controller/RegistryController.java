@@ -25,13 +25,17 @@ import javax.annotation.PostConstruct;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class RegistryController {
 
     @Value("${registry.host}")
-    private String host;
+    private String registryHost;
 
     @Value("${registry.port}")
-    private String port;
+    private String registryPort;
+
+    @Value("${registry.serviceName}")
+    private String registryServiceName;
 
     private String baseUrl;
 
@@ -55,11 +59,18 @@ public class RegistryController {
 
     @PostConstruct
     public void setBaseUrl() {
-        baseUrl = String.format("http://%s:%s", host, port);
+        String kubernetesIp = System.getenv(registryServiceName+"_SERVICE_HOST");
+        String kubernetesPort = System.getenv(registryServiceName+"_SERVICE_PORT");
+        if(kubernetesIp != null && kubernetesPort!=null) {
+            log.info("pointing to kube cluster");
+            this.baseUrl = String.format("http://%s:%s", kubernetesIp, kubernetesPort);
+        } else {
+            log.info("pointing to local");
+            this.baseUrl = String.format("http://%s:%s", registryHost, registryPort);
+        }
         log.info("set baseUrl: {}", baseUrl);
     }
 
-    @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @GetMapping(value = "/getUser")
     public ResponseEntity getUser(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
         String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");
@@ -81,7 +92,6 @@ public class RegistryController {
         }
     }
 
-    @CrossOrigin(origins = {"http://ui:3001", "http://localhost:3001"})
     @GetMapping(value = "/getLogs")
     public ResponseEntity getLogs(@RequestHeader Map<String, String> headers,
                                   @RequestParam(value = "all", required = false, defaultValue = "false")

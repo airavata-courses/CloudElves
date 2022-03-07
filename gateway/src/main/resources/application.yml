@@ -1,9 +1,9 @@
 spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: elves
-    password: cloudelves
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: elves
+#    password: cloudelves
   profiles:
     active: default
 
@@ -27,6 +27,7 @@ forecaster:
 registry:
   host: localhost
   port: 8080
+  serviceName: REGISTRY_SERVICE
   apiPath:
     getUser: /getUser?userId={userId}
     getAllUsers: /getUsers
@@ -38,6 +39,11 @@ registry:
 
 rmq:
   exchange: elvesExchange
+  serviceName: local
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
   output:
     registry: elves.registry.applog.in
     ingestor: elves.ingestor.data.in
