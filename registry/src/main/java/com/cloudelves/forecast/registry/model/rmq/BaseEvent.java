@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseEvent {
-    @JsonProperty("specVersion")
+    @JsonProperty("specversion")
     private String specVersion;
 
     @JsonProperty("type")

@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 public class IngestorResponse {
 
     private String id;
+    private String action;
+    private String comments;
+    private int status;
     private String image;
+    private String userId;
 
 }

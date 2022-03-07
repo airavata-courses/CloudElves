@@ -8,14 +8,19 @@ db:
   password: cloudelves
   name: postgres
 
-spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: elves
-    password: cloudelves
+#spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: elves
+#    password: cloudelves
 
 rmq:
+  serviceName: local
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
   consumerCount: 10
   exchange: elvesExchange
   input:

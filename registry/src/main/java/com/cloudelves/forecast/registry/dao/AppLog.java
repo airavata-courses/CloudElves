@@ -1,6 +1,7 @@
 package com.cloudelves.forecast.registry.dao;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @Table(name = "applog")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 public class AppLog {
 

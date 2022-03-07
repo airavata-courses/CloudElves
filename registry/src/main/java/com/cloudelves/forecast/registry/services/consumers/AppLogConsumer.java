@@ -11,6 +11,7 @@ import com.cloudelves.forecast.registry.model.rmq.IngestorResponseEvent;
 import com.cloudelves.forecast.registry.repository.AppLogRepository;
 import com.cloudelves.forecast.registry.repository.PlotsRepository;
 import com.cloudelves.forecast.registry.repository.UserDetailsRepository;
+import liquibase.logging.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,7 +37,8 @@ public class AppLogConsumer {
     @Autowired
     private PlotsRepository plotsRepository;
 
-    @RabbitListener(queues = "${rmq.input.applog}", concurrency = "${rmq.consumerCount}")
+
+    @RabbitListener(queues = "${rmq.input.applog}", concurrency = "${rmq.consumerCount}", containerFactory = "customConnFactory")
     public void appLogReceiver(AppLogEvent appLogEvent) {
         AppLogRequest appLogRequest = appLogEvent.getData();
         try {
@@ -45,7 +48,7 @@ public class AppLogConsumer {
                 DefaultError error = DefaultError.builder().error(errorMessage).statusCode(HttpStatus.BAD_REQUEST.toString()).build();
                 log.error("error while persisting log: {}", errorMessage);
             } else {
-                Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond(Long.parseLong(appLogRequest.getTimestamp())));
+                Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(appLogRequest.getTimestamp())));
                 AppLog appLog = new AppLog(appLogRequest.getId(), userDetailsOpt.get(), appLogRequest.getServiceId(),
                                            appLogRequest.getAction(), timestamp, appLogRequest.getStatus(), appLogRequest.getComments());
                 appLogRepository.save(appLog);
@@ -58,16 +61,32 @@ public class AppLogConsumer {
         }
     }
 
-    @RabbitListener(queues = "${rmq.input.ingestor}", concurrency = "${rmq.consumerCount}")
+    @RabbitListener(queues = "${rmq.input.ingestor}", concurrency = "${rmq.consumerCount}", containerFactory = "customConnFactory")
     public void ingestorReceiver(IngestorResponseEvent ingestorResponseEvent) {
         IngestorResponse ingestorResponse = ingestorResponseEvent.getData();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(new Date().getTime()));
         try {
             Plots plot = new Plots(ingestorResponse.getId(), ingestorResponse.getImage());
             plotsRepository.save(plot);
+            Optional<UserDetails> userDetailsOpt = userDetailsRepository.findById(ingestorResponse.getUserId());
+            if (userDetailsOpt.isPresent()) {
+                AppLog appLog = AppLog.builder().logTimestamp(timestamp).action(ingestorResponse.getAction())
+                                      .comments(ingestorResponse.getComments()).id(ingestorResponse.getId()).serviceId("ingestor")
+                                      .user(userDetailsOpt.get()).status(ingestorResponse.getStatus()).build();
+                appLogRepository.save(appLog);
+            } else {
+                AppLog appLog = AppLog.builder().logTimestamp(timestamp).action(ingestorResponse.getAction())
+                                      .comments("invalid user").id(ingestorResponse.getId()).serviceId("ingestor")
+                                      .user(userDetailsOpt.get()).status(-1).build();
+                appLogRepository.save(appLog);
+            }
         } catch (Exception e) {
             log.error("error while persisting log: ", e);
             DefaultError error = DefaultError.builder().error(e.getMessage()).statusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString())
                                              .build();
+            AppLog appLog = AppLog.builder().logTimestamp(timestamp).action(ingestorResponse.getAction())
+                                  .comments(e.getMessage()).id(ingestorResponse.getId()).serviceId("ingestor").status(-1).build();
+            appLogRepository.save(appLog);
         }
     }
 

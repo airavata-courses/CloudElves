@@ -34,6 +34,7 @@ public class PostgresConfig {
     public DataSource createPostgresDatasource() {
         String connectionUrl = getConnectionUrl();
         log.info("connectionUrl: {}", connectionUrl);
+        log.info("dbUsername: {} and dbPassword: {}", dbUsername, dbPassword);
         return DataSourceBuilder.create().driverClassName("org.postgresql.Driver").url(connectionUrl).username(dbUsername)
                                 .password(dbPassword).build();
     }
