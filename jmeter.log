@@ -1,0 +1,48 @@
+2022-03-06 23:51:56,951 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2022-03-06 23:51:56,987 INFO o.a.j.JMeter: Loading user properties from: /home/madhavan/Downloads/softwares/apache-jmeter-5.4.3/bin/user.properties
+2022-03-06 23:51:56,988 INFO o.a.j.JMeter: Loading system properties from: /home/madhavan/Downloads/softwares/apache-jmeter-5.4.3/bin/system.properties
+2022-03-06 23:51:56,998 INFO o.a.j.JMeter: Copyright (c) 1998-2021 The Apache Software Foundation
+2022-03-06 23:51:56,998 INFO o.a.j.JMeter: Version 5.4.3
+2022-03-06 23:51:56,998 INFO o.a.j.JMeter: java.version=11.0.13
+2022-03-06 23:51:56,998 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2022-03-06 23:51:56,999 INFO o.a.j.JMeter: os.name=Linux
+2022-03-06 23:51:56,999 INFO o.a.j.JMeter: os.arch=amd64
+2022-03-06 23:51:56,999 INFO o.a.j.JMeter: os.version=5.13.0-30-generic
+2022-03-06 23:51:56,999 INFO o.a.j.JMeter: file.encoding=UTF-8
+2022-03-06 23:51:56,999 INFO o.a.j.JMeter: java.awt.headless=null
+2022-03-06 23:51:56,999 INFO o.a.j.JMeter: Max memory     =1073741824
+2022-03-06 23:51:57,000 INFO o.a.j.JMeter: Available Processors =16
+2022-03-06 23:51:57,014 INFO o.a.j.JMeter: Default Locale=English (EN)
+2022-03-06 23:51:57,014 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2022-03-06 23:51:57,015 INFO o.a.j.JMeter: JMeterHome=/home/madhavan/Downloads/softwares/apache-jmeter-5.4.3
+2022-03-06 23:51:57,015 INFO o.a.j.JMeter: user.dir  =/home/madhavan/649-ADS/load-testing
+2022-03-06 23:51:57,015 INFO o.a.j.JMeter: PWD       =/home/madhavan/649-ADS/load-testing
+2022-03-06 23:51:57,187 INFO o.a.j.JMeter: IP: 192.168.1.7 Name: swamiji FullName: swamiji
+2022-03-06 23:51:57,657 INFO o.a.j.JMeter: Setting LAF to: laf:javax.swing.plaf.metal.MetalLookAndFeel
+2022-03-06 23:51:57,770 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2022-03-06 23:51:59,234 INFO o.j.r.JARSourceHTTP: Found cached repo
+2022-03-06 23:51:59,408 INFO o.j.r.PluginManager: Plugins Status: [jpgc-graphs-basic=2.0, jpgc-sense=3.5, jpgc-cmd=2.2, jpgc-graphs-composite=2.0, jpgc-functions=2.1, jpgc-filterresults=2.2, jpgc-ffw=2.0, jpgc-ggl=2.0, jpgc-mergeresults=2.1, jpgc-perfmon=2.1, jpgc-plugins-manager=1.7, jpgc-plancheck=2.4, jpgc-tst=2.5, jmeter-core=5.4.3, jmeter-ftp=5.4.3, jmeter-http=5.4.3, jmeter-jdbc=5.4.3, jmeter-jms=5.4.3, jmeter-junit=5.4.3, jmeter-java=5.4.3, jmeter-ldap=5.4.3, jmeter-mail=5.4.3, jmeter-mongodb=5.4.3, jmeter-native=5.4.3, jmeter-tcp=5.4.3, jmeter-components=5.4.3]
+2022-03-06 23:52:08,017 INFO o.a.j.s.FileServer: Default base='/home/madhavan/649-ADS/load-testing'
+2022-03-06 23:52:08,019 INFO o.a.j.g.a.Load: Loading file: /home/madhavan/649-ADS/load-testing/complete-system-new/elvesTestPlan.jmx
+2022-03-06 23:52:08,019 INFO o.a.j.s.FileServer: Set new base='/home/madhavan/649-ADS/load-testing/complete-system-new'
+2022-03-06 23:52:08,143 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2022-03-06 23:52:08,152 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2022-03-06 23:52:08,153 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2022-03-06 23:52:08,154 INFO o.a.j.s.SaveService: Loading file: /home/madhavan/649-ADS/load-testing/complete-system-new/elvesTestPlan.jmx
+2022-03-06 23:52:08,246 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-03-06 23:52:08,246 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-03-06 23:52:08,246 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-03-06 23:52:08,246 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-03-06 23:52:08,246 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2022-03-06 23:52:08,246 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2022-03-06 23:52:08,344 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2022-03-06 23:52:08,345 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2022-03-06 23:52:08,345 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2022-03-06 23:52:08,345 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2022-03-06 23:52:08,462 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
+2022-03-06 23:52:08,499 INFO o.a.j.s.FileServer: Set new base='/home/madhavan/649-ADS/load-testing/complete-system-new'
+2022-03-06 23:55:09,951 INFO o.a.j.g.a.Load: Loading file: /home/madhavan/649-ADS/load-testing/complete-system-new/elvesTestPlan-120tpm.jmx
+2022-03-06 23:55:09,952 INFO o.a.j.s.FileServer: Set new base='/home/madhavan/649-ADS/load-testing/complete-system-new'
+2022-03-06 23:55:09,952 INFO o.a.j.s.SaveService: Loading file: /home/madhavan/649-ADS/load-testing/complete-system-new/elvesTestPlan-120tpm.jmx
+2022-03-06 23:55:10,011 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
+2022-03-06 23:55:10,035 INFO o.a.j.s.FileServer: Set new base='/home/madhavan/649-ADS/load-testing/complete-system-new'
