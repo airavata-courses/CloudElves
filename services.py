@@ -41,8 +41,9 @@ class Services:
 
     # downloads data from nexrad.
     def getData(self,data, id):
+        dir = os.getenv('download_path') or './radar_data'
+        dir = dir + '/' + id
         try:
-            dir = os.getenv('download_path') or './radar_data/' + id
             print('creating dir:', dir)
             if os.path.exists(dir):
                 for files in os.listdir(dir):
@@ -67,7 +68,7 @@ class Services:
             return (True,result)
         except Exception as e:
             print(e)
-            return (False,e)
+            return (False, e)
 
     # plots the image out of data retrieved from nexrad.
     def plotImage(self,scans, id):
@@ -88,7 +89,9 @@ class Services:
             print(type(e))
             return (False,e)
         finally:
-            dir = os.getenv('download_path') or './radar_data/' + id
+            # dir = os.getenv('download_path') or './radar_data/' + id
+            dir = os.getenv('download_path') or './radar_data'
+            dir = dir + '/' + id
             if os.path.exists(dir):
                 shutil.rmtree(dir)
             print("deletd dir:", dir)
