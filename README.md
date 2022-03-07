@@ -10,3 +10,5 @@ CloudElves is a weather prediction distributed-system built using microservice a
 
 
 Visit https://github.com/airavata-courses/CloudElves/wiki/Homework-1---Weather-Forecast link for setup.
+
+Project 2 Scalability: https://github.com/airavata-courses/CloudElves/wiki/Homework-2-Scalability
