@@ -19,6 +19,9 @@ spec:
         - name: ingestor
           image: docker.io/madhavankr/elves-ingestor:latest
           imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /data
+            name: ingestor-volume
           env:
           - name: rmq_service_name
             value: RABBITMQ_SERVICE
@@ -30,8 +33,14 @@ spec:
             value: "guest"
           - name: rmq_password
             value: "guest"
+          - name: download_path
+            value: "/data"
           ports:
           - name: ingestor
             containerPort: 8080
             protocol: TCP
-
+      volumes:
+      - name: ingestor-volume
+        hostPath:
+          # directory location on host
+          path: {{hostPath}}

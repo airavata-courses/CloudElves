@@ -1,12 +1,16 @@
 # helm uninstall mu-rabbit -n elves
-helm uninstall postgres -n elves
+helm uninstall elves-postgres -n elves
 
-kubectl delete -f rabbitmq.yml
+kubectl delete -f rabbitmq.yml -n elves
 
 kubectl delete -f forecast.yml
 kubectl delete -f forecast-service.yml
 
-kubectl delete -f ingestor.yml
+hostPath=$(pwd)
+hostPath="$hostPath/data"
+cat ingestor-v2.yml | sed "s|{{hostPath}}|$hostPath|g"  | kubectl delete -f -
+rm -rf $hostPath
+
 
 kubectl delete -f gateway.yml
 kubectl delete -f gateway-service.yml

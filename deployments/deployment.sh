@@ -28,7 +28,13 @@ kubectl apply -f gateway.yml
 kubectl apply -f gateway-service.yml
 
 # deploy ingestor service
-kubectl apply -f ingestor-v2.yml
+hostPath=$(pwd)
+hostPath="$hostPath/data"
+rm -rf $hostPath
+mkdir $hostPath
+
+cat ingestor-v2.yml | sed "s|{{hostPath}}|$hostPath|g"  | kubectl apply -f -
+# cat ingestor-v2.yml | sed "s|{{hostPath}}|$hostPath|g" 
 
 # deploy forecast service
 kubectl apply -f forecast.yml

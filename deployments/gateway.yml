@@ -22,6 +22,8 @@ spec:
           env:
           - name: server.port
             value: "8080"
+          - name: rmq.serviceName
+            value: RABBITMQ_SERVICE
           - name: registry.serviceName
             value: REGISTRY_SERVICE
           ports:
