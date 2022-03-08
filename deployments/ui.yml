@@ -2,144 +2,30 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: ui
-  namespace: default
-  uid: 3b7ed36c-73c0-4ab8-8499-2141586cda89
-  resourceVersion: '10879'
-  generation: 1
-  creationTimestamp: '2022-03-03T00:23:16Z'
-  labels:
-    k8s-app: ui
-  annotations:
-    deployment.kubernetes.io/revision: '1'
-  managedFields:
-    - manager: dashboard
-      operation: Update
-      apiVersion: apps/v1
-      time: '2022-03-03T00:23:16Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:labels:
-            .: {}
-            f:k8s-app: {}
-        f:spec:
-          f:progressDeadlineSeconds: {}
-          f:replicas: {}
-          f:revisionHistoryLimit: {}
-          f:selector: {}
-          f:strategy:
-            f:rollingUpdate:
-              .: {}
-              f:maxSurge: {}
-              f:maxUnavailable: {}
-            f:type: {}
-          f:template:
-            f:metadata:
-              f:labels:
-                .: {}
-                f:k8s-app: {}
-              f:name: {}
-            f:spec:
-              f:containers:
-                k:{"name":"ui"}:
-                  .: {}
-                  f:image: {}
-                  f:imagePullPolicy: {}
-                  f:name: {}
-                  f:resources: {}
-                  f:securityContext:
-                    .: {}
-                    f:privileged: {}
-                  f:terminationMessagePath: {}
-                  f:terminationMessagePolicy: {}
-              f:dnsPolicy: {}
-              f:restartPolicy: {}
-              f:schedulerName: {}
-              f:securityContext: {}
-              f:terminationGracePeriodSeconds: {}
-    - manager: kube-controller-manager
-      operation: Update
-      apiVersion: apps/v1
-      time: '2022-03-03T00:23:16Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            .: {}
-            f:deployment.kubernetes.io/revision: {}
-        f:status:
-          f:conditions:
-            .: {}
-            k:{"type":"Available"}:
-              .: {}
-              f:lastTransitionTime: {}
-              f:lastUpdateTime: {}
-              f:message: {}
-              f:reason: {}
-              f:status: {}
-              f:type: {}
-            k:{"type":"Progressing"}:
-              .: {}
-              f:lastTransitionTime: {}
-              f:lastUpdateTime: {}
-              f:message: {}
-              f:reason: {}
-              f:status: {}
-              f:type: {}
-          f:observedGeneration: {}
-          f:replicas: {}
-          f:unavailableReplicas: {}
-          f:updatedReplicas: {}
-      subresource: status
+  namespace: elves
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: ui
+      run: ui
+      app: ui
   template:
     metadata:
-      name: ui
-      creationTimestamp: null
       labels:
-        k8s-app: ui
+        run: ui
+        app: ui
     spec:
       containers:
         - name: ui
-          image: ayush3103/ui:7
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            privileged: false
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 25%
-      maxSurge: 25%
-  revisionHistoryLimit: 10
-  progressDeadlineSeconds: 600
-status:
-  observedGeneration: 1
-  replicas: 1
-  updatedReplicas: 1
-  unavailableReplicas: 1
-  conditions:
-    - type: Available
-      status: 'False'
-      lastUpdateTime: '2022-03-03T00:23:16Z'
-      lastTransitionTime: '2022-03-03T00:23:16Z'
-      reason: MinimumReplicasUnavailable
-      message: Deployment does not have minimum availability.
-    - type: Progressing
-      status: 'True'
-      lastUpdateTime: '2022-03-03T00:23:16Z'
-      lastTransitionTime: '2022-03-03T00:23:16Z'
-      reason: ReplicaSetUpdated
-      message: ReplicaSet "ui-5b5bd947b6" is progressing.
+          image: docker.io/navkar14/elves-ui:latest
+          imagePullPolicy: Always
+          env:
+          - name: REACT_APP_gateway_host
+            value: "{{gateway_host}}"
+          - name: REACT_APP_gateway_port
+            value: "{{gateway_port}}"
+          ports:
+          - name: ui
+            containerPort: 3001
+            protocol: TCP
 

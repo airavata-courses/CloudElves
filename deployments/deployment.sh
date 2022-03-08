@@ -42,4 +42,13 @@ kubectl apply -f forecast.yml
 # expose forecast as a Nodeport
 kubectl apply -f forecast-service.yml
 
+
+# deploy ui
+gateway_port=30005
+cat ui.yml | sed "s|{{gateway_host}}|$ip|g" | sed "s|{{gateway_port}}|$gateway_port|g" | kubectl apply -f - 
+kubectl apply -f ui-service-v2.yml
+
+echo "$(minikube ip) elves-forecast.me" | sudo tee -a /etc/hosts
+
 echo "gateway can be accessed at http://$ip:30005. check health at http://$ip:30005/actuator/health"
+echo "ui can be accessed at http://elves-forecast:30010"
