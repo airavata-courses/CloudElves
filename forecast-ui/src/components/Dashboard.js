@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from "react";
+import { StateContext, UserContext } from "./Context";
+
 // Import required components.
 import Input from "./Input";
 import Plot from "./Plot";
-import { StateContext, UserContext } from "./Context";
 
 
 function Dashboard() {
@@ -22,7 +23,6 @@ function Dashboard() {
     }
 
     async function InputProcessor(userInputs) {
-
         
         console.log("In processor",state["loading"]);
         
@@ -58,11 +58,11 @@ function Dashboard() {
         else{
             console.log("---> SUCCESS:",response);
             setState({...state, ...response,"status_img":0,"loading":true});
-            // setLoading(!loading);
         }
         
             
     }
+    
     async function getImage(id) {
         console.log("---> Fetching image for id:",id);
         let counter = 10;
