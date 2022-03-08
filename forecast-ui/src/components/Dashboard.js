@@ -62,6 +62,7 @@ function Dashboard() {
         
             
     }
+    
     async function getImage(id) {
         console.log("---> Fetching image for id:",id);
         let counter = 10;
@@ -104,8 +105,8 @@ function Dashboard() {
                 }
             }
         }
-    }
 
+    }
     return (
         <div>
             <Input InputCollector={InputProcessor}/>
@@ -113,5 +114,135 @@ function Dashboard() {
         </div>
     )
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // const reqObject = {
+        //                 "year":String(userInputs.date.getFullYear()),
+        //                 "month": String(userInputs.date.getMonth()+1),
+        //                 "day": String(userInputs.date.getDate()),
+        //                 "startTime": String(userInputs.time),
+        //                 "endTime": String(userInputs.time),
+        //                 "radar": String(userInputs.radar)
+        //             };
+        
+     
+        // const response = await fetch("http://localhost:8082",
+        //         {
+        //             method: "POST",
+        //             // headers: {
+        //             //     "Content-Type": "application/json",
+        //             //     "id_token": userAuthDetails.id_token,
+        //             //     "name": userAuthDetails.name,
+        //             //     "email": userAuthDetails.email
+        //             // },
+        //             body: JSON.stringify(reqObject),
+        //         })
+        //     .then(responseObj => responseObj.json())
+        //     .then(data_recv => {
+        //         console.log('Id received:', data_recv);
+        //         setState({"status":0,"id":data_recv["id"], "image":""});
+        //         getImage(data_recv["id"]);
+              
+        //     })
+        //     .catch((error) => {
+        //         console.error('XXX ERROR:', error);
+        //         setState({"status": -1, "error":error});
+        //         setLoading(false);
+        //     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// This function renders dashboard components in Home page.
+// const Dashboard = () => {
+//     const {userAuthDetails} = useContext(UserContext);
+//     const [state, setState] = useState({"loading":false, "submit":false});
+//     const [plot, setPlot] = useState(null);
+
+//     const 
+//     const InputProcessor =  (userInput) => {
+//         setState({"loading":true, "submit": true});
+        
+//         console.log("bev true");    
+//         setTimeout(()=>{console.log("timeout")},1000);
+//         const reqObject = {
+//             "year":String(userInput.date.getFullYear()),
+//             "month": String(userInput.date.getMonth()+1),
+//             "day": String(userInput.date.getDate()),
+//             "startTime": String(userInput.time),
+//             "endTime": String(userInput.time),
+//             "radar": String(userInput.radar)
+//         };
+
+//          fetchData(reqObject);
+//     };
+
+//     const fetchData = async (input) => {
+
+//         const url = `http://localhost:8082/data`;
+//         setTimeout(1000);
+//         await fetch(url, {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "id_token": userAuthDetails.id_token,
+//                 "name": userAuthDetails.name,
+//                 "email": userAuthDetails.email
+//             },
+//             body: JSON.stringify(input),
+//             })
+//             .then((response) => response.json())
+//             .then((data) => {
+//                 console.log("id:",data["id"]);
+//                 setPlot({"success":data});
+//                 setTimeout(()=>{console.log("timeout")},1500);
+//                 setState({"loading":false, "submit": true});
+//             })
+//             .catch((error) => {
+//                 setTimeout(()=>{console.log("timeout")},1500);
+//                 console.log("XXXerror: ", error);
+//                 setPlot({"error":error});
+                
+//                 setState({"loading":false, "submit": true});
+//             });
+//     }
+
+//     return (
+//         <div className="dashboard">
+//             <Input InputCollector={InputProcessor} isLoading = {state.loading}/>
+//             <Plot  state = {state} plot = {plot}/>
+//             {/* {!submit ? (<div>Please provide some inputs to get weather forecast.</div>) : loading ? (<div>Loading</div>) : (<Plot partochild={plot} />)} */}
+//         </div>
+//     );
+// };
 
 export default Dashboard;
