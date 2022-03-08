@@ -9,7 +9,8 @@ const History = () => {
 	const {userAuthDetails} = useContext(UserContext);
 
   	const getLogs = async () => {
-		await fetch('http://localhost:8082/getLogs', {
+		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getLogs`;
+		await fetch(url, {
 			method: "GET",
 				headers: {
 					"Content-Type": "application/json",
