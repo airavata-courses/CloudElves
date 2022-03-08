@@ -6,7 +6,7 @@ import { UserContext } from "./Context";
 
 // This function renders navigation bar component.
 const NavbarStatic = () => {
-    const {userAuthDetails, setUser, setPage} = useContext(UserContext);
+    const { userAuthDetails, setUser, setPage } = useContext(UserContext);
     console.log(userAuthDetails);
 
     const onSignoutSuccess = async () => {

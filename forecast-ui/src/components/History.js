@@ -1,14 +1,18 @@
 import React, {useContext, useState} from 'react';
 import { Button } from 'react-bootstrap';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
-import {UserContext} from './Context';
+
+// Import required components.
+import { UserContext } from './Context';
 
 // This function is used to fetch user activity by API call to gateway.
 const History = () => {
+
 	const [logs, setLogs] = useState(null);
-	const {userAuthDetails} = useContext(UserContext);
+	const { userAuthDetails } = useContext(UserContext);
 
   	const getLogs = async () => {
+
 		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getLogs`;
 		await fetch(url, {
 			method: "GET",

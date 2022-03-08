@@ -5,6 +5,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import {TimePicker, DatePicker} from '@mui/lab';
 import "react-datepicker/dist/react-datepicker.css";
+// Import required components.
 import { StateContext } from "./Context";
 
 // This function handles user inputs for fetching the weather plots.
@@ -23,7 +24,6 @@ const Input = (props) => {
     return (
         <div style={{display:"flex"}}>
             <form  style={{ border: "1px solid black",display: "flex", flexDirection:"row", width:"100%"}} onSubmit={InputHandler}>
-                
                 <div style={{flex: '1 !important', padding:"30px", width:"20%"}}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker

@@ -9,6 +9,7 @@ const Plot = () => {
 
     console.log("In Plot", state);
     console.log(process.env.REACT_APP_gateway_host, process.env.REACT_APP_gateway_port);
+    
     if (state["loading"]){
         if (state["status_id"] === -1){
             console.log("Failed to fetch")
@@ -19,8 +20,8 @@ const Plot = () => {
             return <div className="plot">Loading...</div>
         }
         else{
-            console.log("Fuckit loading true")
-            return <div>FUck it</div>
+            console.log("Failed to fetch images.")
+            return <div className="plot">Failed to fetch UUID, please try again!</div>
         }
     }
     else{
