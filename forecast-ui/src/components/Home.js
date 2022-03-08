@@ -5,12 +5,12 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import History from "./History";
 import Navbar from "./Navbar";
-import { UserContext } from "./Context";
+import { UserContext, SessionContextProvider } from "./Context";
 
 // This is the home component where all the children components are rendered.
 const Home = () => {
     
-    const renderSwitch= {"home": <Dashboard />, "history":<History/>}
+    const renderSwitch= {"home":<SessionContextProvider><Dashboard /></SessionContextProvider> , "history":<History/>}
     const { userAuthDetails, currPage } = useContext(UserContext);
 
     return (
