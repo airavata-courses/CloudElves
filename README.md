@@ -5,6 +5,7 @@ Spring 2022 Project
 			 1) Ayush Sanghavi
 			 2) Madhavan KR
 			 3) Navkar Shah
+			 4) Amol Sangar
 
 CloudElves is a weather prediction distributed-system built using microservice architecture
 
