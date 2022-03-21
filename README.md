@@ -1,15 +1,19 @@
-# CloudElves
-Spring 2022 Project
+# Deploying Kubernetes on Jetstream cloud.
 
-### Team:
-			 1) Ayush Sanghavi
-			 2) Madhavan KR
-			 3) Navkar Shah
-			 4) Amol Sangar
+# Connecting to kubernetes cluster
 
-CloudElves is a weather prediction distributed-system built using microservice architecture
+## Installing kubectl 
+
+Use this [link](https://kubernetes.io/docs/tasks/tools/) to install the command line **kubectl** for kubernetes.
+
+Download the kubeconfig file from [here]()
+
+Then, to connect to kubernetes cluster, you can do either of the following:
+1) kubectl --kubeconfig=**/path/to/config-file** get all
+
+2) set the environment variable **KUBECONFIG** to **/path/to/config-file** and use kubectl as is.
 
 
-Visit https://github.com/airavata-courses/CloudElves/wiki/Homework-1---Weather-Forecast link for setup.
+PS: If you face any certificate related error, add the option *--insecure-skip-tls-verify* to kubectl commands. (will fix this error soon)
 
-Project 2 Scalability: https://github.com/airavata-courses/CloudElves/wiki/Homework-2-Scalability
+ex: kubectl --insecure-skip-tls-verify --kubeconfig=config.yml get nodes
