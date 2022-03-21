@@ -16,4 +16,6 @@ Then, to connect to kubernetes cluster, you can do either of the following:
 
 PS: If you face any certificate related error, add the option *--insecure-skip-tls-verify* to kubectl commands. (will fix this error soon)
 
-ex: kubectl --insecure-skip-tls-verify --kubeconfig=config.yml get nodes
+**ex:** kubectl --insecure-skip-tls-verify --kubeconfig=config.yml get nodes
+
+![](images/kubernetes-working.png)
