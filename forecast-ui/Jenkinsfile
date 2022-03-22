@@ -6,7 +6,7 @@ pipeline {
         skipDefaultCheckout(true)
     }
     environment {
-        DOCKERHUB_CREDENTIALS=credentials('dockerHub')
+        DOCKERHUB_CREDENTIALS='dockerHub'
         imagename="cloudelves/ui"
         dockerImage=''
     }
