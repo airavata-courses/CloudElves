@@ -1,0 +1,79 @@
+pipeline {
+    agent any
+    
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
+    environment {
+        imagename = "cloudelves/forecast"
+        dockerImage = ''
+    }
+    stages {
+        stage('Cleanup') {
+            steps {
+                // Clean before build
+                cleanWs()
+            }
+        }
+        stage('Checkout') {
+            steps {
+                echo "Checking out 'Develop-forecast' branch"
+                git branch: 'Develop-forecast',
+                url: 'https://github.com/airavata-courses/CloudElves.git',
+                credentialsId: 'MyGitHub'
+            }
+        }
+        stage('Local Build') {
+            steps {
+                /* Installing application dependencies */
+                echo "Building ${env.JOB_NAME}...."
+                dir('forecast') {
+                    sh "pwd"
+                    sh 'python3 -m pip install --user -r requirements.txt'
+                }
+            }
+        }
+        // stage('Unit Test') {
+        //     steps {
+        //         /* Testing the application */
+        //         echo 'Application Testing'
+        //         dir('forecast') {
+        //             sh "pwd"
+        //             sh 'pytest'
+        //         }
+        //     }
+        // }
+        stage('Building docker image') {
+             steps {
+                dir('forecast') {
+                    sh 'pwd'
+                    script {
+                        dockerImage = docker.build imagename
+                    }
+                }   
+            }
+        }
+         stage('Publish') {
+            environment {
+                registryCredential = 'dockerHub'
+            }
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push("$BUILD_NUMBER")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+        stage('Remove unused docker image') {
+            steps{
+                sh "docker rmi $imagename:$BUILD_NUMBER"
+                sh "docker rmi $imagename:latest"
+
+            }
+        }
+
+    }
+}
