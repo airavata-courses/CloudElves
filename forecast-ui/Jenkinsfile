@@ -1,0 +1,57 @@
+pipeline {
+
+    agent any
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS=credentials('dockerHub')
+        imagename="cloudelves/ui"
+        dockerImage=''
+    }
+    stages {
+        stage('Cleanup') {
+            steps {
+                // Clean before build
+                cleanWs()
+            }
+        }
+        stage('Checkout') {
+            steps {
+                echo "Checkout to Develop-ui"
+                git branch: 'Develop-ui',
+                url: 'https://github.com/airavata-courses/CloudElves',
+                credentialsId: 'GitHub-Navkar'
+            }
+        }
+        stage('Local Build') {
+            steps {
+                /* Installing application dependencies */
+                echo "Building ${env.JOB_NAME}...."
+                dir('forecast-ui') {
+                    sh "pwd"
+                    sh 'npm install'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build imagename
+                }
+            }
+        }
+        stage('Push to Dockerhub') {
+             
+            steps{
+                script {
+                    docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
+                        dockerImage.push("$BUILD_NUMBER")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+    }
+}
