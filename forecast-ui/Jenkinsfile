@@ -31,6 +31,7 @@ pipeline {
                 echo "Building ${env.JOB_NAME}...."
                 dir('forecast-ui') {
                     sh "pwd"
+                    sh 'cd forecast-ui'
                     sh 'npm install'
                 }
             }
