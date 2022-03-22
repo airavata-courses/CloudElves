@@ -40,7 +40,7 @@ pipeline {
                 echo 'Application Testing'
                 dir('forecast') {
                     sh "pwd"
-                    sh 'python forecast/manage.py test forecast/tests'
+                    sh 'python3 forecast/manage.py test forecast/tests'
                 }
             }
         }
