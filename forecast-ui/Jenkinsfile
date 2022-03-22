@@ -25,16 +25,16 @@ pipeline {
                 credentialsId: 'GitHub-Navkar'
             }
         }
-        stage('Local Build') {
-            steps {
-                /* Installing application dependencies */
-                echo "Building ${env.JOB_NAME}...."
-                dir('forecast-ui/forecast-ui') {
-                    sh "pwd"
-                    sh 'npm install'
-                }
-            }
-        }
+        // stage('Local Build') {
+        //     steps {
+        //         /* Installing application dependencies */
+        //         echo "Building ${env.JOB_NAME}...."
+        //         dir('forecast-ui/forecast-ui') {
+        //             sh "pwd"
+        //             sh 'npm install'
+        //         }
+        //     }
+        // }
         stage('Build Docker Image') {
             steps {
                 script {
