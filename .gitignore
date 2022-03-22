@@ -2,3 +2,5 @@
 *.pyc
 ingestor/ingestor/downloaded_data/
 ingestor/ingestor/plotted_data/
+**/__pycache__
+**/.pytest_cache

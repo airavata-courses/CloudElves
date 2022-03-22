@@ -34,16 +34,16 @@ pipeline {
                 }
             }
         }
-        // stage('Unit Test') {
-        //     steps {
-        //         /* Testing the application */
-        //         echo 'Application Testing'
-        //         dir('forecast') {
-        //             sh "pwd"
-        //             sh 'pytest'
-        //         }
-        //     }
-        // }
+        stage('Unit Test') {
+            steps {
+                /* Testing the application */
+                echo 'Application Testing'
+                dir('forecast') {
+                    sh "pwd"
+                    sh 'python forecast/manage.py test forecast/tests'
+                }
+            }
+        }
         stage('Building docker image') {
              steps {
                 dir('forecast') {
