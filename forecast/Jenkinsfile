@@ -74,7 +74,7 @@ pipeline {
 
             }
         }
-        stage('Checkout') {
+        stage('Checkout deployment') {
             steps {
                 echo "Checking out 'deployment' branch"
                 git branch: 'deployment',
