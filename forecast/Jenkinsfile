@@ -74,14 +74,14 @@ pipeline {
 
             }
         }
-        stage('Checkout deployments branch') {
-            steps {
-                echo "Checking out 'deployments' branch"
-                git branch: 'deployments',
-                url: 'https://github.com/airavata-courses/CloudElves.git',
-                credentialsId: 'MyGitHub'
-            }
-        }
+        // stage('Checkout deployments branch') {
+        //     steps {
+        //         echo "Checking out 'deployments' branch"
+        //         git branch: 'deployments',
+        //         url: 'https://github.com/airavata-courses/CloudElves.git',
+        //         credentialsId: 'MyGitHub'
+        //     }
+        // }
         stage('Deploy App') {
             steps {
                 dir('forecast') {
