@@ -86,7 +86,7 @@ pipeline {
             steps {
                 dir('forecast') {
                     sh 'pwd'
-                    sh 'cat /home/exouser/.ssh/elves_key'
+                    // sh 'cat /home/exouser/.ssh/elves_key'
                     script{
                         sh "ansible-playbook -i /etc/ansible-host-inventory playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=/home/exouser/.ssh/elves_key"
                     }
