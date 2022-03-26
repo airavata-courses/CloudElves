@@ -8,5 +8,5 @@
       k8s:
         state: present
         validate_certs: no
-        definition: "{{ lookup('file', '../deployments/forecast-deployment.yml') | replace ('TAG',version) }}"
+        definition: "{{ lookup('file', '../deployments/forecast.yml') | replace ('TAG',version) }}"
         namespace: default
