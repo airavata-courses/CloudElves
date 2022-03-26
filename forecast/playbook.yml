@@ -1,0 +1,11 @@
+- hosts: localhost
+  gather_facts: false
+  vars:
+    version: "{{version}}"
+  tasks:
+    - name: Update deploy
+      k8s:
+        state: present
+        validate_certs: no
+        definition: "{{ lookup('file', 'forecast.yml') | replace ('TAG',version) }}"
+        namespace: default
