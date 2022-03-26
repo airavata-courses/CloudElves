@@ -83,13 +83,15 @@ pipeline {
         //     }
         // }
         stage('Deploy App') {
+            environment {
+                SSH_PRIVATE_KEY = credentials('ssh_key_ansible_to_k8s')
+            }
             steps {
                 dir('forecast') {
                     sh 'pwd'
-                    sh "chmod 644 /home/exouser/.ssh/elves_key"
-                    sh 'cat /home/exouser/.ssh/elves_key'
+                    sh "echo $SSH_PRIVATE_KEY"
                     script{
-                        sh "ansible-playbook -i /etc/ansible-host-inventory playbook.yml --extra-vars \"version=$BUILD_NUMBER\""
+                        sh "ansible-playbook -i /etc/ansible-host-inventory playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
                     }
                 }
             }
