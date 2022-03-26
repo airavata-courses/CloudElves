@@ -24,56 +24,56 @@ pipeline {
                 credentialsId: 'MyGitHub'
             }
         }
-        stage('Local Build') {
-            steps {
-                /* Installing application dependencies */
-                echo "Building ${env.JOB_NAME}...."
-                dir('forecast') {
-                    sh "pwd"
-                    sh 'python3 -m pip install --user -r requirements.txt'
-                }
-            }
-        }
-        stage('Unit Test') {
-            steps {
-                /* Testing the application */
-                echo 'Application Testing'
-                dir('forecast') {
-                    sh "pwd"
-                    sh 'python3 forecast/manage.py test forecast/tests'
-                }
-            }
-        }
-        stage('Building docker image') {
-             steps {
-                dir('forecast') {
-                    sh 'pwd'
-                    script {
-                        dockerImage = docker.build imagename
-                    }
-                }   
-            }
-        }
-         stage('Publish') {
-            environment {
-                registryCredential = 'dockerHub'
-            }
-            steps{
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push("$BUILD_NUMBER")
-                        dockerImage.push('latest')
-                    }
-                }
-            }
-        }
-        stage('Remove unused docker image') {
-            steps{
-                sh "docker rmi $imagename:$BUILD_NUMBER"
-                sh "docker rmi $imagename:latest"
+        // stage('Local Build') {
+        //     steps {
+        //         /* Installing application dependencies */
+        //         echo "Building ${env.JOB_NAME}...."
+        //         dir('forecast') {
+        //             sh "pwd"
+        //             sh 'python3 -m pip install --user -r requirements.txt'
+        //         }
+        //     }
+        // }
+        // stage('Unit Test') {
+        //     steps {
+        //         /* Testing the application */
+        //         echo 'Application Testing'
+        //         dir('forecast') {
+        //             sh "pwd"
+        //             sh 'python3 forecast/manage.py test forecast/tests'
+        //         }
+        //     }
+        // }
+        // stage('Building docker image') {
+        //      steps {
+        //         dir('forecast') {
+        //             sh 'pwd'
+        //             script {
+        //                 dockerImage = docker.build imagename
+        //             }
+        //         }   
+        //     }
+        // }
+        //  stage('Publish') {
+        //     environment {
+        //         registryCredential = 'dockerHub'
+        //     }
+        //     steps{
+        //         script {
+        //             docker.withRegistry( '', registryCredential ) {
+        //                 dockerImage.push("$BUILD_NUMBER")
+        //                 dockerImage.push('latest')
+        //             }
+        //         }
+        //     }
+        // }
+        // stage('Remove unused docker image') {
+        //     steps{
+        //         sh "docker rmi $imagename:$BUILD_NUMBER"
+        //         sh "docker rmi $imagename:latest"
 
-            }
-        }
+        //     }
+        // }
         // stage('Checkout deployments branch') {
         //     steps {
         //         echo "Checking out 'deployments' branch"
