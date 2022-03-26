@@ -87,11 +87,9 @@ pipeline {
                 SSH_PRIVATE_KEY = credentials('ssh_key_ansible_to_k8s')
             }
             steps {
-                dir('deployments') {
-                    sh 'pwd'
-                    script{
-                        sh "ansible-playbook -i /etc/ansible-host-inventory playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
-                    }
+                sh 'pwd'
+                script{
+                    sh "ansible-playbook -i /etc/ansible-host-inventory playbooks/playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
                 }
             }
         }
