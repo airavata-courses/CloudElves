@@ -76,10 +76,7 @@ pipeline {
         }
         stage('Checkout ansible deployments branch') {
             steps {
-                echo "Checking out 'deployments' branch"
-                // git branch: 'ansible-k8s-deployments',
-                // url: 'https://github.com/airavata-courses/CloudElves.git',
-                // credentialsId: 'MyGitHub'
+                echo "Checking out 'ansible deployments' branch"
                 sh 'git checkout ansible-k8s-deployments'
             }
         }
