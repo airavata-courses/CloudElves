@@ -33,9 +33,10 @@ pipeline {
         stage('Local Build') {
             // Installing application dependencies.
             steps {
-                echo 'Building ${env.JOB_NAME}....'
+                echo "Building ${env.JOB_NAME}...."
                 sh 'pwd'
-                sh 'python3 -m pip install --user -r requirements.txt'
+                sh 'pip3 --version'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
