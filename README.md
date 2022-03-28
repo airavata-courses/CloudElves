@@ -1,5 +1,9 @@
 # Deploying Kubernetes on Jetstream cloud.
 
+Follow the steps in [here](https://adamtheautomator.com/install-kubernetes-ubuntu/)
+
+Consider modification suggested in [here](https://devops.stackexchange.com/questions/15162/it-seems-like-the-kubelet-isnt-running-or-healthy)
+
 # Connecting to kubernetes cluster
 
 ## Installing kubectl 
