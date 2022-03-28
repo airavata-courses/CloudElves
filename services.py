@@ -43,20 +43,25 @@ class Services:
 
     # downloads data from nexrad.
     def getData(self, data, id):
-        dir = os.getenv('download_path') or './radar_data'
-        dir = dir + '/' + id
-        try:
-            print('creating dir:', dir)
-            if os.path.exists(dir):
-                for files in os.listdir(dir):
-                    path = os.path.join(dir, files)
-                    try:
-                        shutil.rmtree(path)
-                    except OSError:
-                        os.remove(path)
-            else:
-                print("does not")
-                os.mkdir(dir)
+        download_loc = './downloaded_data/'
+        image_loc = './plotted_data/'
+
+        if not os.path.exists(image_loc):
+            os.mkdir(image_loc)
+        # dir = os.getenv('download_path') or './radar_data'
+        # dir = dir + '/' + id
+        # try:
+        #     print('creating dir:', dir)
+        #     if os.path.exists(dir):
+        #         for files in os.listdir(dir):
+        #             path = os.path.join(dir, files)
+        #             try:
+        #                 shutil.rmtree(path)
+        #             except OSError:
+        #                 os.remove(path)
+        #     else:
+        #         print("does not")
+        #         os.mkdir(dir)
             
             scans = self.__connection.get_avail_scans(data["year"], data["month"], data["day"], data["radar"])
             # print(len(scans))
@@ -69,33 +74,34 @@ class Services:
             if len(result.success) == 0:
                 raise Exception("nexrad data download error.")
             
-            return (True,result)
+            return True, result
 
-        except Exception as e:
-            print(e)
-            return (False, e)
+        # except Exception as e:
+        #     print(e)
+        #     return (False, e)
 
     # plots the image out of data retrieved from nexrad.
     def plotImage(self, scans, id):
         pass
         try:
-            # fig = plt.figure(figsize=(16, 12))
-            # for i, scan in enumerate(scans.iter_success(), start=1):
-            #     ax = fig.add_subplot(2, 2, i)
-            #     radar = scan.open_pyart()
-            #     display = pyart.graph.RadarDisplay(radar)
-            #     display.plot('reflectivity', 0, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
-            #     display.set_limits((-150, 150), (-150, 150), ax=ax)
+            fig = plt.figure(figsize=(16, 12))
+            for i, scan in enumerate(scans.iter_success(), start=1):
+                ax = fig.add_subplot(2, 2, i)
+                radar = scan.open_pyart()
+                display = pyart.graph.RadarDisplay(radar)
+                display.plot('reflectivity', 0, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
+                display.set_limits((-150, 150), (-150, 150), ax=ax)
 
-        #     fig.savefig(image_loc + requested_id + ".png")
-        #     return requested_id + ".png"
+            fig.savefig(image_loc + requested_id + ".png")
+            print("figure plotted")
+            return requested_id + ".png"
 
-            # Convert figure to base64
-            # pic_IObytes = io.BytesIO()
-            # plt.savefig(pic_IObytes,  format='png')
-            # pic_IObytes.seek(0)
-            # pic_hash = base64.b64encode(pic_IObytes.read())
-            # return (True, pic_hash)
+           # Convert figure to base64
+            pic_IObytes = io.BytesIO()
+            plt.savefig(pic_IObytes,  format='png')
+            pic_IObytes.seek(0)
+            pic_hash = base64.b64encode(pic_IObytes.read())
+            return (True, pic_hash)
             return (True,"aaa")
         except Exception as e:
             print(type(e))
