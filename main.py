@@ -1,22 +1,22 @@
 from consumer import Consumer
 import os
-from multiprocessing import Process
+from multiprocessing import Process, set_start_method
+
+def foo(p):
+        print('Process:',p)
+        obj = Consumer(os.getenv('data_input_queue') or "elves.ingestor.data.in")
+        obj.consume()
 
 if __name__ == "__main__":
-    numConsumers = os.getenv('numConsumers') or 10
-    numConsumers = int(numConsumers)
+    numConsumers = int( os.getenv('numConsumers') or 10 )
     subscriber_list = []
+    process_list = []
     
     for i in range(numConsumers):
-        subscriber_list.append(Consumer(os.getenv('data_input_queue') or "elves.ingestor.data.in"))
-
-    # execute
-    process_list = []
-    for sub in subscriber_list:
-        process = Process(target=sub.consume)
+        process = Process(target=foo, args=[i] )
         process.start()
         process_list.append(process)
-
+    
     # wait for all process to finish
     for process in process_list:
         process.join()
