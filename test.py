@@ -8,7 +8,20 @@ from services import Services
 from constants import Constants
 
 class TestIngestorService(TestCase):
-    
+
+   # Tests the validity of input parameters
+    def testParameters(self):
+        self.test_input =  {
+                    "year": '2022',
+                    "month": '02',
+                    "day": '02',
+                    "startTime": "1643807400279",
+                    "endTime": "1643807400279",
+                    "radar": "KAKQ",
+                    "userId": "madhkr"
+            }
+        self.assertEqual(self.test_input.keys(), {'year', 'month', 'day', 'radar', 'userId', 'startTime', 'endTime'})
+ 
     def setUp(self):
         self.query = nexradaws.NexradAwsInterface()
         self.templocation = tempfile.mkdtemp()
@@ -33,19 +46,6 @@ class TestIngestorService(TestCase):
     
 
 class TestNexradService(TestCase):
-
-    # Tests the validity of input parameters
-    def testParameters(self):
-        self.test_input =  {
-                    "year": '2022',
-                    "month": '02',
-                    "day": '02',
-                    "startTime": "1643807400279",
-                    "endTime": "1643807400279",
-                    "radar": "KAKQ",
-                    "userId": "madhkr"
-            }
-        self.assertEqual(self.test_input.keys(), {'year', 'month', 'day', 'radar', 'userId', 'startTime', 'endTime'})
 
     def setUp(self):
         self.query = nexradaws.NexradAwsInterface()
@@ -96,15 +96,14 @@ class TestNexradService(TestCase):
 
 if __name__ == '__main__':
     # Test cases for Nexrad Service
-    nexrad = TestNexradService()
-    nexrad.testParameters()
-    nexrad.setUp()
-    nexrad.test_total()
-    nexrad.test_success()
-    nexrad.test_failed()
-    nexrad.test_iter_success()
-    nexrad.test_iter_failed()
-    nexrad.tearDown()
+    # nexrad = TestNexradService()
+    # nexrad.setUp()
+    # nexrad.test_total()
+    # nexrad.test_success()
+    # nexrad.test_failed()
+    # nexrad.test_iter_success()
+    # nexrad.test_iter_failed()
+    # nexrad.tearDown()
 
     # Test cases for Ingestor Service
     ingestor = TestIngestorService()

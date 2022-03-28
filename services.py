@@ -46,8 +46,9 @@ class Services:
         dir = os.getenv('download_path') or './radar_data'
         dir = dir + '/' + id
         try:
-            print('creating dir:', dir)
+            print('Check for directory:', dir)
             if os.path.exists(dir):
+                print("exists")
                 for files in os.listdir(dir):
                     path = os.path.join(dir, files)
                     try:
@@ -55,8 +56,9 @@ class Services:
                     except OSError:
                         os.remove(path)
             else:
-                print("does not")
+                print("directory does not exist")
                 os.mkdir(dir)
+                print("dir created")
             
             scans = self.__connection.get_avail_scans(data["year"], data["month"], data["day"], data["radar"])
             # print(len(scans))
