@@ -5,6 +5,7 @@ import datetime
 import io, base64
 from matplotlib import pyplot as plt
 # import pyart
+# import pytz
 
 class Services:
 
@@ -44,22 +45,23 @@ class Services:
     # downloads data from nexrad.
     def getData(self, data, id):
         dir = os.getenv('download_path') or './radar_data'
-        dir = dir + '/' + id
         try:
-            print('Check for directory:', dir)
-            if os.path.exists(dir):
-                print("exists")
-                for files in os.listdir(dir):
-                    path = os.path.join(dir, files)
-                    try:
-                        shutil.rmtree(path)
-                    except OSError:
-                        os.remove(path)
-            else:
-                print("directory does not exist")
+            # print('Check for directory:', dir)
+            # if not os.path.exists(dir):
+            #     print("exists")
+            #     for files in os.listdir(dir):
+            #         path = os.path.join(dir, files)
+            #         try:
+            #             shutil.rmtree(path)
+            #         except OSError:
+            #             os.remove(path)
+            # else:
+            #     print("directory does not exist")
+            #     os.mkdir(dir)
+            #     print("dir created")
+            if not os.path.exists(dir):
                 os.mkdir(dir)
-                print("dir created")
-            
+                print("created dir")
             scans = self.__connection.get_avail_scans(data["year"], data["month"], data["day"], data["radar"])
             # print(len(scans))
             print(scans[0:2])
@@ -89,8 +91,8 @@ class Services:
             #     display.plot('reflectivity', 0, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
             #     display.set_limits((-150, 150), (-150, 150), ax=ax)
 
-        #     fig.savefig(image_loc + requested_id + ".png")
-        #     return requested_id + ".png"
+            # fig.savefig(image_loc + requested_id + ".png")
+            # return requested_id + ".png"
 
             # Convert figure to base64
             # pic_IObytes = io.BytesIO()

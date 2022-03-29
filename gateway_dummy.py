@@ -3,7 +3,8 @@
 from publisher import Publisher
 
 if __name__ == "__main__":
-    obj = [Publisher() for _ in range(20)]
+    n = 2
+    obj = [Publisher() for _ in range(n)]
     data = {
                 "data": {
                     "year": "2022",
@@ -22,5 +23,5 @@ if __name__ == "__main__":
                 "time": "1646305201059",
                 "datacontenttype": "application/json"
             }
-    for i in range(20):
+    for i in range(n):
         obj[i].publish(queue= "elves.ingestor.data.in", exchange="elvesExchange", body = data)

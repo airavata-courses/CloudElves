@@ -36,6 +36,10 @@ class Processor:
 
             self.__getData = self.__serviceObj.getData(self.__payload["data"], self.__payload["id"])
             
+            
+            # Check registry for image presence.
+            # code...
+            # if not download
             if self.__getData[0]:
 
                 print("Data downloaded!")
