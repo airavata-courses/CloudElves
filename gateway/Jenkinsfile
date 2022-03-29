@@ -6,7 +6,7 @@ pipeline {
         skipDefaultCheckout(true)
     }
     environment {
-        imagename = "cloud-elves/gateway"
+        imagename = "cloudelves/gateway"
         dockerImage = ''
     }
     stages {
