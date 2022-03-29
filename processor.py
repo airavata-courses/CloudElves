@@ -59,10 +59,3 @@ class Processor:
         
         self.__publisherObj.publish(queue = self.__registryQueue, exchange = "elvesExchange", body = registry_payload)
         
-    
-
-
-
-    
-
-        

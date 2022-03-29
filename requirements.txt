@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 arm-pyart==1.11.8
 boto3==1.21.28
 botocore==1.24.28
@@ -19,3 +20,13 @@ scipy==1.8.0
 services==0.1.1
 six==1.16.0
 urllib3==1.26.9
+=======
+numpy
+pandas
+scipy
+netCDF4
+# arm_pyart
+nexradaws
+matplotlib
+pika
+>>>>>>> b584317c86c751ebfe471f74588904f67f60db93
