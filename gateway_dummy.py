@@ -6,11 +6,11 @@ if __name__ == "__main__":
     obj = Publisher()
     data = {
                 "data": {
-                    "year": "2022",
+                    "year": "2020",
                     "month": "02",
                     "day": "02",
                     "startTime": "123",
-                    "endTime": "123",
+                    "endTime": "124",
                     "userId": "madhkr",
                     "radar": "KABR"
                 },

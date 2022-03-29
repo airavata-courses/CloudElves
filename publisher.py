@@ -6,7 +6,7 @@ import os
 
 class Publisher:
 	def __init__(self) -> None:
-		self.__credentials = pika.PlainCredentials(os.getenv('rmq_user') or 'guest',os.getenv('rmq_password') or 'guest')
+		self.__credentials = pika.PlainCredentials(os.getenv('rmq_user') or 'elves',os.getenv('rmq_password') or 'cloudelves')
 		if os.getenv('rmq_service_name'):
 			print("pointing to kubernetes cluster")
 			rmqServiceName = os.getenv('rmq_service_name')
@@ -24,6 +24,6 @@ class Publisher:
 		# self.__channel.queue_declare(queue=queue, durable=True)
 
 		# self.__channel.queue_bind(exchange="elvesExchange", queue=queue, routing_key=queue)
-		self.__channel.basic_publish(exchange='elvesExchange', routing_key=queue, body=json.dumps(body), properties=pika.BasicProperties())
+		self.__channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(body), properties=pika.BasicProperties())
 		print("---> Message sent to queue:",queue)
 		self.__connection.close()

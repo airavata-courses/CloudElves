@@ -35,7 +35,6 @@ class Processor:
         if self.__isValid[0]:
 
             self.__getData = self.__serviceObj.getData(self.__payload["data"], self.__payload["id"])
-            
             if self.__getData[0]:
 
                 print("Data downloaded!")

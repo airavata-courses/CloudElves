@@ -9,7 +9,7 @@ class Consumer:
 	def __init__(self, queue) -> None:
 
 		print("ENV VARS:",os.getenv('rmq_user'), os.getenv('rmq_password'), os.getenv('rmq_host'))
-		self.__credentials = pika.PlainCredentials(os.getenv('rmq_user') or 'guest',os.getenv('rmq_password') or 'guest')
+		self.__credentials = pika.PlainCredentials(os.getenv('rmq_user') or 'elves',os.getenv('rmq_password') or 'cloudelves')
 		
 		if os.getenv('rmq_service_name'):
 			print("pointing to kubernetes cluster")
