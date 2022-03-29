@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+scipy = "*"
+arm-pyart = "*"
+nexradaws = "~=1.1"
+matplotlib = "~=3.4.3"
+pika = "~=1.2.0"
+services = "~=0.1.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
