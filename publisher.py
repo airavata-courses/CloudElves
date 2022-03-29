@@ -22,9 +22,6 @@ class Publisher:
 	
 	def publish(self,queue,exchange,body):
 		self.channel.exchange_declare(exchange='elvesExchange',exchange_type='direct', durable=True)
-		# self.__channel.queue_declare(queue=queue, durable=True)
-
-		# self.__channel.queue_bind(exchange="elvesExchange", queue=queue, routing_key=queue)
 		self.channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(body), properties=pika.BasicProperties())
 		print("---> Message sent to queue:",queue)
 		self.connection.close()

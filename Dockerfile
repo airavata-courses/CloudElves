@@ -3,7 +3,8 @@ RUN mkdir /ingestor
 WORKDIR /ingestor
 ADD . .
 # ADD . /ingestor
-RUN pip install nexradaws pika
+RUN pipenv shell
+RUN pip3 install -r requirements.txt
 CMD ["python","./main.py"]
 
 

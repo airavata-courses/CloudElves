@@ -60,6 +60,6 @@ class Processor:
         else:
             # generate error mesg for registry.
             registry_payload = self.serviceObj.generatePayload(status = -1, id=self.payload["id"], user=self.payload["data"]["userId"], comments="input validation failed.")
-        
+        print(registry_payload)
         self.publisherObj.publish(queue = self.registryQueue, exchange = "elvesExchange", body = registry_payload)
         
