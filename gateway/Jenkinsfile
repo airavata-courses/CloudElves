@@ -38,7 +38,7 @@ pipeline {
              steps {
                 dir('gateway') {
                     sh 'pwd'
-                    sh 'mvn clean package'
+                    sh 'mvnw clean package'
                     script {
                         dockerImage = docker.build imagename
                     }
