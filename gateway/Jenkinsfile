@@ -68,7 +68,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 script{
-                    sh "ansible-playbook -i /etc/ansible-host-inventory playbooks/forecast-playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
+                    sh "ansible-playbook -i /etc/ansible-host-inventory playbooks/gateway-playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
                 }
             }
         }
