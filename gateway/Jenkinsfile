@@ -24,21 +24,11 @@ pipeline {
                 credentialsId: 'MyGitHub'
             }
         }
-        // stage('Unit Test') {
-        //     steps {
-        //         /* Testing the application */
-        //         echo 'Application Testing'
-        //         dir('gateway') {
-        //             sh "pwd"
-        //             sh '//command to run the unit test for gateway'
-        //         }
-        //     }
-        // }
         stage('Build Docker Image') {
              steps {
                 dir('gateway') {
-                    //sh 'pwd'
-                    sh 'mvnw clean package'
+                    sh 'pwd'
+                    sh './mvnw clean package'
                     script {
                         dockerImage = docker.build imagename
                     }
