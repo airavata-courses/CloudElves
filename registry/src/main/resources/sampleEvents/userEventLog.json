@@ -1,0 +1,15 @@
+{
+  "specversion" : "1.0",
+  "type" : "com.example.someevent",
+  "source" : "/mycontext",
+  "subject": "sample",
+  "id" : "C234-1234-1234",
+  "time" : "2018-04-05T17:31:00Z",
+  "datacontenttype" : "application/json",
+  "data" : {
+    "id" : "sample-id",
+    "userId" : "madhavan",
+    "eventName" : "history",
+    "eventTimestamp": "1648714384000"
+  }
+}

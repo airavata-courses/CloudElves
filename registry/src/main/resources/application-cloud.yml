@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+db:
+  host: 149.165.157.38
+  port: 30008
+  username: elves
+  password: cloudelves
+  name: postgres
+
+#spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: elves
+#    password: cloudelves
+
+rmq:
+  serviceName: sampleServiceName
+  host: 149.165.157.38
+  port: 30006
+  username: guest
+  password: guest
+  consumerCount: 10
+  exchange: elvesExchange
+  input:
+    queues: elves.registry.eventlog.in, elves.registry.ingestor.in, elves.registry.userrequest.in, elves.registry.nexrad.in, elves.registry.mera.in
+    eventlog: elves.registry.eventlog.in
+    ingestor: elves.registry.ingestor.in
+    userrequest: elves.registry.userrequest.in
+    nexrad: elves.registry.nexrad.in
+    mera: elves.registry.mera.in
+  deadletter: elves.registry.deadletter

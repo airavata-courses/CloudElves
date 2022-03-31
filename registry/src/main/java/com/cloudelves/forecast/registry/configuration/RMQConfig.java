@@ -2,14 +2,14 @@ package com.cloudelves.forecast.registry.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -17,10 +17,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 
 @Configuration
 @Slf4j
@@ -71,9 +67,10 @@ public class RMQConfig {
     }
 
     @Bean
-    public RabbitTemplate createRabbitTemplate(CachingConnectionFactory connectionFactory) {
+    public RabbitTemplate createRabbitTemplate(CachingConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         rabbitTemplate.setConnectionFactory(connectionFactory);
+        rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
     }
 
@@ -98,28 +95,40 @@ public class RMQConfig {
         return new Jackson2JsonMessageConverter(objectMapper);
     }
 
-    @Bean(name = "applogQueue")
-    public Queue createApplogQueue(@Value("${rmq.input.applog}") String applogQueue) {
-        return new Queue(applogQueue, true);
-    }
-
-    @Bean(name = "ingestorQueue")
-    public Queue createUserDetailsQueue(@Value("${rmq.input.ingestor}") String userDetailsQueue) {
-        return new Queue(userDetailsQueue, true);
-    }
-
     @Bean(name = "registryExchange")
     public DirectExchange createDirectExchange(@Value("${rmq.exchange}") String registryExchange) {
         return new DirectExchange(registryExchange);
     }
 
-    @Bean(name = "appLogQueueBinding")
-    public Binding createAppLogBinding(DirectExchange directExchange, @Qualifier("applogQueue") Queue queue) {
-        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
-    }
+//    @Bean(name = "eventlogQueue")
+//    public Queue createEventlogQueue(@Value("${rmq.input.eventlog}") String eventlogQueue) {
+//        return new Queue(eventlogQueue, true);
+//    }
+//
+//    @Bean(name = "userRequestQueue")
+//    public Queue createUserRequestQueue(@Value("${rmq.input.userrequest}") String userRequestQueue) {
+//        return new Queue(userRequestQueue, true);
+//    }
+//
+//    @Bean(name = "ingestorQueue")
+//    public Queue createIngestorQueue(@Value("${rmq.input.ingestor}") String userDetailsQueue) {
+//        return new Queue(userDetailsQueue, true);
+//    }
+//
+//    @Bean(name = "eventlogQueueBinding")
+//    public Binding createEventlogBinding(DirectExchange directExchange, @Qualifier("eventlogQueue") Queue queue) {
+//        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
+//    }
+//
+//    @Bean(name = "ingestorQueueBinding")
+//    public Binding createUserRequestQueueBinding(DirectExchange directExchange, @Qualifier("userRequestQueue") Queue queue) {
+//        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
+//    }
+//
+//    @Bean(name = "ingestorQueueBinding")
+//    public Binding createIngestorBinding(DirectExchange directExchange, @Qualifier("ingestorQueue") Queue queue) {
+//        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
+//    }
+//
 
-    @Bean(name = "ingestorQueueBinding")
-    public Binding createIngestorBinding(DirectExchange directExchange, @Qualifier("ingestorQueue") Queue queue) {
-        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
-    }
 }

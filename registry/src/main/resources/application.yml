@@ -1,11 +1,19 @@
 server:
   port: 8080
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+spring:
+  profiles:
+    active: cloud
+
 db:
   host: localhost
   port: 5000
   username: postgres
-  password: cloudelves
+  password: O0T1qpeyKd
   name: postgres
 
 #spring:
