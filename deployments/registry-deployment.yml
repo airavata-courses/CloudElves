@@ -1,0 +1,41 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: registry
+  namespace: elves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: registry
+      app: registry
+  template:
+    metadata:
+      labels:
+        run: registry
+        app: registry
+    spec:
+      containers:
+        - name: registry
+          image: "cloudelves/registry:TAG"
+          imagePullPolicy: Always
+          env:
+          - name: rmq.serviceName
+            value: local
+          - name: server.port
+            value: "8080"
+          - name: rmq.host
+          - value: 149.165.157.38
+          - name: rmq.port
+          - value: 30006
+          - name: db.host
+            value: 149.165.157.38
+          - name: db.port
+            value: "30008"
+          - name: db.password
+            value: cloudelves
+
+          ports:
+          - name: registry
+            containerPort: 8080
+            protocol: TCP
