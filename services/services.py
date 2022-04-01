@@ -1,13 +1,10 @@
-import base64
-import io
+import datetime
 import os
 import shutil
-import pytz
-import pyart
-import nexradaws
-from matplotlib import pyplot as plt
-import datetime
 
+import nexradaws
+import pyart
+from matplotlib import pyplot as plt
 
 class Services:
 
@@ -56,7 +53,6 @@ class Services:
                     shutil.rmtree(download_loc)
 
             scans = self.connection.get_avail_scans(data["year"], data["month"], data["day"], data["radar"])
-            print(len(scans))
             print(scans[0:1])
             result = self.connection.download(scans[:4], download_loc)
             print(result.success)
@@ -73,13 +69,14 @@ class Services:
 
     # plots the image out of data retrieved from nexrad.
     def plotImage(self, scans, requested_id):
-        # image_loc = './plotted_data/'
-        # if not os.path.exists(image_loc):
-        #     os.mkdir(image_loc)
-        #     print("dir created")
-        # else:
-        #     for f in os.listdir(image_loc):
-        #         shutil.rmtree(image_loc)
+        image_loc = './plotted_data/'
+        if not os.path.exists(image_loc):
+            os.mkdir(image_loc)
+            print("dir created")
+        else:
+            for f in os.listdir(image_loc):
+                shutil.rmtree(image_loc)
+        # return True, "sample image"
         try:
             fig = plt.figure(figsize=(16, 12))
             for i, scan in enumerate(scans.iter_success(), start=1):
@@ -89,14 +86,14 @@ class Services:
                 display.plot('reflectivity', 0, ax=ax, title="{} {}".format(scan.radar_id, scan.scan_time))
                 display.set_limits((-150, 150), (-150, 150), ax=ax)
 
-            # fig.savefig(image_loc + requested_id + ".png")
-            pic_IObytes = io.BytesIO()
-            fig.savefig(pic_IObytes, format='png')
-            pic_IObytes.seek(0)
-            pic_hash = base64.b64encode(pic_IObytes.read())
-            # print(pic_hash)
+            fig.savefig(requested_id + ".png")
+            # pic_IObytes = io.BytesIO()
+            # fig.savefig(pic_IObytes, format='png')
+            # pic_IObytes.seek(0)
+            # pic_hash = base64.b64encode(pic_IObytes.read())
+            # # print(pic_hash)
             print("figure plotted")
-            return (True, pic_hash)
+            return (True,  '')
         except Exception as e:
             print(e)
             return (False, e)
@@ -105,19 +102,19 @@ class Services:
                         event_type="elves.registry.applog.in", id="", source="ingestor", specversion="1.0", status="2",
                         subject="", user="", datacontenttype="application/json"):
         return {
-            "specversion": specversion,
-            "type": event_type,
-            "source": source,
-            "subject": subject,
-            "id": id,
-            "time": str(datetime.datetime.now()),
+            "specversion":     specversion,
+            "type":            event_type,
+            "source":          source,
+            "subject":         subject,
+            "id":              id,
+            "time":            str(datetime.datetime.now()),
             "datacontenttype": datacontenttype,
-            "data": {
-                "action": action,
-                "id": id,
-                "userId": user,
-                "image": encoded_image,
+            "data":            {
+                "action":   action,
+                "id":       id,
+                "userId":   user,
+                "image":    encoded_image,
                 "comments": comments,
-                "status": status
+                "status":   status
+                }
             }
-        }

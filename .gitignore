@@ -7,3 +7,5 @@ radar_data/
 venv/
 pyvenv.cfg
 sample.html
+.idea/
+bin/

@@ -1,12 +1,10 @@
-#!/usr/bin/env python
-
 import pika
 import json
 import os
 
 class Publisher:
 	def __init__(self) -> None:
-		self.credentials = pika.PlainCredentials(os.getenv('rmq_user') or 'elves',os.getenv('rmq_password') or 'cloudelves')
+		self.credentials = pika.PlainCredentials(os.getenv('rmq_user') or 'guest',os.getenv('rmq_password') or 'guest')
 		
 		if os.getenv('rmq_service_name'):
 			print("pointing to kubernetes cluster")
@@ -14,7 +12,7 @@ class Publisher:
 			rmq_host, rmq_port = os.getenv('{}_SERVICE_HOST'.format(rmqServiceName)), os.getenv('{}_SERVICE_PORT'.format(rmqServiceName))
 		else:
 			print("pointing to local")
-			rmq_host, rmq_port = os.getenv('rmq_host') or 'localhost', os.getenv('{}_SERVICE_PORT') or '5672'
+			rmq_host, rmq_port = os.getenv('rmq_host') or 'localhost', os.getenv('rmq_port') or '5672'
 		print('rmq_host: {} and rmq_port: {}'.format(rmq_host, rmq_port))
 		self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=rmq_host, port=rmq_port, credentials=self.credentials))
 		self.channel = self.connection.channel()

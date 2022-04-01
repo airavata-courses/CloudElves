@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from publisher import Publisher
+from producer.publisher import Publisher
 
 if __name__ == "__main__":
     n = 2

@@ -4,8 +4,8 @@ from unittest import TestCase
 import nexradaws
 from nexradaws.resources.localnexradfile import LocalNexradFile
 from nexradaws.resources.awsnexradfile import AwsNexradFile
-from services import Services
-from constants import Constants
+from services.services import Services
+from commons.constants import Constants
 
 class TestIngestorService(TestCase):
 

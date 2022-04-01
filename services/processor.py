@@ -1,5 +1,5 @@
-from services import Services
-from publisher import Publisher
+from services.services import Services
+from producer.publisher import Publisher
 import os 
 
 class Processor:
