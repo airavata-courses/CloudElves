@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ingestor
+  namespace: elves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ingestor
+      app: ingestor
+  template:
+    metadata:
+      labels:
+        run: ingestor
+        app: ingestor
+    spec:
+      containers:
+        - name: ingestor
+          image: docker.io/madhavankr/elves-ingestor:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /data
+            name: ingestor-volume
+          env:
+          - name: rmq_service_name
+            value: local
+          - name: rmq_host
+            value: "149.165.157.38"
+          - name: rmq_port
+            value: "30006"
+          - name: rmq_user
+            value: "guest"
+          - name: rmq_password
+            value: "guest"
+          - name: download_path
+            value: "/data"
+          ports:
+          - name: ingestor
+            containerPort: 8080
+            protocol: TCP
+      volumes:
+      - name: ingestor-volume
+        hostPath:
+          # directory location on host
+          path: {{hostPath}}
