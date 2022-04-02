@@ -43,4 +43,4 @@ spec:
       - name: ingestor-volume
         hostPath:
           # directory location on host
-          path: {{hostPath}}
+          path: "/home/madhkr/Downloads"
