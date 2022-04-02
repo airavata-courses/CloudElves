@@ -29,7 +29,6 @@ pipeline {
             steps {
                 echo "Building ${env.JOB_NAME}...."
                 sh 'pwd'
-                sh 'pip3 install numpy'
                 sh 'pip3 install -r requirements.txt'
             }
         }
@@ -47,6 +46,7 @@ pipeline {
             // Build docker image.
             steps {
                 script {
+                    sh 'pwd'
                     dockerImage = docker.build imagename
                 }
             }
