@@ -46,7 +46,6 @@ pipeline {
         stage ('Build docker image') {
             // Build docker image.
             steps {
-                sh 'pwd'
                 script {
                     dockerImage = docker.build imagename
                 }
