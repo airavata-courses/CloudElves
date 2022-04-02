@@ -25,16 +25,16 @@ pipeline {
                 credentialsId: 'GitHub-Navkar'
             }
         }
-        // stage('Local Build') {
-        //     steps {
-        //         /* Installing application dependencies */
-        //         echo "Building ${env.JOB_NAME}...."
-        //         dir('forecast-ui/forecast-ui') {
-        //             sh "pwd"
-        //             sh 'npm install'
-        //         }
-        //     }
-        // }
+        stage('Local Build') {
+            steps {
+                /* Installing application dependencies */
+                echo "Building ${env.JOB_NAME}...."
+                dir('forecast-ui/forecast-ui') {
+                    sh "pwd"
+                    sh 'npm install'
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 dir('forecast-ui') {
@@ -46,14 +46,40 @@ pipeline {
                 
             }
         }
-        stage('Push to Dockerhub') {
-             
+         stage('Publish to DockerHub') {
+            environment {
+                registryCredential = 'dockerHub'
+            }
             steps{
                 script {
-                    docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
+                    docker.withRegistry( '', registryCredential ) {
                         dockerImage.push("$BUILD_NUMBER")
                         dockerImage.push('latest')
                     }
+                }
+            }
+        }
+        stage('Remove unused docker image') {
+            steps{
+                sh "docker rmi $imagename:$BUILD_NUMBER"
+                sh "docker rmi $imagename:latest"
+
+            }
+        }
+         stage('Checkout ansible deployments branch') {
+            steps {
+                echo "Checking out 'ansible deployments' branch"
+                sh 'git checkout ansible-k8s-deployments'
+            }
+        }
+        stage('Deploy to Jetstreams') {
+            environment {
+                SSH_PRIVATE_KEY = credentials('ssh_key_ansible_to_k8s')
+            }
+            steps {
+                sh 'pwd'
+                script{
+                    sh "ansible-playbook -i /etc/ansible-host-inventory playbooks/ui-playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
                 }
             }
         }
