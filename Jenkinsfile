@@ -41,16 +41,6 @@ pipeline {
                 sh 'python3 test.py'
             }
         }
-
-        stage ('Docker Build') {
-            // Build docker image.
-            steps {
-                sh 'pwd'
-                script {
-                    dockerImage = docker.build imagename
-                }
-            }
-        }
         stage('Build Docker Image') {
              steps {
                 dir('ingestor') {

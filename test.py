@@ -115,11 +115,11 @@
 # import unittest
 # 
 # 
-# class mytest(unittest.TestCase):
-#     def test_one(self):
-#         x = 'test'
-#         self.assertIsInstance(x, str)
-# 
-# 
-# if __name__ == '__main__':
-#     unittest.main()
+class mytest(unittest.TestCase):
+    def test_one(self):
+        x = 'test'
+        self.assertIsInstance(x, str)
+
+
+if __name__ == '__main__':
+    unittest.main()
