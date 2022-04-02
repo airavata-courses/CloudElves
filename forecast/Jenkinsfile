@@ -18,8 +18,7 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                echo "Checking out 'Develop-forecast' branch"
-                git branch: 'Develop-forecast',
+                git branch: 'ci/forecast',
                 url: 'https://github.com/airavata-courses/CloudElves.git',
                 credentialsId: 'MyGitHub'
             }
@@ -27,7 +26,6 @@ pipeline {
         stage('Local Build') {
             steps {
                 /* Installing application dependencies */
-                echo "Building ${env.JOB_NAME}...."
                 dir('forecast') {
                     sh "pwd"
                     sh 'python3 -m pip install --user -r requirements.txt'
