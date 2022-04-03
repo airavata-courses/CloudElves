@@ -19,4 +19,6 @@ services==0.1.1
 six==1.16.0
 urllib3==1.26.9
 netCDF4==1.5.8
-arm-pyart==1.11.8
+pottery~=3.0.0
+redis~=4.2.1
+requests~=2.27.1

@@ -9,3 +9,4 @@ pyvenv.cfg
 sample.html
 .idea/
 bin/
+plotted_data/

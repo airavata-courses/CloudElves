@@ -4,7 +4,7 @@ from unittest import TestCase
 import nexradaws
 from nexradaws.resources.localnexradfile import LocalNexradFile
 from nexradaws.resources.awsnexradfile import AwsNexradFile
-from services.services import Services
+from services.nexrad_services import NexradService
 from commons.constants import Constants
 
 class TestIngestorService(TestCase):
@@ -25,7 +25,7 @@ class TestIngestorService(TestCase):
     def setUp(self):
         self.query = nexradaws.NexradAwsInterface()
         self.templocation = tempfile.mkdtemp()
-        self.service_obj = Services()
+        self.service_obj = NexradService()
         self.test_input = Constants().dummy_input
         # start = datetime(1643807400279)
         # end = datetime(2013, 5, 20, 19, 00)
