@@ -2,8 +2,7 @@ import React, {useState, useContext} from "react";
 import {Button} from "react-bootstrap";
 import {TextField, Select, MenuItem, InputLabel, FormControl} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import {TimePicker, DatePicker} from '@mui/lab';
+import {TimePicker, DatePicker, LocalizationProvider} from '@mui/lab';
 import "react-datepicker/dist/react-datepicker.css";
 // Import required components.
 import { StateContext } from "./Context";
@@ -16,16 +15,16 @@ const Input = (props) => {
     const [radar, setRadar] = useState(radarList[0]);
     const { state } = useContext(StateContext);
 	
-	const InputHandler = (event) =>{
-		event.preventDefault();
-		props.InputCollector({"date":date, "time": time, "radar": radar});
-	}
+	function inputHandler(event) {
+        event.preventDefault();
+        props.inputCollector({ "date": date, "time": time, "radar": radar });
+    }
 
     return (
         <div style={{display:"flex"}}>
-            <form  style={{ border: "1px solid black",display: "flex", flexDirection:"row", width:"100%"}} onSubmit={InputHandler}>
+            <form  style={{ border: "1px solid black",display: "flex", flexDirection:"row", width:"100%"}} onSubmit={inputHandler}>
                 <div style={{flex: '1 !important', padding:"30px", width:"20%"}}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                         label="Select Date"
                         value={date}
@@ -33,7 +32,7 @@ const Input = (props) => {
                         maxDate={new Date()}
                         required
                         renderInput={(params) => <TextField {...params} />} />
-                </LocalizationProvider>
+                    </LocalizationProvider>
                 </div>
 
                 <div style={{flex: '1 !important', padding:"30px", width:"20%"}}>

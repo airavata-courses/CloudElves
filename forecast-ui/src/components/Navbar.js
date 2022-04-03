@@ -1,37 +1,46 @@
 import React, { useContext } from "react";
-import { Navbar, Container, Form, Button} from "react-bootstrap";
+import { Navbar, Container} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { GoogleLogout } from "react-google-login";
+import { Button } from '@mui/material';
 // Import required components.
 import { UserContext } from "./Context";
 
 // This function renders navigation bar component.
-const NavbarStatic = () => {
-    const { userAuthDetails, setUser, setPage } = useContext(UserContext);
-    console.log(userAuthDetails);
-
+const NavbarStatic = ({page}) => {
+    let navigate = useNavigate();
+    const { userAuthDetails, setUser } = useContext(UserContext);
+    
     const onSignoutSuccess = async () => {
         alert("You have been logged out successfully");
         await setUser(null);
-    };          
-
+    };
+    
+    const navigateTo = (page) => {
+        console.log('Page: /'+page);
+        navigate('/'+page);
+        return;
+    }
     return (
         <Navbar bg="light">
             <Container>
-                <Navbar.Brand onClick={()=>setPage("home")} href="#">
+                <Navbar.Brand onClick={()=>navigateTo("home")} >
                     <b>Cloud Weather Application</b>
                 </Navbar.Brand>
                 {userAuthDetails ? (
-                <Form className="d-flex">
-                    <Button variant="outline-success" onClick={()=>setPage("home")} style={{marginRight:"20px"}}>Home</Button>
-                    <Button variant="outline-success" onClick={()=>setPage("history")} style={{marginRight:"20px"}}>History</Button>
-
+                <div>
+                    <Button variant="contained" hidden={page === "home"} onClick={() => navigateTo("home")} style={{marginRight:"20px"}}>Home</Button>
+                    <Button variant="contained" hidden={page === "nexrad" || page === "home"} onClick={() => navigateTo("nexrad")} style={{marginRight:"20px"}}>Nexrad</Button>
+                    <Button variant="contained" hidden={page === "merra"  || page === "home"} onClick={() => navigateTo("merra")} style={{marginRight:"20px"}}>Merra</Button>
+                    <Button variant="contained" hidden={page === "history" || page === "home"} onClick={() => navigateTo("history")} style={{marginRight:"20px"}}>History</Button>
+                    <Button variant="contained" hidden={page === "logs" || page === "home"} onClick={() => navigateTo("logs")} style={{marginRight:"20px"}}>Logs</Button>
                     <GoogleLogout
                     clientId={process.env.REACT_APP_clientId}
                     buttonText="Sign Out"
                     onLogoutSuccess={onSignoutSuccess}
-                    variant="outline-success"
+                    variant="outlined-success"
                     />
-                </Form> 
+                </div> 
                 ) : null}
             </Container>
         </Navbar>

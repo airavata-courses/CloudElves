@@ -29,7 +29,7 @@ const Login = () => {
           	</Card.Text>
 
           	<GoogleLogin
-				clientId={process.env.REACT_APP_client_ID}
+				clientId={ process.env.REACT_APP_client_ID }
 				buttonText="Sign In"
 				onSuccess={onLoginSuccess}
 				onFailure={onLoginFailure}

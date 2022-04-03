@@ -1,15 +1,12 @@
-import React, {useContext} from "react";
-import { StateContext } from "./Context";
 
-// This function plots the data received from api gateway.
 
-const Plot = () => {
+import React, { useContext } from 'react'
+import { MerraContext } from './Context';
 
-    const { state } = useContext(StateContext);
+function MerraPlot() {
+    const { state } = useContext(MerraContext);
+    console.log("In Plot:", state);
 
-    console.log("In Plot", state);
-    // console.log(process.env.REACT_APP_gateway_host, process.env.REACT_APP_gateway_port);
-    
     if (state["loading"]){
         if (state["status_id"] === -1){
             return <div className="plot">Failed to fetch weather data for the selected inputs, please try again!</div>
@@ -38,9 +35,10 @@ const Plot = () => {
             }
         }
         else {
+            
             return <div className="plot">Failed to fetch UUID, please try again!</div>
         }
     }
-};
+}
 
-export default Plot;
+export default MerraPlot
