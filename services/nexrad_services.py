@@ -15,7 +15,7 @@ from services.redis_service import RedisService
 
 import logging
 
-logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
+logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s  %(name)s  %(levelname)s {%(pathname)s:%(lineno)d}: %(message)s')
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -62,7 +62,7 @@ class NexradService:
     def validate_data(self, data):
         log.info("validating payload")
         try:
-            if set(data.keys()) != {'year', 'month', 'day', 'radar', 'userId', 'startTime', 'endTime', 'plotType'}:
+            if set(data.keys()) != {'year', 'month', 'day', 'radar', 'plotType'}:
                 raise Exception("invalid input fields")
 
             years = self.connection.get_avail_years()

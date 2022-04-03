@@ -7,7 +7,7 @@ import pika
 
 from services.nexrad_services import NexradService
 
-logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
+logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s  %(name)s  %(levelname)s {%(pathname)s:%(lineno)d}: %(message)s')
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -37,7 +37,6 @@ class Consumer(threading.Thread):
     def getMessage(self, ch, method, properties, body):
         try:
             payload = json.loads(body.decode('utf8'))
-            # log.info('payload: ', payload)
             self.nexradService.download_and_plot(payload['id'], payload['data'])
         except Exception as e:
             log.info('error while processing message: ', e)
