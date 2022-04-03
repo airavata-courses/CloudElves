@@ -14,3 +14,7 @@ if __name__ == "__main__":
     for i in range(numConsumers):
         consumer = Consumer(os.getenv('data_input_queue') or "elves.ingestor.data.in")
         consumer.start()
+
+    for i in range(numConsumers):
+        consumer = Consumer(os.getenv('merra_data_input_queue') or "elves.ingestor.merra.in")
+        consumer.start()

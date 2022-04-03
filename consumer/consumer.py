@@ -5,6 +5,7 @@ import threading
 
 import pika
 
+from services.merra_services import MerraService
 from services.nexrad_services import NexradService
 
 logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s  %(name)s  %(levelname)s {%(pathname)s:%(lineno)d}: %(message)s')
@@ -33,11 +34,17 @@ class Consumer(threading.Thread):
         self.channel.basic_qos(prefetch_count=10)
         self.queue = queue
         self.nexradService = NexradService()
+        self.merraService = MerraService()
 
     def getMessage(self, ch, method, properties, body):
         try:
             payload = json.loads(body.decode('utf8'))
-            self.nexradService.download_and_plot(payload['id'], payload['data'])
+
+            if(self.queue == "elves.ingestor.merra.in"):
+                self.merraService.startMerraService(payload['id'], payload['data'])
+            elif(self.queue == "elves.ingestor.data.in"):
+                self.nexradService.download_and_plot(payload['id'], payload['data'])
+
         except Exception as e:
             log.info('error while processing message: ', e)
 
