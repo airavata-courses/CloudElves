@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class IngestorRequest {
+public class NexradRequest {
 
-    private String year, month, day;
-    private String startTime, endTime, userId;
+    private String year;
+    private String month;
+    private String day;
+    private String plotType;
 
     @JsonProperty("radar")
     private String radarStation;

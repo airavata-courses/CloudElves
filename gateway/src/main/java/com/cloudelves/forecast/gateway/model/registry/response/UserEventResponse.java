@@ -8,7 +8,12 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class AppLogResponse {
-    private String id, userId, serviceId, action, timestamp, comments;
-    private int status;
+public class UserEventResponse {
+
+    private String eventId;
+
+    private String eventName;
+
+    private String eventTimestamp;
+
 }

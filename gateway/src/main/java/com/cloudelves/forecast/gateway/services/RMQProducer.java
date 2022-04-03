@@ -23,7 +23,7 @@ public class RMQProducer {
             rabbitTemplate.convertAndSend(exchange, queue, message);
             log.info("successfully sent message to {}", queue);
         } catch (AmqpException e){
-            String errorMessage = String.format("error while sending message to {}: {}", queue, e.getMessage());
+            String errorMessage = String.format("error while sending message to %s: %s", queue, e.getMessage());
             log.error(errorMessage);
             throw new BaseException(errorMessage);
         }

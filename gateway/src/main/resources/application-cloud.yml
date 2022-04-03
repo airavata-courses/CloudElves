@@ -1,12 +1,3 @@
-spring:
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: elves
-#    password: cloudelves
-  profiles:
-    active: default, cloud
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -36,21 +27,21 @@ registry:
     getUser: /getUser?userId={userId}
     getAllUsers: /getUsers
     addUser: /addUser
-    getEvents: /getEvents?userId={userId}
-    getHistory: /getUserRequests?userId={userId}
-    getRequestById: /getRequestById?id={id}
+    getAppLog: /getAppLog?userId={userId}
+    addAppLog: /addAppLog
+    getLogById: /getLogs?id={id}
+    getPlot: /getPlot?id={id}
 
 rmq:
   exchange: elvesExchange
   serviceName: local
-  host: localhost
-  port: 5672
+  host: 149.165.157.38
+  port: 30006
   username: guest
   password: guest
   output:
-    registry: elves.registry.applog.in
-    userrequest: elves.registry.userrequest.in
-    nexrad: elves.ingestor.data.in
+    registry: elves.registry.eventlog.in
+    ingestor: elves.ingestor.data.in
 
 google:
   tokenUrl: https://oauth2.googleapis.com/tokeninfo?id_token={token}

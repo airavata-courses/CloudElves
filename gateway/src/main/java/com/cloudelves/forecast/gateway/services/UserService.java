@@ -1,5 +1,6 @@
 package com.cloudelves.forecast.gateway.services;
 
+import com.cloudelves.forecast.gateway.constants.Constants;
 import com.cloudelves.forecast.gateway.model.registry.request.UserDetailsRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +56,10 @@ public class UserService {
                                                            .build();
         try {
             restService.makeRestCall(url, requestBody, String.class, null, HttpMethod.POST);
-            logService.logEvent(id, userId, "registry", "addUser", 0, "successfully added user");
+            logService.logEvent(id, userId, Constants.EVENT_ADD_USER);
         } catch (Exception e) {
             if (!e.getMessage().contains("user already registered")) {
                 log.error("error while registering user: ", e);
-                logService.logEvent(id, userId, "registry", "addUser", 1, e.getMessage());
             }
         }
     }

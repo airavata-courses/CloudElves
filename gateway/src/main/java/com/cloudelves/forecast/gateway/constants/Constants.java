@@ -20,4 +20,11 @@ public class Constants {
     public static final int STATUS_FAILED = 2;
     public static final int STATUS_ERROR = -1;
 
+    public static final String EVENT_GET_USER = "get_user";
+    public static final String EVENT_ADD_USER = "add_user";
+    public static final String EVENT_GET_DATA_NEXRAD = "get_data_nexrad";
+    public static final String EVENT_GET_DATA_MERA = "get_data_mera";
+    public static final String EVENT_GET_EVENTS = "get_events";
+    public static final String EVENT_GET_HISTORY = "get_history";
+
 }

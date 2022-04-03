@@ -7,9 +7,11 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class AppLogRequest {
+public class UserEventLogRequest {
 
-    private String id, userId, serviceId, action, timestamp, comments;
-    private int status;
+    private String id;
+    private String userId;
+    private String eventName;
+    private String eventTimestamp;
 
 }

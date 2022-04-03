@@ -3,8 +3,9 @@ package com.cloudelves.forecast.gateway.controller;
 import com.cloudelves.forecast.gateway.constants.Constants;
 import com.cloudelves.forecast.gateway.exception.AuthenticationException;
 import com.cloudelves.forecast.gateway.exception.BaseException;
-import com.cloudelves.forecast.gateway.model.registry.response.AppLogResponse;
+import com.cloudelves.forecast.gateway.model.registry.response.PlotRequestResponse;
 import com.cloudelves.forecast.gateway.model.registry.response.UserDetailsResponse;
+import com.cloudelves.forecast.gateway.model.registry.response.UserEventResponse;
 import com.cloudelves.forecast.gateway.services.IAuthenticate;
 import com.cloudelves.forecast.gateway.services.LogService;
 import com.cloudelves.forecast.gateway.services.RestService;
@@ -16,12 +17,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.annotation.PostConstruct;
 
 @RestController
 @Slf4j
@@ -42,8 +42,11 @@ public class RegistryController {
     @Value("${registry.apiPath.getUser}")
     private String getUserPath;
 
-    @Value("${registry.apiPath.getAppLog}")
+    @Value("${registry.apiPath.getEvents}")
     private String getAppLogPath;
+
+    @Value("${registry.apiPath.getHistory}")
+    private String getHistoryPath;
 
     @Autowired
     private RestService restService;
@@ -59,9 +62,9 @@ public class RegistryController {
 
     @PostConstruct
     public void setBaseUrl() {
-        String kubernetesIp = System.getenv(registryServiceName+"_SERVICE_HOST");
-        String kubernetesPort = System.getenv(registryServiceName+"_SERVICE_PORT");
-        if(kubernetesIp != null && kubernetesPort!=null) {
+        String kubernetesIp = System.getenv(registryServiceName + "_SERVICE_HOST");
+        String kubernetesPort = System.getenv(registryServiceName + "_SERVICE_PORT");
+        if (kubernetesIp != null && kubernetesPort != null) {
             log.info("pointing to kube cluster");
             this.baseUrl = String.format("http://%s:%s", kubernetesIp, kubernetesPort);
         } else {
@@ -72,11 +75,8 @@ public class RegistryController {
     }
 
     @GetMapping(value = "/getUser")
-    public ResponseEntity getUser(@RequestHeader Map<String, String> headers) throws BaseException, AuthenticationException {
-        String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");
-        String username = headers.get(Constants.USERNAME_HEADER);
-        String email = headers.get(Constants.EMAIL_HEADER);
-        authenticationService.verifyToken(token, username, email);
+    public ResponseEntity getUser(@RequestHeader(value = "id_token") String token, @RequestHeader(value = "name") String username,
+                                  @RequestHeader(value = "email") String email) throws BaseException {
         String id = UUID.randomUUID().toString();
         userService.checkAndAddUser(id, username, username, email);
         try {
@@ -84,38 +84,47 @@ public class RegistryController {
             Map<String, String> requestParams = Collections.singletonMap("userId", username);
             UserDetailsResponse responseBody = restService.makeRestCall(url, null, UserDetailsResponse.class, requestParams,
                                                                         HttpMethod.GET);
-            logService.logEvent(id, username, "registry", "getUser", 0, "successfully queried user details");
+            logService.logEvent(id, username, Constants.EVENT_GET_USER);
             return ResponseEntity.ok(responseBody);
         } catch (BaseException e) {
-            logService.logEvent(id, username, "registry", "getUser", 2, e.getMessage());
             throw e;
         }
     }
 
-    @GetMapping(value = "/getLogs")
-    public ResponseEntity getLogs(@RequestHeader Map<String, String> headers,
-                                  @RequestParam(value = "all", required = false, defaultValue = "false")
-                                          boolean all) throws BaseException, AuthenticationException {
-        log.info("headers: {}", headers);
-        String token = headers.getOrDefault(Constants.TOKEN_HEADER, "");
-        String defaultToken = headers.get(Constants.TOKEN_HEADER);
-        String username = headers.get(Constants.USERNAME_HEADER);
-        String email = headers.get(Constants.EMAIL_HEADER);
+    @GetMapping(value = "/getEvents")
+    public ResponseEntity getEvents(@RequestHeader(value = "id_token") String token, @RequestHeader(value = "name") String username,
+                                    @RequestHeader(value = "email") String email,
+                                    @RequestParam(value = "numItems", required = false, defaultValue = "10")
+                                            int numItems) throws BaseException {
         String id = UUID.randomUUID().toString();
-        log.info("user: {}, email: {}", username, email);
-        authenticationService.verifyToken(token, username, email);
-        userService.checkAndAddUser(id, username, username, email);
         try {
             String url = baseUrl + getAppLogPath;
             Map<String, String> requestParams = new HashMap<>();
             requestParams.put("userId", username);
-            requestParams.put("all", String.valueOf(all));
-            AppLogResponse[] responseBody = restService.makeRestCall(url, null, AppLogResponse[].class, requestParams,
-                                                                     HttpMethod.GET);
-            logService.logEvent(id, username, "registry", "getAppLogs", 0, "successfully queried logs");
+            requestParams.put("all", String.valueOf(numItems));
+            UserEventResponse[] responseBody = restService.makeRestCall(url, null, UserEventResponse[].class, requestParams,
+                                                                        HttpMethod.GET);
+            logService.logEvent(id, username, Constants.EVENT_GET_EVENTS);
             return ResponseEntity.ok(responseBody);
         } catch (BaseException e) {
-            logService.logEvent(id, username, "registry", "getAppLogs", 1, e.getMessage());
+            throw e;
+        }
+    }
+
+    @GetMapping(value = "/history")
+    public ResponseEntity getHistory(@RequestHeader(value = "id_token") String token, @RequestHeader(value = "name") String username,
+                                    @RequestHeader(value = "email") String email) throws BaseException {
+        String id = UUID.randomUUID().toString();
+        try {
+            String url = baseUrl + getHistoryPath;
+            log.info("url: {}", url);
+            Map<String, String> requestParams = new HashMap<>();
+            requestParams.put("userId", username);
+            PlotRequestResponse[] responseBody = restService.makeRestCall(url, null, PlotRequestResponse[].class, requestParams,
+                                                                          HttpMethod.GET);
+            logService.logEvent(id, username, Constants.EVENT_GET_HISTORY);
+            return ResponseEntity.ok(responseBody);
+        } catch (BaseException e) {
             throw e;
         }
     }
