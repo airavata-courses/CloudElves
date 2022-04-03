@@ -1,9 +1,6 @@
 package com.cloudelves.forecast.registry.dao;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -33,9 +30,11 @@ public class UserDetail {
     @Column(name = "first_login_timestamp")
     private Timestamp registerTimestamp;
 
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserEvent> events = new HashSet<>();
 
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserRequests> requests = new HashSet<>();
 }

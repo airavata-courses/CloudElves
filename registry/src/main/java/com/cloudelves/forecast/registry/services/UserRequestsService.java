@@ -2,6 +2,7 @@ package com.cloudelves.forecast.registry.services;
 
 import com.cloudelves.forecast.registry.dao.UserDetail;
 import com.cloudelves.forecast.registry.dao.UserRequests;
+import com.cloudelves.forecast.registry.exceptions.UserRequestsServicesException;
 import com.cloudelves.forecast.registry.model.response.PlotRequestResponse;
 import com.cloudelves.forecast.registry.repository.UserDetailRepository;
 import com.cloudelves.forecast.registry.repository.UserRequestsRepository;
@@ -36,5 +37,20 @@ public class UserRequestsService {
             result.add(plotRequestResponse);
         });
         return result;
+    }
+
+    public PlotRequestResponse getRequestById(String requestId) throws UserRequestsServicesException {
+        Optional<UserRequests> userRequestOpt = userRequestsRepository.findById(requestId);
+        if (userRequestOpt.isEmpty()) {
+            String errorMessage = String.format("request %s not found", requestId);
+            log.error(errorMessage);
+            throw new UserRequestsServicesException(errorMessage);
+        } else {
+            UserRequests userRequest = userRequestOpt.get();
+            return PlotRequestResponse.builder().requestId(userRequest.getRequestId()).dataSource(userRequest.getDataSource())
+                                      .parameters(userRequest.getParameters()).resultS3Key(userRequest.getResultS3Key())
+                                      .comments(userRequest.getComments()).status(userRequest.getStatus())
+                                      .timestamp(userRequest.getTimestamp().toString()).build();
+        }
     }
 }

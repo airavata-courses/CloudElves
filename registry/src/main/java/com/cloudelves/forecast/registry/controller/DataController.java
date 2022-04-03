@@ -2,8 +2,11 @@ package com.cloudelves.forecast.registry.controller;
 
 import com.cloudelves.forecast.registry.dao.MeraData;
 import com.cloudelves.forecast.registry.dao.NexradData;
+import com.cloudelves.forecast.registry.exceptions.DataServiceException;
 import com.cloudelves.forecast.registry.model.request.MeraDataPostRequest;
 import com.cloudelves.forecast.registry.model.response.DefaultError;
+import com.cloudelves.forecast.registry.model.response.DefaultSuccess;
+import com.cloudelves.forecast.registry.model.response.IngestorNexradDataResponse;
 import com.cloudelves.forecast.registry.model.response.MeraDataResponse;
 import com.cloudelves.forecast.registry.services.DataService;
 import org.springframework.http.HttpStatus;
@@ -47,4 +50,11 @@ public class DataController {
         return ResponseEntity.ok(dataService.getAllMeraData());
     }
 
+
+    @PostMapping(value = "/nexrad/update")
+    public ResponseEntity<DefaultSuccess> updateNexradData(
+            @RequestBody IngestorNexradDataResponse ingestorNexradDataResponse) throws DataServiceException {
+        dataService.updateNexradService(ingestorNexradDataResponse);
+        return ResponseEntity.ok(DefaultSuccess.builder().message("successfully updated").build());
+    }
 }

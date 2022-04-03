@@ -51,7 +51,8 @@ public class PlotRequestConsumer {
                 UserRequests request = requestOpt.get();
                 request.setComments(ingestorResponse.getComments());
                 request.setStatus(ingestorResponse.getStatus());
-                if (ingestorResponse.getStatus() == 2) {
+                log.info("response status = {}", ingestorResponse.getStatus());
+                if (ingestorResponse.getStatus() > 0) {
                     request.setResultS3Key(ingestorResponse.getResultS3Key());
                 }
                 userRequestsRepository.save(request);

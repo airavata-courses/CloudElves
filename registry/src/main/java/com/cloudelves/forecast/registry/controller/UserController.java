@@ -1,6 +1,7 @@
 package com.cloudelves.forecast.registry.controller;
 
 import com.cloudelves.forecast.registry.exceptions.UserNotFoundException;
+import com.cloudelves.forecast.registry.exceptions.UserRequestsServicesException;
 import com.cloudelves.forecast.registry.exceptions.UserServicesException;
 import com.cloudelves.forecast.registry.model.request.UserDetailsRequest;
 import com.cloudelves.forecast.registry.model.response.DefaultSuccess;
@@ -8,7 +9,6 @@ import com.cloudelves.forecast.registry.model.response.PlotRequestResponse;
 import com.cloudelves.forecast.registry.model.response.UserDetailsResponse;
 import com.cloudelves.forecast.registry.services.UserRequestsService;
 import com.cloudelves.forecast.registry.services.UserServices;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,4 +44,10 @@ public class UserController {
     public ResponseEntity<List<PlotRequestResponse>> getUserRequests(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(userRequestsService.getUserRequests(userId));
     }
+
+    @GetMapping(value = "/getRequestById")
+    public ResponseEntity<PlotRequestResponse> getRequestsById(@RequestParam("id") String requestId) throws UserRequestsServicesException {
+        return ResponseEntity.ok(userRequestsService.getRequestById(requestId));
+    }
+
 }

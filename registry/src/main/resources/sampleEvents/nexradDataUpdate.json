@@ -8,10 +8,11 @@
   "datacontenttype": "application/json",
   "data": {
       "dataId": "sample-nexrad-data-id-1",
-      "startTime": "1649248736000",
-      "endTime": "1649249736000",
+      "startTime": "1648857334000",
+      "endTime": "1648860934000",
       "radarName": "KABR",
-      "status": 0,
-      "expirationTime": "1646574936000"
+      "status": 2,
+      "dataS3Key": "sample-s3-key",
+      "expirationTime": "1648860934000"
     }
 }

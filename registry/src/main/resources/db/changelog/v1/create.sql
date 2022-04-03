@@ -14,9 +14,9 @@ create table requests (request_id text not null, user_id text not null, data_sou
                         foreign key(user_id) references userdetails(user_id));
 
 create table nexraddata(nexrad_data_id text not null, start_time timestamp not null, end_time timestamp not null,
-                        radar text not null, expiration_time timestamp not null, status int not null,
+                        radar text not null, expiration_time timestamp, status int not null,
                         last_access_time timestamp not null, data_s3_key text);
 
 create table meradata(mera_data_id text not null, date1 text not null, variable text not null,
-                        expiration_time timestamp not null, last_access_time timestamp not null,
+                        expiration_time timestamp, last_access_time timestamp not null,
                         status int not null, data_s3_key text);

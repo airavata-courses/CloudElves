@@ -100,35 +100,4 @@ public class RMQConfig {
         return new DirectExchange(registryExchange);
     }
 
-//    @Bean(name = "eventlogQueue")
-//    public Queue createEventlogQueue(@Value("${rmq.input.eventlog}") String eventlogQueue) {
-//        return new Queue(eventlogQueue, true);
-//    }
-//
-//    @Bean(name = "userRequestQueue")
-//    public Queue createUserRequestQueue(@Value("${rmq.input.userrequest}") String userRequestQueue) {
-//        return new Queue(userRequestQueue, true);
-//    }
-//
-//    @Bean(name = "ingestorQueue")
-//    public Queue createIngestorQueue(@Value("${rmq.input.ingestor}") String userDetailsQueue) {
-//        return new Queue(userDetailsQueue, true);
-//    }
-//
-//    @Bean(name = "eventlogQueueBinding")
-//    public Binding createEventlogBinding(DirectExchange directExchange, @Qualifier("eventlogQueue") Queue queue) {
-//        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
-//    }
-//
-//    @Bean(name = "ingestorQueueBinding")
-//    public Binding createUserRequestQueueBinding(DirectExchange directExchange, @Qualifier("userRequestQueue") Queue queue) {
-//        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
-//    }
-//
-//    @Bean(name = "ingestorQueueBinding")
-//    public Binding createIngestorBinding(DirectExchange directExchange, @Qualifier("ingestorQueue") Queue queue) {
-//        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
-//    }
-//
-
 }

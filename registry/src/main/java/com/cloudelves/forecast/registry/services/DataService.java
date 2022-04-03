@@ -3,6 +3,8 @@ package com.cloudelves.forecast.registry.services;
 import com.cloudelves.forecast.registry.constants.DataServiceConstants;
 import com.cloudelves.forecast.registry.dao.MeraData;
 import com.cloudelves.forecast.registry.dao.NexradData;
+import com.cloudelves.forecast.registry.exceptions.DataServiceException;
+import com.cloudelves.forecast.registry.model.response.IngestorNexradDataResponse;
 import com.cloudelves.forecast.registry.model.response.MeraDataResponse;
 import com.cloudelves.forecast.registry.repository.MeraDataRepository;
 import com.cloudelves.forecast.registry.repository.NexradDataRepository;
@@ -11,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -127,4 +126,34 @@ public class DataService {
             return null;
         }
     }
+
+    public void updateNexradService(IngestorNexradDataResponse nexradDataResponse) throws DataServiceException {
+        try {
+            Optional<NexradData> nexradDataOpt = nexradDataRepository.findById(nexradDataResponse.getDataId());
+            NexradData nexradData;
+            Timestamp startTime = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(nexradDataResponse.getStartTime())));
+            Timestamp endTime = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(nexradDataResponse.getEndTime())));
+            Timestamp currentTime = Timestamp.from(Instant.now());
+            if (nexradDataOpt.isPresent()) {
+                nexradData = nexradDataOpt.get();
+                nexradData.setDataS3Key(nexradDataResponse.getDataS3Key());
+                nexradData.setLastAccessTime(currentTime);
+                nexradData.setStatus(nexradDataResponse.getStatus());
+            } else {
+                Timestamp expirationTime = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(nexradDataResponse.getExpirationTime())));
+                nexradData = NexradData.builder().nexradDataId(nexradDataResponse.getDataId()).startTime(startTime).endTime(endTime)
+                                       .dataS3Key(nexradDataResponse.getDataS3Key()).expirationTime(expirationTime)
+                                       .lastAccessTime(currentTime).radarName(nexradDataResponse.getRadarName())
+                                       .status(nexradDataResponse.getStatus()).build();
+            }
+            nexradDataRepository.save(nexradData);
+            log.info("successfully updated nexrad data with id: {}", nexradData.getNexradDataId());
+        } catch (Exception e) {
+            String errorMessage = String.format("error while updating nexrad data with id: %s: %s", nexradDataResponse.getDataId(),
+                                                e.getMessage());
+            log.error(errorMessage, e);
+            throw new DataServiceException(errorMessage);
+        }
+    }
 }
+
