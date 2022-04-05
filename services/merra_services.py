@@ -56,7 +56,6 @@ class MerraService:
         self.format = os.getenv('data_conversion_format') or 'zarr'
 
     def startMerraService(self, id, data):
-        lockList = []
         try:
             product = data['product']
             startDate = data['startDate']
@@ -68,118 +67,20 @@ class MerraService:
 
             # CHECK WITH REGISTRY FOR LOCAL DATA AVAILABILITY
             dateList = self.convertDateRangeToList(startDate, endDate)
-            completedData, inProgressData, unavailableData = self.registryService.get_mera_data(dateList, varNames[0])
+
+            # dateList = []
             fileList = []
-            cur_download_loc = self.download_loc + '/' + id
-            if not os.path.exists(cur_download_loc):
-                os.mkdir(cur_download_loc)
-
-            log.info('waiting on in progress files')
-            inProgressDates = inProgressData.keys()
-            while True:
-                cd, ipd, ud = self.registryService.get_mera_data(inProgressDates, varNames[0])
-                if len(ipd) == 0:
-                    break
-                sleep(2)
-            log.info('completedData before: {}'.format(completedData))
-            for x in cd:
-                completedData[x] = cd[x]
-            log.info('completedData after: {}'.format(completedData))
-            for x in ud:
-                unavailableData.append(x)
-            log.info('completed waiting on in progress files')
-
-            # download files from local s3
-            log.info('downloading files from local s3 for request id: {}'.format(id))
-            log.info('type(completedData): {}'.format(type(completedData)))
-            for key in completedData:
-                completed = completedData[key]
-                zipFilePath = cur_download_loc + '/' + completed['dataS3Key'] + '.zip'
-                self.s3Service.download_file(completed['dataS3Key'], zipFilePath)
-                unpackFolder = cur_download_loc + '/' + completed['dataS3Key']
-                shutil.unpack_archive(zipFilePath, unpackFolder)
-                fileList.append(completed['dataS3Key'])
-                log.info('successfully downloaded {} from s3'.format(completed['dataS3Key']))
-
-            log.info('downloading unavailable files from mera for request id: {}'.format(id))
-            unavailableFileList, unavailableDataIds = [], []
-            for unavailableDate in unavailableData:
-                lockList.append(self.redis_service.acquire_mera_lock(unavailableDate, varNames[0]))
-                dataId = str(uuid.uuid4())
-                unavailableDataIds.append(dataId)
-                expirationTime = int(datetime.datetime.now().timestamp() + 180) * 1000
-                update_request = utils.generate_mera_data_update_payload(id, dataId, unavailableDate, varNames[0], 1, expirationTime=expirationTime)
-                self.registryService.update_nexrad_registry('mera', update_request)
-                jobId, response = self.startMerraDataDownload(product, unavailableDate, unavailableDate, varNames)
-                status = self.checkMerraRequestStatus(jobId, response)
-                if status == 'Succeeded':
-                    urls = self.getResults(jobId)
-                    unavailableFileList += self.downloadMerraData(id, urls)
+            locallyPresentMap = self.checkL1Cache()
+            for date in locallyPresentMap:
+                if locallyPresentMap[date] == '':
+                    dateList.add(date)
                 else:
-                    errorMessage = 'failed to download mera data for {} in request {}'.format(unavailableDate, id)
-                    log.error(errorMessage)
-                    raise Exception(errorMessage)
-
-            zarrFileList = []
-            if (format == 'COG'):
-                zarrFileList.extend(self.convertDataToCOG(id, unavailableFileList))
-            else:
-                zarrFileList.extend(self.convertDataToZarr(id, unavailableFileList))
-
-            log.info('zarrFileList: {}'.format(zarrFileList))
-            log.info('uploading files to s3')
-            for i, zarrFileName in enumerate(zarrFileList):
-                zarrFilePath = cur_download_loc + '/' + zarrFileName
-                zarrZipFileName = shutil.make_archive(zarrFilePath + '-zip', 'zip', zarrFilePath)
-                self.s3Service.upload_file(zarrZipFileName, zarrFileName)
-                fileDate, fileVar = self.extractDateAndProduct(zarrFileName)
-                update_request = utils.generate_mera_data_update_payload(id, unavailableDataIds[i], fileDate, fileVar, 2, s3Keys=zarrFileName)
-                self.registryService.update_nexrad_registry('mera', update_request)
+                    fileList.append(locallyPresentMap[date])
+            zarrFileList = self.check_and_download(dateList, product, varNames[0])
 
             zarrFileList += fileList
 
             log.info('zarrFileList = {}'.format(zarrFileList))
-            # existingFiles, newRequestParams = self.isFilesPresentInCache(id, product, startDate, endDate, varNames, format)
-
-            # zarrFileList = existingFiles
-            #
-            # print(existingFiles, newRequestParams)
-
-            # for req in newRequestParams:
-            #     newStartDate = req['startDate']
-            #     newEndDate = req['endDate']
-            #     newVarNames = req['vname']
-            #
-            #     jobId, response = self.startMerraDataDownload(product, newStartDate, newEndDate, newVarNames)
-            #
-            #     # SET REGISTRY - Download Job Started
-            #     # success_payload = self.generate_result_payload(id, 1, 'successfully completed request', _)
-            #     # self.publisher.publish(self.registry_queue, success_payload)
-            #     # log.info('successfully processed request {}. updated registry'.format(id))
-            #
-            #     status = self.checkMerraRequestStatus(jobId, response)
-            #
-            #     if status == 'Succeeded':
-            #
-            #         # SET REGISTRY - Downloading Data
-            #
-            #         urls = self.getResults(jobId)
-            #         fileList = self.downloadMerraData(id, urls)  # Downloads the data locally
-            #     else:
-            #         # SET REGISTRY - Download Job Failed
-            #         pass
-            #         return
-            #
-            #     # SET REGISTRY - Data Conversion Job Started
-            #
-            #     if (format == 'COG'):
-            #         zarrFileList.extend(self.convertDataToCOG(id, fileList))
-            #     else:
-            #         zarrFileList.extend(self.convertDataToZarr(id, fileList))
-
-            # -------------------------------------------------------------------------
-
-            # SET REGISTRY - Visualization Job Started
 
             print("zf", zarrFileList)
             for vname in varNames:
@@ -215,11 +116,87 @@ class MerraService:
             error_payload = utils.generate_result_payload(id, -1, error_message)
             self.publisher.publish(self.registry_queue, error_payload)
             log.error('processing request {} failed. updated registry'.format(id))
+
+
+    def check_and_download(self, dateList, product, varName):
+        lockList = []
+        try:
+            completedData, inProgressData, unavailableData = self.registryService.get_mera_data(dateList, varName)
+            cur_download_loc = self.local_cache_dir
+            log.info('waiting on in progress files')
+
+            inProgressDates = inProgressData.keys()
+            while True:
+                cd, ipd, ud = self.registryService.get_mera_data(inProgressDates, varName)
+                if len(ipd) == 0:
+                    break
+                sleep(2)
+
+            for x in cd:
+                completedData[x] = cd[x]
+            for x in ud:
+                unavailableData.append(x)
+
+            log.info('completed waiting on in progress files')
+
+            completedFileList = []
+            # download files from local s3
+            log.info('downloading files from local s3 for request id: {}'.format(id))
+            log.info('type(completedData): {}'.format(type(completedData)))
+            for key in completedData:
+                completed = completedData[key]
+                zipFilePath = cur_download_loc + '/' + completed['dataS3Key'] + '.zip'
+                self.s3Service.download_file(completed['dataS3Key'], zipFilePath)
+                unpackFolder = cur_download_loc + '/' + completed['dataS3Key']
+                shutil.unpack_archive(zipFilePath, unpackFolder)
+                completedFileList.append(unpackFolder)
+                os.remove(zipFilePath)
+                log.info('successfully downloaded {} from s3'.format(completed['dataS3Key']))
+
+            log.info('downloading unavailable files from mera for request id: {}'.format(id))
+            unavailableFileList, unavailableDataIds = [], []
+            for unavailableDate in unavailableData:
+                lockList.append(self.redis_service.acquire_mera_lock(unavailableDate, varName))
+                dataId = str(uuid.uuid4())
+                unavailableDataIds.append(dataId)
+                expirationTime = int(datetime.datetime.now().timestamp() + 180) * 1000
+                update_request = utils.generate_mera_data_update_payload(id, dataId, unavailableDate, varName, 1, expirationTime=expirationTime)
+                self.registryService.update_nexrad_registry('mera', update_request)
+                jobId, response = self.startMerraDataDownload(product, unavailableDate, unavailableDate, varName)
+                status = self.checkMerraRequestStatus(jobId, response)
+                if status == 'Succeeded':
+                    urls = self.getResults(jobId)
+                    unavailableFileList += self.downloadMerraData(id, urls)
+                else:
+                    errorMessage = 'failed to download mera data for {} in request {}'.format(unavailableDate, id)
+                    log.error(errorMessage)
+                    raise Exception(errorMessage)
+
+            zarrFileList = []
+            if (format == 'COG'):
+                zarrFileList.extend(self.convertDataToCOG(id, unavailableFileList))
+            else:
+                zarrFileList.extend(self.convertDataToZarr(id, unavailableFileList))
+
+            log.info('zarrFileList: {}'.format(zarrFileList))
+            log.info('uploading files to s3')
+            for i, zarrFileName in enumerate(zarrFileList):
+                zarrFilePath = cur_download_loc + '/' + zarrFileName
+                zarrZipFileName = shutil.make_archive(zarrFilePath + '-zip', 'zip', zarrFilePath)
+                self.s3Service.upload_file(zarrZipFileName, zarrFileName)
+                fileDate, fileVar = self.extractDateAndProduct(zarrFileName)
+                update_request = utils.generate_mera_data_update_payload(id, unavailableDataIds[i], fileDate, fileVar, 2, s3Keys=zarrFileName)
+                self.registryService.update_nexrad_registry('mera', update_request)
+            return zarrFileList + completedFileList
+        except Exception as e:
+            errorMessage = 'error while downloading mera files: {}'.format(e)
+            log.error(errorMessage)
+            raise Exception(errorMessage)
         finally:
             for lock in lockList:
                 log.info('releasing lock {}'.format(lock.key))
                 self.redis_service.release_lock(lock)
-            self.cleanup(id)
+
 
     # ===================================================================================================================
     def generatePayload(self, action="elves.ingetor.getdata", comments="500: Internal Server Error", encoded_image="",
