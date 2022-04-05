@@ -10,3 +10,5 @@ sample.html
 .idea/
 bin/
 plotted_data/
+merra_downloads/
+local_cache/
