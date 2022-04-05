@@ -2,9 +2,6 @@ package com.cloudelves.forecast.registry.model.response;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import java.sql.Timestamp;
-
 @Data
 @Builder
 @AllArgsConstructor

@@ -4,6 +4,7 @@ import com.cloudelves.forecast.registry.constants.DataServiceConstants;
 import com.cloudelves.forecast.registry.dao.MeraData;
 import com.cloudelves.forecast.registry.dao.NexradData;
 import com.cloudelves.forecast.registry.exceptions.DataServiceException;
+import com.cloudelves.forecast.registry.model.response.IngestorMeraDataResponse;
 import com.cloudelves.forecast.registry.model.response.IngestorNexradDataResponse;
 import com.cloudelves.forecast.registry.model.response.MeraDataResponse;
 import com.cloudelves.forecast.registry.repository.MeraDataRepository;
@@ -124,6 +125,34 @@ public class DataService {
         } else {
             log.info("nexrad data either does not exists or in progress has expired");
             return null;
+        }
+    }
+
+    public void updateMeraData(IngestorMeraDataResponse meraDataResponse) throws DataServiceException {
+        try {
+            Optional<MeraData> meraDataOpt = meraDataRepository.findById(meraDataResponse.getDataId());
+            MeraData meraData;
+            Timestamp currentTime = Timestamp.from(Instant.now());
+            if (meraDataOpt.isPresent()) {
+                meraData = meraDataOpt.get();
+                meraData.setDataS3Key(meraDataResponse.getDataS3Key());
+                meraData.setLastAccessTime(currentTime);
+                meraData.setStatus(meraDataResponse.getStatus());
+                meraData.setLastAccessTime(currentTime);
+            } else {
+                Timestamp expirationTime = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(meraDataResponse.getExpirationTime())));
+                meraData = MeraData.builder().meraDataId(meraDataResponse.getDataId()).dataS3Key(meraDataResponse.getDataS3Key())
+                                   .date(meraDataResponse.getDate()).status(meraDataResponse.getStatus())
+                                   .variable(meraDataResponse.getVariable()).lastAccessTime(currentTime).expirationTime(expirationTime)
+                                   .build();
+            }
+            meraDataRepository.save(meraData);
+            log.info("successfully updated nexrad data with id: {}", meraData.getMeraDataId());
+        } catch (Exception e) {
+            String errorMessage = String.format("error while updating mera data with id: %s: %s", meraDataResponse.getDataId(),
+                                                e.getMessage());
+            log.error(errorMessage, e);
+            throw new DataServiceException(errorMessage);
         }
     }
 

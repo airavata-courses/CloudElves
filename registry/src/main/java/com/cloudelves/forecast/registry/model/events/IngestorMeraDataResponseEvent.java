@@ -13,6 +13,6 @@ import java.util.List;
 @Builder
 public class IngestorMeraDataResponseEvent extends BaseEvent {
 
-    private List<IngestorMeraDataResponse> data;
+    private IngestorMeraDataResponse data;
 
 }

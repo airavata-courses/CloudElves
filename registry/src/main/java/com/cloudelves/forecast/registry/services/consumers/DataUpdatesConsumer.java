@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class DataUpdatesConsumer {
 
     @RabbitListener(queues = "${rmq.input.mera}", concurrency = "${rmq.consumerCount}", containerFactory = "customConnFactory")
     public void meraDataUpdatesConsumer(IngestorMeraDataResponseEvent meraDataResponseEvent) {
-        List<IngestorMeraDataResponse> meraDataResponseList = meraDataResponseEvent.getData();
+        List<IngestorMeraDataResponse> meraDataResponseList = Collections.singletonList(meraDataResponseEvent.getData());
         for(IngestorMeraDataResponse meraDataResponse: meraDataResponseList) {
             Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(meraDataResponse.getExpirationTime())));
             Timestamp currentTime = Timestamp.from(Instant.now());
