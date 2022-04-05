@@ -55,6 +55,22 @@ class RegistryServices:
             log.error(e)
             raise Exception("Error while downloading data from Nexrad for given parameters: {}".format(e))
 
+    def get_mera_data(self, dates, variable):
+        requestUrl = self.domain + "/mera"
+        data = {'dates': list(dates), 'variable': variable}
+        log.info('data: {}'.format(data))
+        try:
+            response = self.session.post(requestUrl, json=data)
+            if response.status_code == 200:
+                log.info('successfully queried registry for mera data for dates: {} and variable: {}'.format(dates, variable))
+                responseBody = response.json()
+                log.info('responseBody: {}'.format(responseBody))
+                return responseBody['completed'], responseBody['inProgress'], responseBody['unavailable']
+        except Exception as e:
+            errorMessage = 'error while querying mera data from registry: {}'.format(e)
+            log.error(errorMessage)
+            raise Exception(errorMessage)
+        
     def cache_nexrad_data(self, capacity):
         bulk_data = self.get_all_nexrad_data()
         bulk_data = json.loads(bulk_data)
@@ -71,13 +87,17 @@ class RegistryServices:
                 return []
         except Exception as e:
             log.error(e)
-            raise Exception(" Error while caching nexrad data :{}".format(e))
+            raise Exception("error while caching nexrad data :{}".format(e))
 
-    def update_nexrad_registry(self, data):
-        requestUrl = self.domain + '/nexrad/update'
+    def update_nexrad_registry(self, data_source, data):
+        if data_source == 'nexrad':
+            requestUrl = self.domain + '/nexrad/update'
+        else:
+            requestUrl = self.domain + '/mera/update'
         response = self.session.post(requestUrl, json=data)
         if response.status_code != 200:
             errorMessage = 'error while updating registry: http status code {}'.format(response.status_code)
             log.error(errorMessage)
             raise Exception(errorMessage)
         log.info('successfully updated registry')
+

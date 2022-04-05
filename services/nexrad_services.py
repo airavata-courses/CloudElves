@@ -24,8 +24,8 @@ class NexradService:
 
     def __init__(self) -> None:
         self.connection = nexradaws.NexradAwsInterface()
-        self.results_bucket = os.getenv('nexrad_results_bucket') or 'nexradresults'
-        self.download_loc = os.getenv('nexrad_download_loc') or './nexrad_downloads'
+        self.results_bucket = os.getenv('nexrad_results_bucket') or 'results'
+        self.download_loc = os.getenv('download_loc') or './nexrad_downloads'
         self.registry_queue = os.getenv('registry_op_queue') or 'elves.registry.ingestor.in'
         self.redis_service = RedisService()
         if self.download_loc[len(self.download_loc) - 1] == '/':
@@ -44,14 +44,15 @@ class NexradService:
                 plot_location = self.plot_data_from_file(downloads, data['plotType'], id)
             else:
                 plot_location = self.plot_data_from_scan(downloads, data['plotType'], id)
-            self.s3Service.upload_file(plot_location)
+            self.s3Service.upload_file(plot_location, id)
             log.info('uploaded plot to local s3 bucket')
-            success_payload = self.generate_result_payload(id, 1, 'successfully completed request', plot_location)
+            success_payload = self.generate_result_payload(id, 1, 'successfully completed request', id)
             self.publisher.publish(self.registry_queue, success_payload)
             log.info('successfully processed request {}. updated registry'.format(id))
         except Exception as e:
             error_message = 'error while processing request {}: {}'.format(id, e)
             log.error(error_message)
+            log.critical(e, exc_info=True)
             error_payload = self.generate_result_payload(id, -1, error_message)
             self.publisher.publish(self.registry_queue, error_payload)
             log.error('processing request {} failed. updated registry'.format(id))
@@ -139,7 +140,7 @@ class NexradService:
             update_request = self.generate_data_update_payload(id, data_id, int(startTime.timestamp()) * 1000, int(endTime.timestamp()) * 1000,
                                                                data['radar'],
                                                                0, expirationTime=expirationTime)
-            self.registryService.update_nexrad_registry(update_request['data'])
+            self.registryService.update_nexrad_registry('nexrad', update_request['data'])
             cur_download_loc = self.download_loc + '/' + id
             os.mkdir(cur_download_loc)
             scans = self.connection.get_avail_scans(data["year"], data["month"], data["day"], data["radar"])
@@ -155,9 +156,8 @@ class NexradService:
                 self.s3Service.upload_file(cur_download_loc + '/' + s, s)
                 s3Keys.append(s)
             update_request = self.generate_data_update_payload(id, data_id, int(startTime.timestamp()) * 1000, int(endTime.timestamp()) * 1000,
-                                                               data['radar'],
-                                                               2, s3Keys=','.join(s3Keys))
-            self.registryService.update_nexrad_registry(update_request['data'])
+                                                               data['radar'], 2, s3Keys=','.join(s3Keys))
+            self.registryService.update_nexrad_registry('nexrad', update_request['data'])
             return result
         except Exception as e:
             errorMessage = 'error while downloading nexrad files for {}: {}'.format(id, e)

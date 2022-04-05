@@ -16,7 +16,7 @@ class S3Service:
         self.region = os.getenv('region') or 'us-east-1'
         self.aws_access_key_id = os.getenv('aws_access_key_id') or 'accessKey1'
         self.aws_secret_access_key = os.getenv('aws_secret_access_key') or 'verySecretKey1'
-        self.endpoint_url = os.getenv('endpoint_url') or 'http://149.165.157.38:30042'
+        self.endpoint_url = os.getenv('s3_endpoint_url') or 'http://149.165.157.38:30042'
         self.s3_client = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key,
                                       region_name=self.region, endpoint_url=self.endpoint_url)
         if not self.is_bucket_available():
@@ -26,10 +26,9 @@ class S3Service:
     def is_bucket_available(self):
         all_buckets = self.s3_client.list_buckets()
         for bucket in all_buckets['Buckets']:
-            if self.bucket_name not in bucket['Name']:
-                return False
-            else:
+            if self.bucket_name == bucket['Name']:
                 return True
+        return False
 
     def create_bucket(self):
         try:
@@ -70,7 +69,7 @@ class S3Service:
             object_name = os.path.basename(file_name)
         try:
             response = self.s3_client.upload_file(file_name, self.bucket_name, object_name)
-            log.info('successfully uploaded file with s3 key: {}'.format(file_name))
+            log.info('successfully uploaded file with s3 key: {}'.format(object_name))
         except ClientError as e:
             errorMessage = 'error while uploading the file {} to bucket {}: {}'.format(file_name, self.bucket_name, e)
             log.info(errorMessage)

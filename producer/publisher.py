@@ -25,7 +25,6 @@ class Publisher:
         self.connection.channel().exchange_declare(exchange='elvesExchange', exchange_type='direct', durable=True)
 
     def publish(self, queue, body):
-        if self.connection.is_closed:
-            self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
-        self.connection.channel().basic_publish(exchange='', routing_key=queue, body=json.dumps(body), properties=pika.BasicProperties(delivery_mode=1))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
+        connection.channel().basic_publish(exchange='', routing_key=queue, body=json.dumps(body), properties=pika.BasicProperties(delivery_mode=1))
         log.info('message sent to queue: {}'.format(queue))

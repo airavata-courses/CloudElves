@@ -15,7 +15,7 @@ class RedisService:
         redis_url = 'redis://{}:{}/1'.format(redis_host, redis_port)
         self.redis = Redis.from_url(redis_url)
         log.info('successfully connected to redis on {}'.format(redis_url))
-        self.auto_release_time = int(os.getenv('lock_duration') or '20')
+        self.auto_release_time = int(os.getenv('nexrad_lock_duration') or '20')
 
     def __acquire_lock(self, resourceName, auto_release_time):
         lock = Redlock(key=resourceName, masters={self.redis}, auto_release_time=max(auto_release_time, self.auto_release_time))
@@ -28,8 +28,8 @@ class RedisService:
         resourceName = '{}-{}-{}'.format(startTime, endTime, radarName)
         return self.__acquire_lock(resourceName, auto_release_time)
 
-    def acquire_mera_lock(self, date, auto_release_time=10):
-        resourceName = '{}'.format(date)
+    def acquire_mera_lock(self, date, varName, auto_release_time=10):
+        resourceName = '{}-{}'.format(date, varName)
         return self.__acquire_lock(resourceName, auto_release_time)
 
     def release_lock(self, lock: Redlock):
