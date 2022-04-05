@@ -225,16 +225,14 @@ class MerraService:
             # Acquire Lock
             self.mutex.acquire()
 
-            present = []
             shortName = product.split('_')[0]
             sd = [int(x) for x in startDate.split("-")]
             ed = [int(x) for x in endDate.split("-")]
             start_date = date(sd[0], sd[1], sd[2]) 
             end_date = date(ed[0], ed[1], ed[2])
             delta = end_date - start_date   # returns timedelta
-            newRequestParams = []
+            files = {}
             for vname in varNames:
-                temp = []
                 for i in range(delta.days + 1):
                     day = start_date + timedelta(days=i)
                     dateStr = day.strftime('%Y%m%d')
@@ -248,39 +246,15 @@ class MerraService:
                         file_exists = exists(local_cache_dir + '/' + searchString)
                         print(file_exists)
                         if(file_exists):
-                            present.append(searchString)
-                            if(len(temp) != 0):
-                                subsetStartDate = self.createDateFromFileName(temp[0])
-                                subsetEndDate = self.createDateFromFileName(temp[-1])
-                                newRequestParams.append({
-                                    'startDate': subsetStartDate,
-                                    "endDate": subsetEndDate,
-                                    "vname": [vname]
-                                })
-                                temp = []
+                            files[self.createDateFromFileName(searchString)] = local_cache_dir + '/' + searchString
                             # Update last modified time of the file to refresh cache
                             now = datetime.datetime.now()
                             self.set_file_last_modified(local_cache_dir + '/' + searchString, now)
                         else:
-                            temp.append(searchString)
+                            files[self.createDateFromFileName(searchString)] = ''
 
-            if(len(present) == 0 and len(newRequestParams) == 0):
-                newRequestParams.append({
-                    'startDate': startDate,
-                    "endDate": endDate,
-                    "vname": varNames
-                })
-            elif(len(temp) != 0):
-                subsetStartDate = self.createDateFromFileName(temp[0])
-                subsetEndDate = self.createDateFromFileName(temp[-1])
-                newRequestParams.append({
-                    'startDate': subsetStartDate,
-                    "endDate": subsetEndDate,
-                    "vname": [vname]
-                })
-
-            print("amol",newRequestParams)
-            return present,newRequestParams
+            print("amol",files)
+            return files
         except Exception as e:
             errorMessage = 'error while checking local data: {}'.format(e)
             log.error(errorMessage)
@@ -444,7 +418,7 @@ class MerraService:
                 f = open(cur_download_loc + '/' + outfn,'wb')
                 f.write(result.content)
                 f.close()
-                fileList.append(outfn)
+                fileList.append(cur_download_loc + '/' + outfn)
                 print(outfn, "is downloaded")
             except:
                 print('Error! Status code is %d for this URL:\n%s' % (result.status.code,URL))
@@ -459,11 +433,10 @@ class MerraService:
         try:
             COGFileList = []
             
-            nc_data_loc = self.download_loc + '/' + id
             local_cache_dir = self.local_cache_dir
 
             for filePath in fileList:
-                ncfile = xr.open_dataset(nc_data_loc + '/' + filePath)
+                ncfile = xr.open_dataset(filePath)
             
                 for vname in ncfile.data_vars:
                     # Read file
@@ -488,15 +461,12 @@ class MerraService:
                     # Saving the file
                     dateStr = ncfile.attrs['Filename'].split('.')[2]
                     fileNameToStore = self.generateFileName(ncfile.attrs['ShortName'],dateStr,vname) + '.tif'
-                    COGFileList.append(fileNameToStore)
+                    COGFileList.append(local_cache_dir + '/' + fileNameToStore)
 
                     try:
                         if not os.path.exists(local_cache_dir + '/' + fileNameToStore):
                             # Stores to local cache
                             pr.rio.to_raster(os.getcwd() + '/' + local_cache_dir + '/' + fileNameToStore)
-                            
-                            # Upload to S3 bucket
-                            # PLACEHOLDER
                     except:
                         print('File already exists')
 
@@ -511,11 +481,10 @@ class MerraService:
         try:
             zarrFileList = []
             
-            cur_download_loc = self.download_loc + '/' + id
             local_cache_dir = self.local_cache_dir
 
             for filePath in fileList:
-                ds = xr.open_dataset(cur_download_loc + '/' + filePath)
+                ds = xr.open_dataset(filePath)
                 
                 compressor = zarr.Blosc(cname='zstd', clevel=3)
                 for vname in ds.data_vars:
@@ -526,16 +495,13 @@ class MerraService:
                     # Saving the file
                     dateStr = ds.attrs['Filename'].split('.')[2]
                     fileNameToStore = self.generateFileName(ds.ShortName,dateStr,vname)
-                    zarrFileList.append(fileNameToStore)
+                    zarrFileList.append(local_cache_dir + '/' + fileNameToStore)
 
                     try:
                         if not os.path.exists(local_cache_dir + '/' + fileNameToStore):
                             # Stores to local cache
                             encoding = {vname: {'compressor': compressor}}
                             temp_ds.to_zarr(store=local_cache_dir + '/' + fileNameToStore, encoding=encoding, consolidated=True)
-
-                            # Upload to S3 bucket
-                            # PLACEHOLDER
                     except:
                         print('File already exists')
 
@@ -553,25 +519,24 @@ class MerraService:
                 return
             
             cur_download_loc = self.download_loc + '/' + id
-            local_cache_dir = self.local_cache_dir
 
             if(format == 'COG'):
-                cog_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[0])
+                cog_ds = xr.open_rasterio(fileNameList[0])
                 lons = cog_ds['x']
                 lats = cog_ds['y']
                 T2M = cog_ds.values
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[index])
+                    temp_ds = xr.open_rasterio(fileNameList[index])
                     temp_T2M = temp_ds.values
                     T2M = np.vstack((T2M,temp_T2M))
             else:
-                zarr_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[0], consolidated=True)
+                zarr_ds = xr.open_zarr(store=fileNameList[0], consolidated=True)
                 lons = zarr_ds[varName]['lon'][:]
                 lats = zarr_ds[varName]['lat'][:]
                 T2M = zarr_ds[varName][:, :, :]
                 # left,bottom,right,top = zarr_ds.rio.bounds()
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[index], consolidated=True)
+                    temp_ds = xr.open_zarr(store=fileNameList[index], consolidated=True)
                     temp_T2M = temp_ds[varName][:, :, :]
                     T2M = np.vstack((T2M,temp_T2M))
 
@@ -600,13 +565,9 @@ class MerraService:
             if not os.path.exists(cur_download_loc):
                 os.mkdir(cur_download_loc)
             # Save as Image
-            outputFile = f'{cur_download_loc}/image.{varName}.{int(time.time())}.png'
-            plt.savefig(outputFile)
-            
-            # Upload to S3 bucket
-            # PLACEHOLDER
-
-            return outputFile
+            outputFilePath = f'{cur_download_loc}/image.{varName}.{int(time.time())}.png'
+            plt.savefig(outputFilePath)
+            return outputFilePath
         except Exception as e:
             errorMessage = 'error while image plotting: {}'.format(e)
             log.error(errorMessage)
@@ -616,7 +577,6 @@ class MerraService:
     def visualizeMerra2GIF(self, id, fileNameList, varName, format):
         try:
             cur_download_loc = self.download_loc + '/' + id
-            local_cache_dir = self.local_cache_dir
 
             def animate(i,varToShow,lons,lats,clevs,varName):
                 if(varToShow.ndim == 4):
@@ -639,21 +599,21 @@ class MerraService:
                 return
             
             if(format == 'COG'):
-                cog_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[0])
+                cog_ds = xr.open_rasterio(fileNameList[0])
                 lons = cog_ds['x']
                 lats = cog_ds['y']
                 T2M = cog_ds.values
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[index])
+                    temp_ds = xr.open_rasterio(fileNameList[index])
                     temp_T2M = temp_ds.values
                     T2M = np.vstack((T2M,temp_T2M))
             else:
-                zarr_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[0], consolidated=True)
+                zarr_ds = xr.open_zarr(store=fileNameList[0], consolidated=True)
                 lons = zarr_ds[varName]['lon'][:]
                 lats = zarr_ds[varName]['lat'][:]
                 T2M = zarr_ds[varName][:, :, :]
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[index], consolidated=True)
+                    temp_ds = xr.open_zarr(store=fileNameList[index], consolidated=True)
                     temp_T2M = temp_ds[varName][:, :, :]      
                     T2M = np.vstack((T2M,temp_T2M))
 
@@ -684,13 +644,9 @@ class MerraService:
             if not os.path.exists(cur_download_loc):
                 os.mkdir(cur_download_loc)
             # Save as GIF
-            outputFile = f'{cur_download_loc}/animation.{varName}.{int(time.time())}.gif'
-            anim.save(outputFile, writer='pillow')
-
-            # Upload to S3 bucket
-            # PLACEHOLDER
-            
-            return outputFile
+            outputFilePath = f'{cur_download_loc}/animation.{varName}.{int(time.time())}.gif'
+            anim.save(outputFilePath, writer='pillow')            
+            return outputFilePath
         except Exception as e:
             errorMessage = 'error while gif plotting: {}'.format(e)
             log.error(errorMessage)
@@ -731,7 +687,7 @@ class MerraService:
             "source":          'ingestor',
             "subject":         'ingestor.getdata',
             "id":              request_id,
-            "time":            str(int(datetime.now().timestamp())),
+            "time":            str(int(datetime.datetime.now().timestamp())),
             "datacontenttype": 'application/json',
             "data":            data
         }
