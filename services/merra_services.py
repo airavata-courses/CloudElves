@@ -10,6 +10,7 @@ from functools import partial
 
 import sys
 import time
+import shutil
 from datetime import date, timedelta
 import json
 import urllib3
@@ -26,6 +27,7 @@ import zarr
 import os
 import warnings
 import datetime
+import threading
 warnings.filterwarnings("ignore")
 
 from producer import publisher
@@ -41,18 +43,26 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 class MerraService:
-
     # ===================================================================================================================
     def __init__(self) -> None:
         # self.connection = nexradaws.NexradAwsInterface()
-        self.results_bucket = os.getenv('nexrad_results_bucket') or 'merraresults'
-        self.download_loc = os.getenv('nexrad_download_loc') or './merra_downloads'
+        self.results_bucket = os.getenv('merra_results_bucket') or 'merraresults'
+        self.download_loc = os.getenv('merra_download_loc') or './merra_downloads'
+        self.local_cache_dir = os.getenv('l1_cache_loc') or './local_cache'
         self.registry_queue = os.getenv('registry_op_queue') or 'elves.registry.ingestor.in'
-        self.redis_service = RedisService()
+        self.l1_cache_capacity = os.getenv('l1_cache_capacity') or 10
+        self.mutex = threading.Lock()
+        # Downloads
         if self.download_loc[len(self.download_loc) - 1] == '/':
             self.download_loc = self.download_loc[:len(self.download_loc) - 1]
         if not os.path.exists(self.download_loc):
             os.mkdir(self.download_loc)
+        # Local Caches
+        if self.local_cache_dir[len(self.local_cache_dir) - 1] == '/':
+            self.local_cache_dir = self.local_cache_dir[:len(self.local_cache_dir) - 1]
+        if not os.path.exists(self.local_cache_dir):
+            os.mkdir(self.local_cache_dir)
+        self.redis_service = RedisService()
         self.s3Service = S3Service(self.results_bucket)
         self.publisher = publisher.Publisher()
         self.registryService = RegistryServices()
@@ -72,12 +82,18 @@ class MerraService:
             # CHECK WITH REGISTRY FOR LOCAL DATA AVAILABILITY
             # existingDataURLS = checkWithRegistry(product,startDate,endDate,varNames)
             
-            existingFiles,newRequestParams = self.isFilesPresentInCache(id,product,startDate,endDate,varNames,format)
+            # L1 CACHE - CHECK LOCALLY IF FILES ARE PRESENT
+            existingFiles,newRequestParams = self.checkL1Cache(id,product,startDate,endDate,varNames,format)
 
-            zarrFileList = existingFiles
+            # L2 CACHE - CHECK AND DOWNLOAD S3 BUCKET FOR FILES
+            # PLACEHOLDER
+            # filesDownloaded, filesToDownloadFromMerra = self.checkandDownloadL2Cache(newRequestParams)
 
             print(existingFiles, newRequestParams)
-                    
+            convertedFiles = existingFiles
+            # convertedFiles.extend(filesDownloaded)
+            fileList = []
+            outputFiles = []
             for req in newRequestParams:
                 newStartDate = req['startDate']
                 newEndDate = req['endDate']
@@ -106,18 +122,18 @@ class MerraService:
                 # SET REGISTRY - Data Conversion Job Started
 
                 if(format == 'COG'):
-                    zarrFileList.extend(self.convertDataToCOG(id, fileList))
+                    convertedFiles.extend(self.convertDataToCOG(id, fileList))
                 else:
-                    zarrFileList.extend(self.convertDataToZarr(id, fileList))
+                    convertedFiles.extend(self.convertDataToZarr(id, fileList))
 
             # -------------------------------------------------------------------------
                 
             # SET REGISTRY - Visualization Job Started
 
-            print("zf",zarrFileList)
+            print("zf",convertedFiles)
             for vname in varNames:
                 vizFiles = []
-                for zf in zarrFileList:
+                for zf in convertedFiles:
                     if(format == 'COG'):
                         zarrVar = zf.split('.')[-2]
                     else:
@@ -125,17 +141,15 @@ class MerraService:
                     
                     if zarrVar == vname:
                         vizFiles.append(zf)
-                
                 print(vizFiles)
                 if(outputType == 'image'):
-                    self.visualizeMerra2Image(id, vizFiles,vname,format)
+                    outputFiles.append(self.visualizeMerra2Image(id,vizFiles,vname,format))
                 else:
-                    self.visualizeMerra2GIF(id, vizFiles,vname,format)
+                    outputFiles.append(self.visualizeMerra2GIF(id,vizFiles,vname,format))
 
             # SET REGISTRY - Job Completed
 
-            # if(dataConvStatus == "Success"):
-            #     deleteLocalData(urls)
+            return fileList, convertedFiles, outputFiles
         except Exception as e:
             error_message = 'error while processing request {}: {}'.format(id, e)
             log.error(error_message)
@@ -143,30 +157,137 @@ class MerraService:
             self.publisher.publish(self.registry_queue, error_payload)
             log.error('processing request {} failed. updated registry'.format(id))
         finally:
-            pass
-            # self.cleanup(id)
+            self.cleanup(id)
+            self.updateL1Cache()
     
     # ===================================================================================================================
-    def generatePayload(self, action="elves.ingetor.getdata", comments="500: Internal Server Error", encoded_image="",
-                        event_type="elves.registry.applog.in", id="", source="ingestor", specversion="1.0", status="2",
-                        subject="", user="", datacontenttype="application/json"):
-        return {
-            "specversion":     specversion,
-            "type":            event_type,
-            "source":          source,
-            "subject":         subject,
-            "id":              id,
-            "time":            str(datetime.datetime.now()),
-            "datacontenttype": datacontenttype,
-            "data":            {
-                "action":   action,
-                "id":       id,
-                "userId":   user,
-                "image":    encoded_image,
-                "comments": comments,
-                "status":   status
-                }
-            }
+    # Helper Functions
+    def generateFileName(self, shortName, dateStr, vname):
+        parts = []
+        parts.append('MERRA2')
+        parts.append(shortName)
+        parts.append(dateStr)
+        parts.append(vname)
+        fileName = '.'.join(parts)
+        return fileName
+
+    def createDateFromFileName(self, fileNameStr):
+        fileNameStr = fileNameStr.split('.')[2]
+        recalcDate = []
+        recalcDate.append(fileNameStr[0:4])
+        recalcDate.append(fileNameStr[4:6])
+        recalcDate.append(fileNameStr[6:8])
+        dateStr = '-'.join(recalcDate)
+        return dateStr
+
+    def set_file_last_modified(self, file_path, dt):
+        dt_epoch = dt.timestamp()
+        os.utime(file_path, (dt_epoch, dt_epoch))
+    
+    def getFilesByLastAccessTime(self, dirpath):
+        a = [s for s in os.listdir(dirpath)]
+        a.sort(key=lambda s: os.path.getmtime(os.path.join(dirpath, s)))
+        a.reverse()
+        return a
+    
+    def updateL1Cache(self):
+        try:
+            # Acquire Lock
+            self.mutex.acquire()
+            local_cache_dir = self.local_cache_dir
+            files = self.getFilesByLastAccessTime(local_cache_dir)
+            capactiy = self.l1_cache_capacity
+            dir_length = len(os.listdir(local_cache_dir))
+            # Delete files from the end of the list
+            for index in range(capactiy,dir_length,1):
+                file_loc = local_cache_dir + '/' + files[index]
+                if os.path.isfile(file_loc):
+                    os.remove(file_loc)
+                else:
+                    shutil.rmtree(file_loc)
+        except Exception as e:
+            errorMessage = 'error while updating L1 cache: {}'.format(e)
+            log.error(errorMessage)
+            raise Exception(errorMessage)
+        finally:
+            # Release Lock
+            self.mutex.release()
+    
+    def cleanup(self, id):
+        download_path = self.download_loc + '/' + id
+        if os.path.exists(download_path):
+            shutil.rmtree(download_path)
+            log.info('deleted {}'.format(download_path))
+    
+    # ===================================================================================================================
+    def checkL1Cache(self, id, product, startDate, endDate, varNames, format):
+        try:
+            # Acquire Lock
+            self.mutex.acquire()
+
+            present = []
+            shortName = product.split('_')[0]
+            sd = [int(x) for x in startDate.split("-")]
+            ed = [int(x) for x in endDate.split("-")]
+            start_date = date(sd[0], sd[1], sd[2]) 
+            end_date = date(ed[0], ed[1], ed[2])
+            delta = end_date - start_date   # returns timedelta
+            newRequestParams = []
+            for vname in varNames:
+                temp = []
+                for i in range(delta.days + 1):
+                    day = start_date + timedelta(days=i)
+                    dateStr = day.strftime('%Y%m%d')
+
+                    searchString = self.generateFileName(shortName,dateStr,vname)
+                    if(format == 'COG'):
+                        searchString = searchString + '.tif'
+                    print(searchString)
+                    local_cache_dir = self.local_cache_dir
+                    if os.path.exists(local_cache_dir):
+                        file_exists = exists(local_cache_dir + '/' + searchString)
+                        print(file_exists)
+                        if(file_exists):
+                            present.append(searchString)
+                            if(len(temp) != 0):
+                                subsetStartDate = self.createDateFromFileName(temp[0])
+                                subsetEndDate = self.createDateFromFileName(temp[-1])
+                                newRequestParams.append({
+                                    'startDate': subsetStartDate,
+                                    "endDate": subsetEndDate,
+                                    "vname": [vname]
+                                })
+                                temp = []
+                            # Update last modified time of the file to refresh cache
+                            now = datetime.datetime.now()
+                            self.set_file_last_modified(local_cache_dir + '/' + searchString, now)
+                        else:
+                            temp.append(searchString)
+
+            if(len(present) == 0 and len(newRequestParams) == 0):
+                newRequestParams.append({
+                    'startDate': startDate,
+                    "endDate": endDate,
+                    "vname": varNames
+                })
+            elif(len(temp) != 0):
+                subsetStartDate = self.createDateFromFileName(temp[0])
+                subsetEndDate = self.createDateFromFileName(temp[-1])
+                newRequestParams.append({
+                    'startDate': subsetStartDate,
+                    "endDate": subsetEndDate,
+                    "vname": [vname]
+                })
+
+            print("amol",newRequestParams)
+            return present,newRequestParams
+        except Exception as e:
+            errorMessage = 'error while checking local data: {}'.format(e)
+            log.error(errorMessage)
+            raise Exception(errorMessage)
+        finally:
+            # Release Lock
+            self.mutex.release()
 
     # ===================================================================================================================
     # This method POSTs formatted JSON WSP requests to the GES DISC endpoint URL
@@ -295,7 +416,6 @@ class MerraService:
         # =========================================
         # STEP 9
         # Sort the results into documents and URLs
-
         docs = []
         urls = []
         for item in results :
@@ -311,7 +431,6 @@ class MerraService:
         # STEP 10 
         # Use the requests library to submit the HTTP_Services URLs and write out the results.
         print('\nHTTP_services output:')
-
         fileList = []
         for item in urls :
             URL = item['link'] 
@@ -336,22 +455,15 @@ class MerraService:
         return fileList
 
     # ===================================================================================================================
-    def deleteLocalData(self, urls):
-        for item in urls:
-            # Remove existing file
-            try:
-                os.remove(item['label'])
-            except OSError:
-                pass
-    
-    # ===================================================================================================================
     def convertDataToCOG(self, id, fileList):
         try:
             COGFileList = []
             
-            cur_download_loc = self.download_loc + '/' + id
+            nc_data_loc = self.download_loc + '/' + id
+            local_cache_dir = self.local_cache_dir
+
             for filePath in fileList:
-                ncfile = xr.open_dataset(cur_download_loc + '/' + filePath)
+                ncfile = xr.open_dataset(nc_data_loc + '/' + filePath)
             
                 for vname in ncfile.data_vars:
                     # Read file
@@ -378,14 +490,13 @@ class MerraService:
                     fileNameToStore = self.generateFileName(ncfile.attrs['ShortName'],dateStr,vname) + '.tif'
                     COGFileList.append(fileNameToStore)
 
-                    # AWS S3 path
-                    # s3_path = 's3://your_data_path/zarr_example' 
-                    # Initilize the S3 file system
-                    # s3 = s3fs.S3FileSystem()
-                    # store = s3fs.S3Map(root=s3_path, s3=s3, check=False)
-
                     try:
-                        pr.rio.to_raster(os.getcwd() + '/' + cur_download_loc + '/' + fileNameToStore)
+                        if not os.path.exists(local_cache_dir + '/' + fileNameToStore):
+                            # Stores to local cache
+                            pr.rio.to_raster(os.getcwd() + '/' + local_cache_dir + '/' + fileNameToStore)
+                            
+                            # Upload to S3 bucket
+                            # PLACEHOLDER
                     except:
                         print('File already exists')
 
@@ -399,7 +510,10 @@ class MerraService:
     def convertDataToZarr(self, id, fileList):
         try:
             zarrFileList = []
+            
             cur_download_loc = self.download_loc + '/' + id
+            local_cache_dir = self.local_cache_dir
+
             for filePath in fileList:
                 ds = xr.open_dataset(cur_download_loc + '/' + filePath)
                 
@@ -409,22 +523,19 @@ class MerraService:
                     if(vname == 'time_bnds'):
                         continue
                     temp_ds = ds[vname].to_dataset()
-
                     # Saving the file
                     dateStr = ds.attrs['Filename'].split('.')[2]
                     fileNameToStore = self.generateFileName(ds.ShortName,dateStr,vname)
                     zarrFileList.append(fileNameToStore)
 
-                    # AWS S3 path
-                    # s3_path = 's3://your_data_path/zarr_example' 
-                    # Initilize the S3 file system
-                    # s3 = s3fs.S3FileSystem()
-                    # store = s3fs.S3Map(root=s3_path, s3=s3, check=False)
-
                     try:
-                        encoding = {vname: {'compressor': compressor}}
-                        temp_ds.to_zarr(store=cur_download_loc + '/' + fileNameToStore, encoding=encoding, consolidated=True)
-                        # zarrFileList.append(fileNameToStore)
+                        if not os.path.exists(local_cache_dir + '/' + fileNameToStore):
+                            # Stores to local cache
+                            encoding = {vname: {'compressor': compressor}}
+                            temp_ds.to_zarr(store=local_cache_dir + '/' + fileNameToStore, encoding=encoding, consolidated=True)
+
+                            # Upload to S3 bucket
+                            # PLACEHOLDER
                     except:
                         print('File already exists')
 
@@ -442,53 +553,60 @@ class MerraService:
                 return
             
             cur_download_loc = self.download_loc + '/' + id
+            local_cache_dir = self.local_cache_dir
+
             if(format == 'COG'):
-                cog_ds = xr.open_rasterio(cur_download_loc + '/' + fileNameList[0])
+                cog_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[0])
                 lons = cog_ds['x']
                 lats = cog_ds['y']
                 T2M = cog_ds.values
-
-                for index in range(1,len(cur_download_loc + '/' + fileNameList)):
-                    temp_ds = xr.open_rasterio(fileNameList[index])
+                for index in range(1,len(fileNameList)):
+                    temp_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[index])
                     temp_T2M = temp_ds.values
                     T2M = np.vstack((T2M,temp_T2M))
             else:
-                zarr_ds = xr.open_zarr(store=cur_download_loc + '/' + fileNameList[0], consolidated=True)
+                zarr_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[0], consolidated=True)
                 lons = zarr_ds[varName]['lon'][:]
                 lats = zarr_ds[varName]['lat'][:]
                 T2M = zarr_ds[varName][:, :, :]
-
-                left,bottom,right,top = zarr_ds.rio.bounds()
-
+                # left,bottom,right,top = zarr_ds.rio.bounds()
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_zarr(store=cur_download_loc + '/' + fileNameList[index], consolidated=True)
+                    temp_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[index], consolidated=True)
                     temp_T2M = temp_ds[varName][:, :, :]
                     T2M = np.vstack((T2M,temp_T2M))
 
             # Take mean of all days data
             T2M = np.mean(T2M,axis=0)
 
-            fig = plt.figure(figsize=(18,12))
+            fig = plt.figure(num=id,figsize=(18,12))
+            ax = fig.add_subplot(111)
             ax = plt.axes(projection=ccrs.PlateCarree())
             ax.set_global()
             ax.coastlines(resolution="110m",linewidth=1)
             ax.gridlines(draw_labels=True,linestyle='--',color='black')
-
             # Set contour levels, then draw the plot and a colorbar
             clevs = np.arange(215,315,5)
             
             if(T2M.ndim == 3):
-                cont=plt.contourf(lons, lats, T2M[0], clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
+                cont=ax.contourf(lons, lats, T2M[0], clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
             else:
-                cont=plt.contourf(lons, lats, T2M, clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
+                cont=ax.contourf(lons, lats, T2M, clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
             
-            plt.title(f'MERRA-2 - {varName}', size=14)
-            cb = plt.colorbar(ax=ax, orientation="vertical", pad=0.02, aspect=24, shrink=0.55)
+            ax.set_title(f'MERRA-2 - {varName}', size=14)
+            cb = fig.colorbar(cont, ax=ax, orientation="vertical", pad=0.02, aspect=24, shrink=0.55)
             cb.set_label('K',size=12,rotation=0,labelpad=15)
             cb.ax.tick_params(labelsize=10)
 
-            # AWS S3 UPLOAD
-            plt.savefig(f'{cur_download_loc}/image.{varName}.{int(time.time())}.png')
+            if not os.path.exists(cur_download_loc):
+                os.mkdir(cur_download_loc)
+            # Save as Image
+            outputFile = f'{cur_download_loc}/image.{varName}.{int(time.time())}.png'
+            plt.savefig(outputFile)
+            
+            # Upload to S3 bucket
+            # PLACEHOLDER
+
+            return outputFile
         except Exception as e:
             errorMessage = 'error while image plotting: {}'.format(e)
             log.error(errorMessage)
@@ -498,6 +616,7 @@ class MerraService:
     def visualizeMerra2GIF(self, id, fileNameList, varName, format):
         try:
             cur_download_loc = self.download_loc + '/' + id
+            local_cache_dir = self.local_cache_dir
 
             def animate(i,varToShow,lons,lats,clevs,varName):
                 if(varToShow.ndim == 4):
@@ -520,138 +639,100 @@ class MerraService:
                 return
             
             if(format == 'COG'):
-                cog_ds = xr.open_rasterio(cur_download_loc + '/' + fileNameList[0])
+                cog_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[0])
                 lons = cog_ds['x']
                 lats = cog_ds['y']
                 T2M = cog_ds.values
-
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_rasterio(cur_download_loc + '/' + fileNameList[index])
+                    temp_ds = xr.open_rasterio(local_cache_dir + '/' + fileNameList[index])
                     temp_T2M = temp_ds.values
                     T2M = np.vstack((T2M,temp_T2M))
             else:
-                zarr_ds = xr.open_zarr(store=cur_download_loc + '/' + fileNameList[0], consolidated=True)
+                zarr_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[0], consolidated=True)
                 lons = zarr_ds[varName]['lon'][:]
                 lats = zarr_ds[varName]['lat'][:]
                 T2M = zarr_ds[varName][:, :, :]
-
                 for index in range(1,len(fileNameList)):
-                    temp_ds = xr.open_zarr(store=cur_download_loc + '/' + fileNameList[index], consolidated=True)
+                    temp_ds = xr.open_zarr(store=local_cache_dir + '/' + fileNameList[index], consolidated=True)
                     temp_T2M = temp_ds[varName][:, :, :]      
                     T2M = np.vstack((T2M,temp_T2M))
 
             # Set the figure size, projection, and extent
             Nt=len(T2M)
-            fig = plt.figure(figsize=(18,12))
+            fig = plt.figure(num=id,figsize=(18,12))
+            ax = fig.add_subplot(111)
             ax = plt.axes(projection=ccrs.PlateCarree())
             ax.set_global()
             ax.coastlines(resolution="110m",linewidth=1)
-            ax.gridlines(linestyle='--',color='black')
+            ax.gridlines(draw_labels=True,linestyle='--',color='black')
 
             # Set contour levels, then draw the plot and a colorbar
             clevs = np.arange(215,315,5)
             if(T2M.ndim == 4):
-                cont=plt.contourf(lons, lats, T2M[0][0], clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
+                cont=ax.contourf(lons, lats, T2M[0][0], clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
             elif(T2M.ndim == 3):
-                cont=plt.contourf(lons, lats, T2M[0], clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
+                cont=ax.contourf(lons, lats, T2M[0], clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
             else:
-                cont=plt.contourf(lons, lats, T2M, clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
+                cont=ax.contourf(lons, lats, T2M, clevs, transform=ccrs.PlateCarree(),cmap=plt.cm.jet)
 
-            plt.title(f'MERRA-2 - {varName}', size=14)
-            cb = plt.colorbar(ax=ax, orientation="vertical", pad=0.02, aspect=24, shrink=0.55)
+            ax.set_title(f'MERRA-2 - {varName}', size=14)
+            cb = fig.colorbar(cont, ax=ax, orientation="vertical", pad=0.02, aspect=24, shrink=0.55)
             cb.set_label('K',size=12,rotation=0,labelpad=15)
             cb.ax.tick_params(labelsize=10) 
             anim = animation.FuncAnimation(fig, func=partial(animate,varToShow=T2M,lons=lons,lats=lats,clevs=clevs,varName=varName), frames=Nt, interval=500, repeat=True, blit=False)
 
+            if not os.path.exists(cur_download_loc):
+                os.mkdir(cur_download_loc)
             # Save as GIF
-            anim.save(f'{cur_download_loc}/animation.{varName}.{int(time.time())}.gif', writer='pillow')
+            outputFile = f'{cur_download_loc}/animation.{varName}.{int(time.time())}.gif'
+            anim.save(outputFile, writer='pillow')
+
+            # Upload to S3 bucket
+            # PLACEHOLDER
+            
+            return outputFile
         except Exception as e:
             errorMessage = 'error while gif plotting: {}'.format(e)
             log.error(errorMessage)
             raise Exception(errorMessage)
 
     # ===================================================================================================================
-    def generateFileName(self, shortName, dateStr, vname):
-        parts = []
-        parts.append('MERRA2')
-        parts.append(shortName)
-        parts.append(dateStr)
-        parts.append(vname)
-        fileName = '.'.join(parts)
-        return fileName
+    def generatePayload(self, action="elves.ingetor.getdata", comments="500: Internal Server Error", encoded_image="",
+                        event_type="elves.registry.applog.in", id="", source="ingestor", specversion="1.0", status="2",
+                        subject="", user="", datacontenttype="application/json"):
+        return {
+            "specversion":     specversion,
+            "type":            event_type,
+            "source":          source,
+            "subject":         subject,
+            "id":              id,
+            "time":            str(datetime.datetime.now()),
+            "datacontenttype": datacontenttype,
+            "data":            {
+                "action":   action,
+                "id":       id,
+                "userId":   user,
+                "image":    encoded_image,
+                "comments": comments,
+                "status":   status
+                }
+            }
 
-    def createDateFromFileName(self, fileNameStr):
-        fileNameStr = fileNameStr.split('.')[2]
-        recalcDate = []
-        recalcDate.append(fileNameStr[0:4])
-        recalcDate.append(fileNameStr[4:6])
-        recalcDate.append(fileNameStr[6:8])
-        dateStr = '-'.join(recalcDate)
-        return dateStr
+    def generate_result_payload(self, request_id, status, comments, results_s3_key=None):
+        data = {"requestId": request_id, "status": status, "comments": comments}
+        if results_s3_key is not None:
+            data["resultS3Key"] = results_s3_key
+        return self.generate_payload(request_id, data)
 
-    # ===================================================================================================================
-    def isFilesPresentInCache(self, id, product, startDate, endDate, varNames, format):
-        try:
-            present = []
-
-            shortName = product.split('_')[0]
-
-            sd = [int(x) for x in startDate.split("-")]
-            ed = [int(x) for x in endDate.split("-")]
-            start_date = date(sd[0], sd[1], sd[2]) 
-            end_date = date(ed[0], ed[1], ed[2])
-
-            delta = end_date - start_date   # returns timedelta
-
-            newRequestParams = []
-            for vname in varNames:
-                temp = []
-                for i in range(delta.days + 1):
-                    day = start_date + timedelta(days=i)
-                    dateStr = day.strftime('%Y%m%d')
-
-                    searchString = self.generateFileName(shortName,dateStr,vname)
-                    if(format == 'COG'):
-                        searchString = searchString + '.tif'
-                    print(searchString)
-                    cur_download_loc = self.download_loc + '/' + id
-                    if os.path.exists(cur_download_loc):
-                        file_exists = exists(cur_download_loc + '/' + searchString)
-                        print(file_exists)
-                        if(file_exists):
-                            present.append(searchString)
-                            if(len(temp) != 0):
-                                subsetStartDate = self.createDateFromFileName(temp[0])
-                                subsetEndDate = self.createDateFromFileName(temp[-1])
-                                newRequestParams.append({
-                                    'startDate': subsetStartDate,
-                                    "endDate": subsetEndDate,
-                                    "vname": [vname]
-                                })
-                                temp = []
-                        else:
-                            temp.append(searchString)
-
-            if(len(present) == 0 and len(newRequestParams) == 0):
-                newRequestParams.append({
-                    'startDate': startDate,
-                    "endDate": endDate,
-                    "vname": varNames
-                })
-            elif(len(temp) != 0):
-                subsetStartDate = self.createDateFromFileName(temp[0])
-                subsetEndDate = self.createDateFromFileName(temp[-1])
-                newRequestParams.append({
-                    'startDate': subsetStartDate,
-                    "endDate": subsetEndDate,
-                    "vname": [vname]
-                })
-
-            print("amol",newRequestParams)
-            return present,newRequestParams
-        except Exception as e:
-            errorMessage = 'error while checking local data: {}'.format(e)
-            log.error(errorMessage)
-            raise Exception(errorMessage)
-
+    def generate_payload(self, request_id, data):
+        return {
+            "specversion":     '1.0',
+            "type":            'elves.ingestor.getdata',
+            "source":          'ingestor',
+            "subject":         'ingestor.getdata',
+            "id":              request_id,
+            "time":            str(int(datetime.now().timestamp())),
+            "datacontenttype": 'application/json',
+            "data":            data
+        }
     # ===================================================================================================================

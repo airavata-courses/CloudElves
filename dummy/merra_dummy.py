@@ -1,3 +1,6 @@
+import os, sys
+sys.path.insert(0, os.path.abspath(".."))
+
 from services.merra_services import MerraService
 
 MerraService.startMerraService('6e187992-6cb3-4e3e-9133-4efaee37a69a ', {
@@ -5,6 +8,6 @@ MerraService.startMerraService('6e187992-6cb3-4e3e-9133-4efaee37a69a ', {
                     "startDate": "2022-01-01",
                     "endDate": "2022-01-02",
                     "varNames": ["T"],
-                    "outputType": "gif",
+                    "outputType": "image",
                     "userId": "asangar"
                 })
