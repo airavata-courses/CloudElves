@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0acf1be-3c42-4fa1-a7e2-6e7d0736cc89" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/gateway-deployment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/gateway-deployment.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/ingestor-deployment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/ingestor-deployment.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
