@@ -1,3 +1,4 @@
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -16,14 +17,32 @@ spec:
         app: gateway
     spec:
       containers:
-      - name: gateway
-        image: "cloudelves/gateway:TAG"
-        imagePullPolicy: Always
-        ports:
         - name: gateway
-          containerPort: 8080
-          protocol: TCP
+          image: docker.io/madhavankr/elves-gateway:latest
+          imagePullPolicy: Always
+          env:
+          - name: server.port
+            value: "8080"
+          - name: rmq.host
+            value: "149.165.157.38"
+          - name: rmq.port
+            value: "30006"
+          - name: ingestor.host
+            value: "149.165.157.38"
+          - name: ingestor.port
+            value: "30002"
+          - name: registry.host
+            value: "149.165.157.38"
+          - name: registry.port
+            value: "30001"
+
+          ports:
+          - name: gateway
+            containerPort: 8080
+            protocol: TCP
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -35,6 +54,7 @@ spec:
     app: gateway
   ports:
     - protocol: TCP
-      port: 8001
-      targetPort: 8001
-      nodePort: 30021
+      port: 8080
+      targetPort: 8080
+      nodePort: 30005
+

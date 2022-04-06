@@ -23,8 +23,6 @@ spec:
           - mountPath: /data
             name: ingestor-volume
           env:
-          - name: rmq_service_name
-            value: local
           - name: rmq_host
             value: "149.165.157.38"
           - name: rmq_port
@@ -33,14 +31,39 @@ spec:
             value: "guest"
           - name: rmq_password
             value: "guest"
-          - name: download_path
+          - name: download_loc
             value: "/data"
+          - name: redis_host
+            value: "149.165.157.38"
+          - name: redis_port
+            value: "30011"
+          - name: registry_host
+            value: "http://149.165.157.38:30001"
+          - name: s3_endpoint_url
+            value: "http://149.165.157.38:30042"
           ports:
           - name: ingestor
-            containerPort: 8080
+            containerPort: 8083
             protocol: TCP
       volumes:
       - name: ingestor-volume
         hostPath:
           # directory location on host
-          path: "/home/madhkr/Downloads"
+          path: /
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingestor-service
+  namespace: elves
+spec:
+  selector:
+    app: ingestor
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+      nodePort: 30002
