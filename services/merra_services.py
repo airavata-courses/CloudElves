@@ -14,6 +14,8 @@ from time import sleep
 
 import cartopy.crs as ccrs
 import certifi
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,10 +24,9 @@ import urllib3
 import xarray as xr
 import zarr
 
-from commons import utils
-
 warnings.filterwarnings("ignore")
 
+from commons import utils
 from producer import publisher
 from services.registry_services import RegistryServices
 from services.s3_services import S3Service
@@ -39,32 +40,32 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 class MerraService:
-
     # ===================================================================================================================
     def __init__(self) -> None:
-        self.results_bucket = os.getenv('nexrad_results_bucket') or 'results'
-        self.download_loc = os.getenv('download_loc') or './merra_downloads'
-        self.registry_queue = os.getenv('registry_op_queue') or 'elves.registry.ingestor.in'
-
-        # local cache setting
+        self.results_bucket = os.getenv('merra_results_bucket') or 'results'
+        self.download_loc = os.getenv('merra_download_loc') or './merra_downloads'
         self.local_cache_dir = os.getenv('l1_cache_loc') or './local_cache'
         self.l1_cache_capacity = os.getenv('l1_cache_capacity') or 10
-        if self.local_cache_dir[len(self.local_cache_dir) - 1] == '/':
-            self.local_cache_dir = self.local_cache_dir[:len(self.local_cache_dir) - 1]
-        if not os.path.exists(self.local_cache_dir):
-            os.mkdir(self.local_cache_dir)
+        self.registry_queue = os.getenv('registry_op_queue') or 'elves.registry.ingestor.in'
+        self.format = os.getenv('data_conversion_format') or 'zarr'
         self.mutex = threading.Lock()
-
-        self.redis_service = RedisService()
+        # Downloads
         if self.download_loc[len(self.download_loc) - 1] == '/':
             self.download_loc = self.download_loc[:len(self.download_loc) - 1]
         if not os.path.exists(self.download_loc):
             os.mkdir(self.download_loc)
+        # Local Caches
+        if self.local_cache_dir[len(self.local_cache_dir) - 1] == '/':
+            self.local_cache_dir = self.local_cache_dir[:len(self.local_cache_dir) - 1]
+        if not os.path.exists(self.local_cache_dir):
+            os.mkdir(self.local_cache_dir)
+        # Services
+        self.redis_service = RedisService()
         self.s3Service = S3Service(self.results_bucket)
         self.publisher = publisher.Publisher()
         self.registryService = RegistryServices()
-        self.format = os.getenv('data_conversion_format') or 'zarr'
 
+    # ===================================================================================================================
     def startMerraService(self, id, data):
         try:
             product = data['product']
@@ -72,7 +73,7 @@ class MerraService:
             endDate = data['endDate']
             varNames = data['varNames']
             outputType = data['outputType'] or 'image'
-
+            log.info('parameters for request {} is {}'.format(id, data))
             format = self.format
 
             locallyPresentMap = self.checkL1Cache(id, product, startDate, endDate, varNames, format)
@@ -85,11 +86,10 @@ class MerraService:
                     fileList.append(locallyPresentMap[localDate])
             log.info('files present in L1 cache: {}'.format(fileList))
             log.info('files downloading from l2 cache: {}'.format(dateList))
-            zarrFileList = self.check_and_download(dateList, product, varNames[0])
+            zarrFileList = self.check_and_download(id, dateList, product, varNames[0])
             zarrFileList += fileList
             log.info('zarrFileList = {}'.format(zarrFileList))
 
-            print("zf", zarrFileList)
             for vname in varNames:
                 vizFiles = []
                 for zf in zarrFileList:
@@ -112,10 +112,9 @@ class MerraService:
                 log.info('successfully uploaded result to s3 for id {}'.format(id))
                 success_payload = utils.generate_result_payload(id, 1, 'successfully completed request', id)
                 self.publisher.publish(self.registry_queue, success_payload)
-            # SET REGISTRY - Job Completed
 
-            # if(dataConvStatus == "Success"):
-            #     deleteLocalData(urls)
+                log.info("Results:\n fileList= {}\n zarrFileList= {}\n imageFileName= {}".format(fileList, zarrFileList, imageFileName))
+                return fileList, zarrFileList, imageFileName
         except Exception as e:
             error_message = 'error while processing request {}: {}'.format(id, e)
             log.error(error_message)
@@ -123,14 +122,24 @@ class MerraService:
             error_payload = utils.generate_result_payload(id, -1, error_message)
             self.publisher.publish(self.registry_queue, error_payload)
             log.error('processing request {} failed. updated registry'.format(id))
+        finally:
+            self.cleanup(id)
+            self.updateL1Cache()
 
+    # ===================================================================================================================
     def extractDateAndProduct(self, fileName):
-        nameComponents = fileName.split('.')
+        nameComponents = fileName.split('/')
+        log.info('after splitting on / {}'.format(nameComponents))
+        nameComponents = nameComponents[len(nameComponents) - 1]
+        nameComponents = nameComponents.split('.')
+        log.info('after splitting on . {}'.format(nameComponents))
         year, month, day = nameComponents[2][:4], nameComponents[2][4:6], nameComponents[2][6:8]
+        log.info('{}-{}-{}'.format(year, month, day))
+        log.info('{}'.format(nameComponents[3]))
         return '{}-{}-{}'.format(year, month, day), nameComponents[3]
 
-    def check_and_download(self, dateList, product, varName):
-        log.info('downloading from mera for product: {} and variable: {} for dates: {}'.format(product, varName, dateList))
+    def check_and_download(self, id, dateList, product, varName):
+        format = self.format
         lockList = []
         try:
             completedData, inProgressData, unavailableData = self.registryService.get_mera_data(dateList, varName)
@@ -152,7 +161,6 @@ class MerraService:
 
             # download files from local s3
             log.info('downloading files from local s3 for request id: {}'.format(id))
-            log.info('type(completedData): {}'.format(type(completedData)))
             cur_download_loc = self.local_cache_dir
             completedFileList = []
             for key in completedData:
@@ -174,7 +182,7 @@ class MerraService:
                 expirationTime = int(datetime.datetime.now().timestamp() + 180) * 1000
                 update_request = utils.generate_mera_data_update_payload(id, dataId, unavailableDate, varName, 1, expirationTime=expirationTime)
                 self.registryService.update_nexrad_registry('mera', update_request)
-                jobId, response = self.startMerraDataDownload(product, unavailableDate, unavailableDate, varName)
+                jobId, response = self.startMerraDataDownload(product, unavailableDate, unavailableDate, [varName])
                 status = self.checkMerraRequestStatus(jobId, response)
                 if status == 'Succeeded':
                     urls = self.getResults(jobId)
@@ -193,11 +201,15 @@ class MerraService:
             log.info('zarrFileList: {}'.format(zarrFileList))
             log.info('uploading files to s3')
             for i, zarrFileName in enumerate(zarrFileList):
-                zarrFilePath = cur_download_loc + '/' + zarrFileName
-                zarrZipFileName = shutil.make_archive(zarrFilePath + '-zip', 'zip', zarrFilePath)
-                self.s3Service.upload_file(zarrZipFileName, zarrFileName)
+                # Update zarrFilePath correctly as zarrFileName is a file path now and storing in local_cache
+                zarrFilePath = zarrFileName
+                actFileName = zarrFileName.split('/')
+                actFileName = actFileName[len(actFileName)-1]
+                zarrZipFileName = shutil.make_archive(actFileName + '-zip', 'zip', zarrFilePath)
+                self.s3Service.upload_file(zarrZipFileName, actFileName)
+                os.remove(zarrZipFileName)
                 fileDate, fileVar = self.extractDateAndProduct(zarrFileName)
-                update_request = utils.generate_mera_data_update_payload(id, unavailableDataIds[i], fileDate, fileVar, 2, s3Keys=zarrFileName)
+                update_request = utils.generate_mera_data_update_payload(id, unavailableDataIds[i], fileDate, fileVar, 2, s3Keys=actFileName)
                 self.registryService.update_nexrad_registry('mera', update_request)
             return zarrFileList + completedFileList
         except Exception as e:
@@ -209,6 +221,8 @@ class MerraService:
                 log.info('releasing lock {}'.format(lock.key))
                 self.redis_service.release_lock(lock)
 
+    # ===================================================================================================================
+    # Helper Functions
     def generateFileName(self, shortName, dateStr, vname):
         parts = []
         parts.append('MERRA2')
@@ -347,9 +361,9 @@ class MerraService:
         data_req = []
         for i in range(len(varNames)):
             data_req.append({
-                                'datasetId': product,
-                                'variable':  varNames[i]
-                                })
+                'datasetId': product,
+                'variable':  varNames[i]
+                })
 
         # Construct JSON WSP request for API method: subset
         subset_request = {
@@ -702,3 +716,5 @@ class MerraService:
             errorMessage = 'error while gif plotting: {}'.format(e)
             log.error(errorMessage)
             raise Exception(errorMessage)
+
+    # ===================================================================================================================

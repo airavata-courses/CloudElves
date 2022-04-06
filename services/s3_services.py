@@ -69,7 +69,7 @@ class S3Service:
             object_name = os.path.basename(file_name)
         try:
             response = self.s3_client.upload_file(file_name, self.bucket_name, object_name)
-            log.info('successfully uploaded file with s3 key: {}'.format(object_name))
+            log.info('successfully uploaded file {} with s3 key: {}'.format(file_name, object_name))
         except ClientError as e:
             errorMessage = 'error while uploading the file {} to bucket {}: {}'.format(file_name, self.bucket_name, e)
             log.info(errorMessage)
@@ -77,6 +77,7 @@ class S3Service:
 
     def download_file(self, file_name, download_path):
         try:
+            log.info('downloading s3 key {} to local path {}'.format(file_name, download_path))
             self.s3_client.download_file(self.bucket_name, file_name, download_path)
         except ClientError as e:
             errorMessage = "error while downloading the file {} from bucket {}: {}".format(file_name, self.bucket_name, e)

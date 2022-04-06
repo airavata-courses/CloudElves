@@ -2,10 +2,14 @@ import datetime
 import os
 import shutil
 import uuid
-from datetime import datetime
-
+import matplotlib
 import nexradaws
 import pyart
+
+from datetime import datetime
+
+matplotlib.use('Agg')
+
 from matplotlib import pyplot as plt
 
 from producer import publisher
