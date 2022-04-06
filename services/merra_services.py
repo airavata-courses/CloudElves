@@ -130,6 +130,7 @@ class MerraService:
         return '{}-{}-{}'.format(year, month, day), nameComponents[3]
 
     def check_and_download(self, dateList, product, varName):
+        log.info('downloading from mera for product: {} and variable: {} for dates: {}'.format(product, varName, dateList))
         lockList = []
         try:
             completedData, inProgressData, unavailableData = self.registryService.get_mera_data(dateList, varName)
