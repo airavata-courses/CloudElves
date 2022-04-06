@@ -2,12 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ingestor-service
+  namespace: elves
 spec:
   selector:
     app: ingestor
   type: NodePort
   ports:
     - protocol: TCP
-      port: 8001
-      targetPort: 8001
+      port: 8080
+      targetPort: 8080
       nodePort: 30002

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-redis-config
+  namespace: elves
+data:
+  redis-config: ""
