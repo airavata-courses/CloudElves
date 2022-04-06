@@ -1,9 +1,4 @@
 spring:
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: elves
-#    password: cloudelves
   profiles:
     active: default, cloud
 
@@ -15,11 +10,11 @@ server:
   port: 8082
 
 ingestor:
-  host: ingestor
-  port: 8000
+  host: localhost
+  port: 8083
+  serviceName: INGESTOR_SERVICE
   apiPath:
-    getData: /getdata?year={year}&month={month}&day={day}&radar={radar}&id={id}&starttime={startTime}&endtime={endTime}
-    getImage: /getimage
+    getImage: /image
 
 forecaster:
   host: forecaster
@@ -31,7 +26,7 @@ forecaster:
 registry:
   host: localhost
   port: 8080
-  serviceName: REGISTRY_SERVICE
+  serviceName: local
   apiPath:
     getUser: /getUser?userId={userId}
     getAllUsers: /getUsers
@@ -50,7 +45,8 @@ rmq:
   output:
     registry: elves.registry.applog.in
     userrequest: elves.registry.userrequest.in
-    nexrad: elves.ingestor.data.in
+    nexrad: elves.ingestor.nexrad.data.in
+    mera: elves.ingestor.mera1.data.in
 
 google:
   tokenUrl: https://oauth2.googleapis.com/tokeninfo?id_token={token}

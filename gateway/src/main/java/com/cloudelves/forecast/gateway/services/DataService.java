@@ -4,8 +4,11 @@ import com.cloudelves.forecast.gateway.constants.Constants;
 import com.cloudelves.forecast.gateway.exception.BaseException;
 import com.cloudelves.forecast.gateway.model.events.CreatePlotRequestEvent;
 import com.cloudelves.forecast.gateway.model.events.IngestorGetDataEvent;
+import com.cloudelves.forecast.gateway.model.events.MeraGetDataEvent;
 import com.cloudelves.forecast.gateway.model.ingestor.request.CreatePlotRequest;
+import com.cloudelves.forecast.gateway.model.ingestor.request.MeraRequest;
 import com.cloudelves.forecast.gateway.model.ingestor.request.NexradRequest;
+import com.cloudelves.forecast.gateway.model.ingestor.response.ImageResponse;
 import com.cloudelves.forecast.gateway.model.registry.response.PlotRequestResponse;
 import com.cloudelves.forecast.gateway.model.registry.response.UserDetailsResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +39,8 @@ public class DataService {
     @Value("${rmq.output.nexrad}")
     private String nexradQueue;
 
-//    @Value("${rmq.output.mera}")
-//    private String meraQueue;
+    @Value("${rmq.output.mera}")
+    private String meraQueue;
 
     @Value("${rmq.output.userrequest}")
     private String userrequestQueue;
@@ -85,6 +88,7 @@ public class DataService {
         return requestId;
     }
 
+
     public String sendNexradPlotRequest(String userId, NexradRequest nexradRequest) throws BaseException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("day", nexradRequest.getDay());
@@ -100,6 +104,33 @@ public class DataService {
         log.info("created nexrad request {} on ingestor", requestId);
         return requestId;
     }
+
+    public Map<String, String> sendMeraPlotRequest(String userId, MeraRequest meraRequest) throws BaseException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("product", meraRequest.getProduct());
+        parameters.put("startDate", meraRequest.getStartDate());
+        parameters.put("endDate", meraRequest.getEndDate());
+        parameters.put("outputType", meraRequest.getOutputType());
+        String timestamp = String.valueOf(new Date().getTime());
+        Map<String, String> requestIdMap = new HashMap<>();
+        for (String var : meraRequest.getVarNames()) {
+            List<String> singleVarList = Collections.singletonList(var);
+            MeraRequest modifiedMeraRequest = MeraRequest.builder().startDate(meraRequest.getStartDate()).endDate(meraRequest.getEndDate())
+                                                         .outputType(meraRequest.getOutputType()).product(meraRequest.getProduct())
+                                                         .varNames(singleVarList).build();
+            meraRequest.setVarNames(singleVarList);
+            parameters.put("variable", var);
+            String requestId = sendCreatePlotRequest(userId, "mera", parameters);
+            MeraGetDataEvent ingestorEvent = MeraGetDataEvent.builder().id(requestId).source(Constants.SOURCE_GATEWAY).time(timestamp)
+                                                             .type(Constants.INGESTOR_GET_DATA).data(modifiedMeraRequest).build();
+            rmqProducer.produceMessage(meraQueue, ingestorEvent);
+            requestIdMap.put(var, requestId);
+        }
+
+        log.info("created mera request {} on ingestor", requestIdMap);
+        return requestIdMap;
+    }
+
 
     public PlotRequestResponse getRequestById(String id) throws BaseException {
         Map<String, String> requestParams = Collections.singletonMap("id", id);

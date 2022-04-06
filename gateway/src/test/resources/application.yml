@@ -6,8 +6,9 @@ server:
   port: 8082
 
 ingestor:
-  host: localhost
-  port: 8083
+  host: 149.165.157.38
+  port: 30002
+  serviceName: local
   apiPath:
     getImage: /image
 
@@ -19,17 +20,16 @@ forecaster:
     storm: /stormclustering
 
 registry:
-  host: localhost
-  port: 8080
+  host: 149.165.157.38
+  port: 30001
   serviceName: local
   apiPath:
     getUser: /getUser?userId={userId}
     getAllUsers: /getUsers
     addUser: /addUser
-    getAppLog: /getAppLog?userId={userId}
-    addAppLog: /addAppLog
-    getLogById: /getLogs?id={id}
-    getPlot: /getPlot?id={id}
+    getEvents: /getEvents?userId={userId}
+    getHistory: /getUserRequests?userId={userId}
+    getRequestById: /getRequestById?id={id}
 
 rmq:
   exchange: elvesExchange
@@ -39,8 +39,10 @@ rmq:
   username: guest
   password: guest
   output:
-    registry: elves.registry.eventlog.in
-    ingestor: elves.ingestor.data.in
+    registry: elves.registry.applog.in
+    userrequest: elves.registry.userrequest.in
+    nexrad: elves.ingestor.nexrad.data.in
+    mera: elves.ingestor.mera1.data.in
 
 google:
   tokenUrl: https://oauth2.googleapis.com/tokeninfo?id_token={token}

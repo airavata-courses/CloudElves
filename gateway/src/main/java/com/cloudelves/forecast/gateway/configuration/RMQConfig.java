@@ -90,8 +90,13 @@ public class RMQConfig {
     }
 
     @Bean(name = "ingestorQueue")
-    public Queue createUserDetailsQueue(@Value("${rmq.output.ingestor}") String getDataQueue) {
-        return new Queue(getDataQueue, true);
+    public Queue createNexradQueue(@Value("${rmq.output.nexrad}") String nexradQueue) {
+        return new Queue(nexradQueue, true);
+    }
+
+    @Bean(name = "meraQueue")
+    public Queue createMeraQueue(@Value("${rmq.output.mera}") String meraQueue) {
+        return new Queue(meraQueue, true);
     }
 
     @Bean(name = "exchange")
@@ -101,6 +106,11 @@ public class RMQConfig {
 
     @Bean(name = "appLogQueueBinding")
     public Binding createAppLogBinding(DirectExchange directExchange, @Qualifier("ingestorQueue") Queue queue) {
+        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
+    }
+
+    @Bean(name = "meraQueueBinding")
+    public Binding createMeraQueueBinding(DirectExchange directExchange, @Qualifier("meraQueue") Queue queue) {
         return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
     }
 }
