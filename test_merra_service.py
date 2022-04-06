@@ -25,13 +25,13 @@ class TestMerraService(TestCase):
         
         cur_download_loc = os.getenv('merra_download_loc') + '/' + self.id
         if os.path.exists(cur_download_loc):
-          fileListToCheck = ['MERRA2_400.tavg1_2d_slv_Nx.20220101.SUB.nc', 'MERRA2_400.tavg1_2d_slv_Nx.20220102.SUB.nc']
-          convertedFilesToCheck = ['MERRA2.M2T1NXSLV.20220101.T2M', 'MERRA2.M2T1NXSLV.20220102.T2M']
-          outputFilesToCheck = ['pytest_merra/test_id1/image.T2M.']
+          fileListToCheck = []
+          convertedFilesToCheck = ['./local_cache/MERRA2.M2T1NXSLV.20220101.T2M', './local_cache/MERRA2.M2T1NXSLV.20220102.T2M']
+          imageFileNameToCheck = ['pytest_merra/test_id1/image.T2M.']
 
           self.assertEqual(fileListToCheck, fileList)
           self.assertEqual(convertedFilesToCheck, convertedFiles)
-          self.assertIn(outputFilesToCheck[0], outputFiles[0])
+          self.assertIn(imageFileNameToCheck[0], outputFiles[0])
         
         try:
           shutil.rmtree(os.getenv('merra_download_loc'))
