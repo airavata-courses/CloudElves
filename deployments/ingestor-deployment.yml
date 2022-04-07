@@ -38,7 +38,7 @@ spec:
           - name: redis_port
             value: "30011"
           - name: registry_host
-            value: "http://149.165.152.104:30001"
+            value: "http://149.165.157.38:30001"
           - name: s3_endpoint_url
             value: "http://149.165.157.38:30042"
           ports:

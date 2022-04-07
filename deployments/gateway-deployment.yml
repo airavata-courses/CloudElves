@@ -21,8 +21,8 @@ spec:
           image: "cloudelves/gateway:TAG"
           imagePullPolicy: Always
           env:
-          - name: registry.serviceName
-            value: REGISTRY_SERVICE
+          # - name: registry.serviceName
+          #   value: REGISTRY_SERVICE
           - name: server.port
             value: "8080"
           - name: rmq.host
@@ -30,11 +30,11 @@ spec:
           - name: rmq.port
             value: "30006"
           - name: ingestor.host
-            value: "149.165.152.104"
+            value: "149.165.157.38"
           - name: ingestor.port
             value: "30002"
           - name: registry.host
-            value: "149.165.152.104"
+            value: "149.165.157.38"
           - name: registry.port
             value: "30001"
 

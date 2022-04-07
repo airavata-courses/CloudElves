@@ -1,3 +1,35 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ui
+  namespace: elves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ui
+      app: ui
+  template:
+    metadata:
+      labels:
+        run: ui
+        app: ui
+    spec:
+      containers:
+        - name: ui
+          image: cloudelves/ui:TAG
+          imagePullPolicy: Always
+          env:
+          - name: REACT_APP_gateway_host
+            value: "149.165.157.38"
+          - name: REACT_APP_gateway_port
+            value: "30005"
+          ports:
+          - name: ui
+            containerPort: 3001
+            protocol: TCP
+---
 apiVersion: v1
 kind: Service
 metadata:
