@@ -2,13 +2,14 @@ import datetime
 import os
 import shutil
 import uuid
-import matplotlib
 import nexradaws
 import pyart
 
 from datetime import datetime
 
-matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('TKAgg')
+import pylab
 
 from matplotlib import pyplot as plt
 

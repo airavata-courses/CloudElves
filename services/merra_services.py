@@ -15,7 +15,9 @@ from time import sleep
 import cartopy.crs as ccrs
 import certifi
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use('TKAgg')
+import pylab
+
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,6 +25,7 @@ import requests
 import urllib3
 import xarray as xr
 import zarr
+import rioxarray as rio
 
 warnings.filterwarnings("ignore")
 
