@@ -11,7 +11,7 @@ log.setLevel(logging.INFO)
 
 class RedisService:
     def __init__(self):
-        redis_host, redis_port = os.getenv('redis_host') or 'localhost', os.getenv('redis_port') or '6379'
+        redis_host, redis_port = os.getenv('redis_host') or '149.165.157.38', os.getenv('redis_port') or '30011'
         redis_url = 'redis://{}:{}/1'.format(redis_host, redis_port)
         self.redis = Redis.from_url(redis_url)
         log.info('successfully connected to redis on {}'.format(redis_url))
