@@ -6,9 +6,9 @@ import nexradaws
 import pyart
 
 from datetime import datetime
-import tkinter
+# import tkinter
 import matplotlib
-matplotlib.use('TKAgg')
+matplotlib.use('Agg')
 import pylab
 
 from matplotlib import pyplot as plt
