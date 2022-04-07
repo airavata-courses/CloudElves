@@ -10,7 +10,7 @@ Consider modification suggested in [here](https://devops.stackexchange.com/quest
 
 Use this [link](https://kubernetes.io/docs/tasks/tools/) to install the command line **kubectl** for kubernetes.
 
-Download the kubeconfig file from [here](https://github.com/airavata-courses/CloudElves/blob/kubernetes/kubeconfig)
+For kubeconfig request any of the CloudElves team members [Madhavan](mailto:madhkr@iu.edu), [Amol](mailto:Asangar@iu.edu), or [Ayush](mailto:asanghavi@iu.edu)
 
 Then, to connect to kubernetes cluster, you can do either of the following:
 1) kubectl --kubeconfig=**/path/to/config-file** get all
