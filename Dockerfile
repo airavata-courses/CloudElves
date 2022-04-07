@@ -9,9 +9,9 @@ WORKDIR /ingestor
 # ==================================
 COPY ./requirements.txt /ingestor/requirements.txt
 
-RUN apt-get -y update
+# RUN apt-get -y update
 
-RUN python -m pip install --upgrade pip
+# RUN python -m pip install --upgrade pip
 RUN pip3 install numpy
 
 # Required for rioxarray
