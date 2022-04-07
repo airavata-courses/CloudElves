@@ -7,14 +7,26 @@ import { UserContext } from "./Context";
 // This function handles Sign in with Google.
 const Login = () => {
 	
-	const { setUser } = useContext(UserContext);
-	const onLoginSuccess = async (res) => {
-		console.log("Login Success:", res);
-		await setUser({"id_token":res.accessToken, "name":res.profileObj["givenName"], "email":res.profileObj["email"]});
-	};
+	const { userAuthDetails, setUser } = useContext(UserContext);
+	async function onLoginSuccess(res) {
+
+		console.log("Login Success:",res);
+		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getUser`;
+		await setUser({ "id_token": res.accessToken, "name": res.profileObj["givenName"], "email": res.profileObj["email"] });
+		fetch(url, {
+            method: "GET",
+            headers: {
+                "id_token": res.accessToken,
+                "name": res.profileObj["givenName"],
+                "email": res.profileObj["email"],
+            }
+        }).then(response => response.json())
+            .then(response => (response))
+            .catch(error => (error));
+	}
 
 	const onLoginFailure = (error) => {
-	console.log("Login failed:",error);
+	console.log("Login failed:", error);
 	};
 
   	return (

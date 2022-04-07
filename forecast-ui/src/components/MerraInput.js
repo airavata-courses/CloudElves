@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button, TextField, Select, MenuItem, InputLabel,Checkbox, ListItemText, OutlinedInput} from '@mui/material';
+import { Button, TextField, Select, MenuItem, InputLabel,Checkbox, ListItemText, OutlinedInput, FormControlLabel} from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { BugReportOutlined, BugReport} from '@mui/icons-material';
+import { BugReportOutlined, BugReport } from '@mui/icons-material';
 
 function MerraInput (props) {
     const params = props.params;
@@ -15,13 +15,27 @@ function MerraInput (props) {
 
     function inputHandler(event) {
         event.preventDefault();
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+        
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+        
+            return [year, month, day].join('-');
+        }
         props.inputCollector({
             "product": product,
-            "variables": variables,
-            "startDate": startDate,
-            "endDate": endDate,
-            "debug": debug
-        })
+            "varNames": variables,
+            "startDate": formatDate(startDate),
+            "endDate": formatDate(endDate),
+            // "debug": debug,
+            "outputType": "image"
+        });
     }
 
     return (
@@ -79,9 +93,9 @@ function MerraInput (props) {
                 required
                 >
                 {variableList.map((x, idx) => (
-                    <MenuItem key={idx} value={x["label"]}>
-                    <Checkbox checked={variables.indexOf(x["label"]) > -1} />
-                    <ListItemText primary={x["label"]} />
+                    <MenuItem key={idx} value={x[Object.keys(x)[0]]}>
+                    <Checkbox checked={variables.indexOf(x[Object.keys(x)[0]]) > -1} />
+                    <ListItemText primary={x[Object.keys(x)[0]]} />
                     </MenuItem>
                 ))}
                 </Select>
@@ -119,11 +133,10 @@ function MerraInput (props) {
                 </LocalizationProvider>
 
             </div>
-            <div style={{ "flexDirection":"row", margin:"15px" }}>
+            {/* <div style={{ "flexDirection":"row", margin:"15px" }}>
+                <FormControlLabel control={<Checkbox onClick={() => setDebug(!debug)} name="debug" icon={<BugReportOutlined />} checkedIcon={<BugReport />} />} label="Debug" />
                 
-                <Checkbox {...{inputProps: { 'aria-label': 'Checkbox demo' }}} onClick={() => setDebug(!debug)} name="debug" icon={<BugReportOutlined />} checkedIcon={<BugReport />} />
-                
-            </div>
+            </div> */}
             <div style={{ "flexDirection":"row", margin:"15px" }}>
                 
                 <Button variant="contained" type="submit">Find</Button>

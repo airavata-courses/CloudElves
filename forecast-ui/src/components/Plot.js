@@ -31,7 +31,7 @@ const Plot = () => {
                 return <div className="plot">Failed to fetch images for weather data for the selected inputs, please try again!</div>
             }
             else{
-                const image= `data:image/png;base64,`+state["img"];
+                const image= `data:image/png;base64, `+state["img_url"];
                 return(
                     <div><img src={image} alt="Weather plots"/></div>
                 )

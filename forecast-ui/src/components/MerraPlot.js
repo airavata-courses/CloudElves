@@ -1,15 +1,13 @@
-
-
 import React, { useContext } from 'react'
 import { MerraContext } from './Context';
 
 function MerraPlot() {
     const { state } = useContext(MerraContext);
-    console.log("In Plot:", state);
+    console.log("In Merra Plot:");
 
-    if (state["loading"]){
+    if (state["loading"]) {
         if (state["status_id"] === -1){
-            return <div className="plot">Failed to fetch weather data for the selected inputs, please try again!</div>
+            return <div className="plot">Failed to fetch UUID, please try again!</div>
         }
         else if (state["status_id"] === 1){
             console.log("Loading...")
@@ -19,20 +17,23 @@ function MerraPlot() {
             return <div className="plot">Failed to fetch UUID, please try again!</div>
         }
     }
-    else{
+    else {
         if (state["status_id"] === 0){
             return (<div>Please provide some inputs to get weather forecast.</div>)
         }
-        else if (state["status_id"] === 1){
-            if (state["status_img"] === -1){
-                return <div className="plot">Failed to fetch images for weather data for the selected inputs, please try again!</div>
-            }
-            else{
-                const image= `data:image/png;base64,`+state["img"];
-                return(
-                    <div><img src={image} alt="Weather plots"/></div>
-                )
-            }
+        else if (state["status_id"] === 1) {
+            console.log("Image retrieval complete:",state["status_img"]);
+            return (
+                <div>
+                    {Object.keys(state["status_img"]).map((id) => {
+                        console.log(state["status_img"][id]["status"], state["status_img"][id]["img_url"]);
+                        let image = `data:image/png;base64, ${state["status_img"][id]["img_url"]}`;
+                        if (state["status_img"][id]["status"] === 1) return <img src={image} alt="Merra plots" />
+                        else return <div>Error in gettig image</div>
+                    })}
+                </div>     
+            )
+
         }
         else {
             

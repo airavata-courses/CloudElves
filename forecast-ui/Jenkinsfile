@@ -20,9 +20,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "Checkout to Develop-ui"
-                git branch: 'Develop-ui',
+                git branch: 'ci/ui',
                 url: 'https://github.com/airavata-courses/CloudElves',
-                credentialsId: 'GitHub-Navkar'
+                credentialsId: 'MyGitHub'
             }
         }
         // stage('Local Build') {
@@ -43,17 +43,40 @@ pipeline {
                     dockerImage = docker.build imagename
                     }
                 }
-                
+
             }
         }
-        stage('Push to Dockerhub') {
-             
+        stage('Publish to Dockerhub') {
             steps{
                 script {
                     docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
                         dockerImage.push("$BUILD_NUMBER")
                         dockerImage.push('latest')
                     }
+                }
+            }
+        }
+         stage('Remove unused docker image') {
+            steps{
+                sh "docker rmi $imagename:$BUILD_NUMBER"
+                sh "docker rmi $imagename:latest"
+
+            }
+        }
+        stage('Checkout ansible deployments branch') {
+            steps {
+                echo "Checking out 'ansible deployments' branch"
+                sh 'git checkout ansible-k8s-deployments'
+            }
+        }
+        stage('Deploy to Jetstreams') {
+            environment {
+                SSH_PRIVATE_KEY = credentials('ssh_key_ansible_to_k8s')
+            }
+            steps {
+                sh 'pwd'
+                script{
+                    sh "ansible-playbook -i /etc/ansible-host-inventory playbooks/ui-playbook.yml --extra-vars \"version=$BUILD_NUMBER\" --private-key=$SSH_PRIVATE_KEY"
                 }
             }
         }

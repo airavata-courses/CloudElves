@@ -14,7 +14,8 @@ const Logs = () => {
 	const { userAuthDetails } = useContext(UserContext);
 
   	const getLogs = async () => {
-		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getLogs`;
+        // http://149.165.157.38:30005/getEvents?numItems=5
+		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getEvents?numItems=10`;
 		await fetch(url, {
 			method: "GET",
 				headers: {
@@ -26,7 +27,7 @@ const Logs = () => {
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log("--> user history retrieved!");
+				console.log("--> user logs retrieved!");
 				setLogs({"status": 1, "rows":data});
 			})
 			.catch((error) => {
@@ -51,10 +52,6 @@ const Logs = () => {
                                 <TableCell align="center" sx={{ width: "22%", border:"1px solid black"}}><b>Log ID</b></TableCell>
                                 <TableCell align="center" sx={{ width: "5%", border:"1px solid black"}}><b>User</b></TableCell>
                                 <TableCell align="center" sx={{ width: "8%", border:"1px solid black"}}><b>Service ID</b></TableCell>
-                                <TableCell align="center" sx={{ width: "8%", border:"1px solid black"}}><b>Action</b></TableCell>
-                                <TableCell align="center" sx={{ width: "10%", border:"1px solid black"}}><b>Timestamp</b></TableCell>
-                                <TableCell align="center" sx={{ width: "32%", border:"1px solid black"}}><b>Comments</b></TableCell>
-                                <TableCell align="center" sx={{ width: "5%", border:"1px solid black"}}><b>Status</b></TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody >
@@ -62,13 +59,9 @@ const Logs = () => {
                                 <TableRow
                                 key={row.id}
                                 >
-                                <TableCell align="left" sx={{ border:"1px solid black"}} >{row.id}</TableCell>
-                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.userId}</TableCell>
-                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.serviceId}</TableCell>
-                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.action}</TableCell>
-                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.timestamp}</TableCell>
-                                <TableCell sx={{ border:"1px solid black"}} >{row.comments}</TableCell>
-                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.status}</TableCell>
+                                <TableCell align="left" sx={{ border:"1px solid black"}} >{row.eventId}</TableCell>
+                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.eventName}</TableCell>
+                                <TableCell  align="center" sx={{ border:"1px solid black"}} >{row.eventTimestamp}</TableCell>
                                 </TableRow>
                                 ))}
                             </TableBody>
