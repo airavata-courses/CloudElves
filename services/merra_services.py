@@ -14,6 +14,7 @@ from time import sleep
 
 import cartopy.crs as ccrs
 import certifi
+import tkinter
 import matplotlib
 matplotlib.use('TKAgg')
 import pylab

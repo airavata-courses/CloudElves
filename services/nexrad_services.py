@@ -6,7 +6,7 @@ import nexradaws
 import pyart
 
 from datetime import datetime
-
+import tkinter
 import matplotlib
 matplotlib.use('TKAgg')
 import pylab
