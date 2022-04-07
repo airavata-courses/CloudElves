@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Run Tests') {
              steps {
-                dir('gateway') {
+                dir('registry') {
                     sh 'pwd'
                     sh './mvnw test'
                     }
