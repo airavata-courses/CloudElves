@@ -407,7 +407,7 @@ class MerraService:
 
         # Check on the job status after a brief nap
         while response['result']['Status'] in ['Accepted', 'Running']:
-            sleep(4)
+            sleep(2)
             response = self.get_http_data(status_request)
             status = response['result']['Status']
             percent = response['result']['PercentCompleted']
