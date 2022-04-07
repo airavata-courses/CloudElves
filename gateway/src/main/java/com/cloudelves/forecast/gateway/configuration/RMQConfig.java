@@ -99,6 +99,11 @@ public class RMQConfig {
         return new Queue(meraQueue, true);
     }
 
+    @Bean(name="userRequestQueue")
+    public Queue createUserRequestQueue(@Value("${rmq.output.userrequest}") String userRequestQueue) {
+        return new Queue(userRequestQueue, true);
+    }
+
     @Bean(name = "exchange")
     public DirectExchange createDirectExchange(@Value("${rmq.exchange}") String registryExchange) {
         return new DirectExchange(registryExchange);
@@ -113,4 +118,10 @@ public class RMQConfig {
     public Binding createMeraQueueBinding(DirectExchange directExchange, @Qualifier("meraQueue") Queue queue) {
         return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
     }
+
+    @Bean(name = "meraQueueBinding")
+    public Binding createUserRequestQueueBinding(DirectExchange directExchange, @Qualifier("userRequestQueue") Queue queue) {
+        return BindingBuilder.bind(queue).to(directExchange).with(queue.getName());
+    }
+
 }

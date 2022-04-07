@@ -21,7 +21,7 @@ import java.util.*;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
 public class IngestorController {
 
     private LogService logService;

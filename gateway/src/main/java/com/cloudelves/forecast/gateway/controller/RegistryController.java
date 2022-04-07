@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
 public class RegistryController {
 
     @Value("${registry.host}")
