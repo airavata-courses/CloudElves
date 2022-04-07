@@ -87,7 +87,7 @@ function NexradDashboard() {
                 break;
             }
             else if (response["status_img" === -1]){
-                console.log("---> ERROR IMAGE:",response);
+                console.log("XXX ERROR IMAGE:",response);
                 setState({...state,...response, "img_url":"", "loading":false});
                 break;
             }
