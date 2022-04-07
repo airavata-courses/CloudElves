@@ -1,6 +1,5 @@
 import shutil
 from unittest import TestCase
-import unittest
 import os
 from services.merra_services import MerraService
 
@@ -12,41 +11,25 @@ class TestMerraService(TestCase):
             "startDate": "2022-01-01",
             "endDate": "2022-01-02",
             "varNames": ["T2M"],
-            "outputType": "image",
+            "outputType": "gif",
             "userId": "asangar"
         }
         self.id = "test_id"
         os.environ["merra_download_loc"] = "pytest_merra"
+        os.environ["l1_cache_loc"] = "pytest_cache"
         self.merraService = MerraService()
 
     def test_CompleteFlowZarrFormat_Positive(self):        
         self.id = self.id + '1'
         fileList, convertedFiles, outputFiles = self.merraService.startMerraService(self.id,self.data)
-        
+        cache_loc = os.getenv('l1_cache_loc')
+        image_loc = os.getenv('merra_download_loc')
+                
         cur_download_loc = os.getenv('merra_download_loc') + '/' + self.id
         if os.path.exists(cur_download_loc):
           fileListToCheck = []
-          convertedFilesToCheck = ['./local_cache/MERRA2.M2T1NXSLV.20220101.T2M', './local_cache/MERRA2.M2T1NXSLV.20220102.T2M']
-          imageFileNameToCheck = 'pytest_merra/test_id1/image.T2M.'
-
-          self.assertEqual(fileListToCheck, fileList)
-          self.assertEqual(convertedFilesToCheck, convertedFiles)
-          self.assertIn(imageFileNameToCheck[0], outputFiles)
-        
-        try:
-          shutil.rmtree(os.getenv('merra_download_loc'))
-        except:
-          pass
-    
-    def test_CompleteFlowCOGFormat_Positive(self):        
-        self.id = self.id + '2'
-        fileList, convertedFiles, outputFiles = self.merraService.startMerraService(self.id,self.data)
-        
-        cur_download_loc = os.getenv('merra_download_loc') + '/' + self.id
-        if os.path.exists(cur_download_loc):
-          fileListToCheck = []
-          convertedFilesToCheck = ['./local_cache/MERRA2.M2T1NXSLV.20220101.T2M.tif', './local_cache/MERRA2.M2T1NXSLV.20220102.T2M.tif']
-          imageFileNameToCheck = 'pytest_merra/test_id2/image.T2M.'
+          convertedFilesToCheck = [f'{cache_loc}/MERRA2.M2T1NXSLV.20220101.T2M', f'{cache_loc}/MERRA2.M2T1NXSLV.20220102.T2M']
+          imageFileNameToCheck = f'{image_loc}/test_id1/animation.T2M.'
 
           self.assertEqual(fileListToCheck, fileList)
           self.assertEqual(convertedFilesToCheck, convertedFiles)
@@ -54,6 +37,29 @@ class TestMerraService(TestCase):
         
         try:
           shutil.rmtree(os.getenv('merra_download_loc'))
+          shutil.rmtree(os.getenv('l1_cache_loc'))
+        except:
+          pass
+    
+    def test_CompleteFlowCOGFormat_Positive(self):        
+        self.id = self.id + '2'
+        fileList, convertedFiles, outputFiles = self.merraService.startMerraService(self.id,self.data)
+        cache_loc = os.getenv('l1_cache_loc')
+        image_loc = os.getenv('merra_download_loc')
+
+        cur_download_loc = os.getenv('merra_download_loc') + '/' + self.id
+        if os.path.exists(cur_download_loc):
+          fileListToCheck = []
+          convertedFilesToCheck = [f'{cache_loc}/MERRA2.M2T1NXSLV.20220101.T2M.tif', f'{cache_loc}/MERRA2.M2T1NXSLV.20220102.T2M.tif']
+          imageFileNameToCheck = f'{image_loc}/test_id2/animation.T2M.'
+
+          self.assertEqual(fileListToCheck, fileList)
+          self.assertEqual(convertedFilesToCheck, convertedFiles)
+          self.assertIn(imageFileNameToCheck, outputFiles)
+        
+        try:
+          shutil.rmtree(os.getenv('merra_download_loc'))
+          shutil.rmtree(os.getenv('l1_cache_loc'))
         except:
           pass
 
@@ -69,3 +75,4 @@ if __name__ == '__main__':
     os.environ.pop('data_conversion_format', None)
 
     os.environ.pop('merra_download_loc', None)
+    os.environ.pop('l1_cache_loc', None)
