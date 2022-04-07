@@ -31,6 +31,7 @@ def download_image(s3Key):
         errorMessage = 'error while downloading file {} from s3: {}'.format(s3Key, e)
         log.error(errorMessage)
         log.critical(e, exc_info=True)
+        return jsonify({'error': errorMessage}), 500
     finally:
         if f is not None:
             f.close()

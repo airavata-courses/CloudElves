@@ -107,7 +107,7 @@ class MerraService:
                     imageFileName = self.visualizeMerra2Image(id, vizFiles, vname, format)
                 else:
                     imageFileName = self.visualizeMerra2GIF(id, vizFiles, vname, format)
-
+                log.info("imageFilename: {}".format(imageFileName))
                 self.s3Service.upload_file(imageFileName, id)
                 log.info('successfully uploaded result to s3 for id {}'.format(id))
                 success_payload = utils.generate_result_payload(id, 1, 'successfully completed request', id)
