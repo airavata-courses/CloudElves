@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: docker.io/madhavankr/elves-gateway:latest
+          image: "cloudelves/gateway:TAG"
           imagePullPolicy: Always
           env:
           - name: server.port

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: registry
-          image: docker.io/madhavankr/elves-registry:latest
+          image: "cloudelves/registry:TAG"
           imagePullPolicy: Always
           env:
           - name: rmq.serviceName
