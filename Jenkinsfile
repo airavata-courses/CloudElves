@@ -19,7 +19,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "Checking out 'ci/ingestor' branch"
-                git branch: 'ci/ingestor',
+                git branch: 'HW3/ingestor-mera',
                 url: 'https://github.com/airavata-courses/CloudElves.git',
                 credentialsId: 'MyGitHub'
             }
