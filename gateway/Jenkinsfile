@@ -29,6 +29,7 @@ pipeline {
             dir('gateway') {
                 sh 'pwd'
                 sh './mvnw test'
+                }
             }
         }
         stage('Build Docker Image') {
