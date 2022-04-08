@@ -25,7 +25,9 @@ RUN pip3 install --no-binary shapely shapely
 
 RUN pip3 install -r requirements.txt
 
-RUN touch $HOME/.netrc && echo "machine urs.earthdata.nasa.gov login asangar password Cloud_Elves123" >> $HOME/.netrc && chmod 0600 $HOME/.netrc
+ARG EARTHDATA_SECRET=default
+RUN echo $EARTHDATA_SECRET
+RUN touch $HOME/.netrc && echo "$EARTHDATA_SECRET" >> $HOME/.netrc && chmod 0600 $HOME/.netrc
 
 # ==================================
 COPY . /ingestor

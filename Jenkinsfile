@@ -45,10 +45,13 @@ pipeline {
 
         stage ('Build docker image') {
             // Build docker image.
+            environment {
+                EARTHDATA_SECRET = credentials('earthdata_secret')
+            }
             steps {
                 script {
                     sh 'pwd'
-                    dockerImage = docker.build imagename
+                    dockerImage = docker.build("${imagename}:${env.BUILD_ID}", "--build-arg 'EARTHDATA_SECRET=${EARTHDATA_SECRET}' -f Dockerfile .")
                 }
             }
         }
