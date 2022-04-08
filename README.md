@@ -10,15 +10,15 @@ Spring 2022 Project
 CloudElves is a weather prediction distributed-system built using microservice architecture
 
 
-**Project 1 ** 
+**Project 1:** 
 
 https://github.com/airavata-courses/CloudElves/wiki/Homework-1---Weather-Forecast link for setup.
 
-**Project 2 Scalability: **
+**Project 2 Scalability:**
 
 https://github.com/airavata-courses/CloudElves/wiki/Homework-2-Scalability
 
-**Project 3**
+**Project 3:**
 
 Accessing application and Artchitectural Changes: https://github.com/airavata-courses/CloudElves/wiki/Homework-3:-Architectural-Changes-and-Merra-Service
 
