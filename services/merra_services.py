@@ -45,15 +45,15 @@ log.setLevel(logging.INFO)
 
 class MerraService:
     # ===================================================================================================================
-    def __init__(self) -> None:
+    def __init__(self, l1CacheMutex, plotMutex) -> None:
         self.results_bucket = os.getenv('merra_results_bucket') or 'results'
         self.download_loc = os.getenv('merra_download_loc') or './merra_downloads'
         self.local_cache_dir = os.getenv('l1_cache_loc') or './local_cache'
         self.l1_cache_capacity = os.getenv('l1_cache_capacity') or 10
         self.registry_queue = os.getenv('registry_op_queue') or 'elves.registry.ingestor.in'
         self.format = os.getenv('data_conversion_format') or 'zarr'
-        self.mutex = threading.Lock()
-        self.plotMutex = threading.Lock()
+        self.mutex = l1CacheMutex
+        self.plotMutex = plotMutex
         # Downloads
         if self.download_loc[len(self.download_loc) - 1] == '/':
             self.download_loc = self.download_loc[:len(self.download_loc) - 1]
@@ -639,6 +639,7 @@ class MerraService:
             # Save as Image
             outputFilePath = f'{cur_download_loc}/image.{varName}.{int(time.time())}.png'
             plt.savefig(outputFilePath)
+            plt.close(fig)
             return outputFilePath
         except Exception as e:
             errorMessage = 'error while image plotting: {}'.format(e)
@@ -725,6 +726,7 @@ class MerraService:
             # Save as GIF
             outputFilePath = f'{cur_download_loc}/animation.{varName}.{int(time.time())}.gif'
             anim.save(outputFilePath, writer='pillow')
+            plt.close(fig)
             return outputFilePath
         except Exception as e:
             errorMessage = 'error while gif plotting: {}'.format(e)

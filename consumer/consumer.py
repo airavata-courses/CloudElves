@@ -15,7 +15,7 @@ log.setLevel(logging.INFO)
 
 
 class Consumer(threading.Thread):
-    def __init__(self, queue) -> None:
+    def __init__(self, queue, l1CacheMutex, plotMutex) -> None:
         threading.Thread.__init__(self)
         rmq_username = os.getenv('rmq_username') or 'guest'
         rmq_password = os.getenv('rmq_password') or 'guest'
@@ -34,7 +34,7 @@ class Consumer(threading.Thread):
         self.channel.basic_qos(prefetch_count=10)
         self.queue = queue
         self.nexradService = NexradService()
-        self.merraService = MerraService()
+        self.merraService = MerraService(l1CacheMutex, plotMutex)
 
     def getMessage(self, ch, method, properties, body):
         try:
