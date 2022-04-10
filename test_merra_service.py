@@ -12,7 +12,7 @@ class TestMerraService(TestCase):
             "startDate": "2022-01-01",
             "endDate": "2022-01-02",
             "varNames": ["T2M"],
-            "outputType": "gif",
+            "outputType": "image",
             "userId": "asangar"
         }
         self.id = "test_id"
@@ -32,7 +32,7 @@ class TestMerraService(TestCase):
         if os.path.exists(cur_download_loc):
           fileListToCheck = []
           convertedFilesToCheck = [f'{cache_loc}/MERRA2.M2T1NXSLV.20220101.T2M', f'{cache_loc}/MERRA2.M2T1NXSLV.20220102.T2M']
-          imageFileNameToCheck = f'{image_loc}/test_id1/animation.T2M.'
+          imageFileNameToCheck = f'{image_loc}/test_id1/image.T2M.'
 
           # self.assertEqual(fileListToCheck, fileList)
           # self.assertEqual(convertedFilesToCheck, convertedFiles)
@@ -54,7 +54,7 @@ class TestMerraService(TestCase):
         if os.path.exists(cur_download_loc):
           fileListToCheck = []
           convertedFilesToCheck = [f'{cache_loc}/MERRA2.M2T1NXSLV.20220101.T2M.tif', f'{cache_loc}/MERRA2.M2T1NXSLV.20220102.T2M.tif']
-          imageFileNameToCheck = f'{image_loc}/test_id2/animation.T2M.'
+          imageFileNameToCheck = f'{image_loc}/test_id2/image.T2M.'
 
           # self.assertEqual(fileListToCheck, fileList)
           # self.assertEqual(convertedFilesToCheck, convertedFiles)
