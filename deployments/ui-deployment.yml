@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: Always
           env:
           - name: REACT_APP_gateway_host
-            value: "149.165.157.38"
+            value: "149.165.155.17"
           - name: REACT_APP_gateway_port
             value: "30005"
           ports:

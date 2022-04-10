@@ -26,15 +26,15 @@ spec:
           - name: server.port
             value: "8080"
           - name: rmq.host
-            value: "149.165.157.38"
+            value: "149.165.155.17"
           - name: rmq.port
             value: "30006"
           - name: ingestor.host
-            value: "149.165.157.38"
+            value: "149.165.155.17"
           - name: ingestor.port
             value: "30002"
           - name: registry.host
-            value: "149.165.157.38"
+            value: "149.165.155.17"
           - name: registry.port
             value: "30001"
 
