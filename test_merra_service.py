@@ -88,13 +88,13 @@ if __name__ == '__main__':
     merra_test2.test_createDateFromFileName()
 
     # os.environ["data_conversion_format"] = "zarr"
-    # merra_test1 = TestMerraService()
-    # merra_test1.test_CompleteFlowZarrFormat_Positive()
+    # merra_test3 = TestMerraService()
+    # merra_test3.test_CompleteFlowZarrFormat_Positive()
     # os.environ.pop('data_conversion_format', None)
 
     # os.environ["data_conversion_format"] = "COG"
-    # merra_test2 = TestMerraService()
-    # merra_test2.test_CompleteFlowCOGFormat_Positive()
+    # merra_test4 = TestMerraService()
+    # merra_test4.test_CompleteFlowCOGFormat_Positive()
     # os.environ.pop('data_conversion_format', None)
 
     # os.environ.pop('merra_download_loc', None)

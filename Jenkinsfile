@@ -32,7 +32,6 @@ pipeline {
                 sh 'pip3 install -r requirements.txt'
             }
         }
-
         stage('Unit Test') {
             // Testing the application.
             steps {
@@ -42,7 +41,6 @@ pipeline {
                 // sh 'python3 test_nexrad_service.py'
             }
         }
-
         stage ('Build docker image') {
             // Build docker image.
             environment {
