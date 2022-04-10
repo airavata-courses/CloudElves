@@ -1,6 +1,7 @@
 import shutil
 from unittest import TestCase
 import os
+import threading
 from services.merra_services import MerraService
 
 class TestMerraService(TestCase):
@@ -17,7 +18,9 @@ class TestMerraService(TestCase):
         self.id = "test_id"
         os.environ["merra_download_loc"] = "pytest_merra"
         os.environ["l1_cache_loc"] = "pytest_cache"
-        self.merraService = MerraService()
+        self.l1CacheMutex = threading.Lock()
+        self.plotMutex = threading.Lock()
+        self.merraService = MerraService(self.l1CacheMutex,self.plotMutex)
 
     def test_CompleteFlowZarrFormat_Positive(self):        
         self.id = self.id + '1'
@@ -76,4 +79,3 @@ if __name__ == '__main__':
 
     os.environ.pop('merra_download_loc', None)
     os.environ.pop('l1_cache_loc', None)
-    
