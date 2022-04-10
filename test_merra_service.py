@@ -76,3 +76,4 @@ if __name__ == '__main__':
 
     os.environ.pop('merra_download_loc', None)
     os.environ.pop('l1_cache_loc', None)
+    
