@@ -24,7 +24,7 @@ spec:
             name: ingestor-volume
           env:
           - name: rmq_host
-            value: "149.165.157.38"
+            value: "149.165.155.17"
           - name: rmq_port
             value: "30006"
           - name: rmq_user
@@ -34,13 +34,13 @@ spec:
           - name: download_loc
             value: "/data"
           - name: redis_host
-            value: "149.165.157.38"
+            value: "149.165.155.17"
           - name: redis_port
             value: "30011"
           - name: registry_host
-            value: "http://149.165.157.38:30001"
+            value: "http://149.165.155.17:30001"
           - name: s3_endpoint_url
-            value: "http://149.165.157.38:30042"
+            value: "http://149.165.155.17:30042"
           ports:
           - name: ingestor
             containerPort: 8083
