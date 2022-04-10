@@ -38,11 +38,11 @@ class TestMerraService(TestCase):
           self.assertEqual(convertedFilesToCheck, convertedFiles)
           self.assertIn(imageFileNameToCheck, outputFiles)
         
-        try:
-          shutil.rmtree(os.getenv('merra_download_loc'))
-          shutil.rmtree(os.getenv('l1_cache_loc'))
-        except:
-          pass
+        # try:
+        #   shutil.rmtree(os.getenv('merra_download_loc'))
+        #   shutil.rmtree(os.getenv('l1_cache_loc'))
+        # except:
+        #   pass
     
     def test_CompleteFlowCOGFormat_Positive(self):        
         self.id = self.id + '2'
@@ -60,11 +60,11 @@ class TestMerraService(TestCase):
           self.assertEqual(convertedFilesToCheck, convertedFiles)
           self.assertIn(imageFileNameToCheck, outputFiles)
         
-        try:
-          shutil.rmtree(os.getenv('merra_download_loc'))
-          shutil.rmtree(os.getenv('l1_cache_loc'))
-        except:
-          pass
+        # try:
+        #   shutil.rmtree(os.getenv('merra_download_loc'))
+        #   shutil.rmtree(os.getenv('l1_cache_loc'))
+        # except:
+        #   pass
 
 if __name__ == '__main__':
     os.environ["data_conversion_format"] = "zarr"
