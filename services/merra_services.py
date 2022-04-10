@@ -16,8 +16,8 @@ import cartopy.crs as ccrs
 import certifi
 # import tkinter
 import matplotlib
-matplotlib.use('Agg')
-import pylab
+# matplotlib.use('Agg')
+# import pylab
 
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -53,6 +53,7 @@ class MerraService:
         self.registry_queue = os.getenv('registry_op_queue') or 'elves.registry.ingestor.in'
         self.format = os.getenv('data_conversion_format') or 'zarr'
         self.mutex = threading.Lock()
+        self.plotMutex = threading.Lock()
         # Downloads
         if self.download_loc[len(self.download_loc) - 1] == '/':
             self.download_loc = self.download_loc[:len(self.download_loc) - 1]
@@ -582,6 +583,9 @@ class MerraService:
     # ===================================================================================================================
     def visualizeMerra2Image(self, id, fileNameList, varName, format):
         try:
+            # Acquire Lock
+            self.plotMutex.acquire()
+
             if (not fileNameList):
                 print("No filenames present")
                 return
@@ -640,10 +644,16 @@ class MerraService:
             errorMessage = 'error while image plotting: {}'.format(e)
             log.error(errorMessage)
             raise Exception(errorMessage)
+        finally:
+            # Release Lock
+            self.plotMutex.release()
 
     # ===================================================================================================================
     def visualizeMerra2GIF(self, id, fileNameList, varName, format):
         try:
+            # Acquire Lock
+            self.plotMutex.acquire()
+
             cur_download_loc = self.download_loc + '/' + id
 
             def animate(i, varToShow, lons, lats, clevs, varName):
@@ -720,5 +730,8 @@ class MerraService:
             errorMessage = 'error while gif plotting: {}'.format(e)
             log.error(errorMessage)
             raise Exception(errorMessage)
+        finally:
+            # Release Lock
+            self.plotMutex.release()
 
     # ===================================================================================================================
