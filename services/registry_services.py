@@ -12,7 +12,7 @@ log.setLevel(logging.INFO)
 
 class RegistryServices:
     def __init__(self):
-        self.domain = os.getenv('registry_host') or 'http://149.165.152.104:30001'
+        self.domain = os.getenv('registry_host') or 'http://149.165.155.17:30001'
         self.session = rq.session()
 
     def jsonprint(self, obj):

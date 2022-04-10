@@ -16,7 +16,7 @@ class S3Service:
         self.region = os.getenv('region') or 'us-east-1'
         self.aws_access_key_id = os.getenv('aws_access_key_id') or 'accessKey1'
         self.aws_secret_access_key = os.getenv('aws_secret_access_key') or 'verySecretKey1'
-        self.endpoint_url = os.getenv('s3_endpoint_url') or 'http://149.165.157.38:30042'
+        self.endpoint_url = os.getenv('s3_endpoint_url') or 'http://149.165.155.17:30042'
         self.s3_client = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key,
                                       region_name=self.region, endpoint_url=self.endpoint_url)
         if not self.is_bucket_available():
