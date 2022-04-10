@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRequestsRepository extends CrudRepository<UserRequests, String> {
 
-    @Query(nativeQuery = true, value = "select * from requests where user_id=:userId")
+    @Query(nativeQuery = true, value = "select * from requests r where r.user_id=:userId order by r.request_timestamp desc")
     public List<UserRequests> findByUserId(String userId);
 
 }
