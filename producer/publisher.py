@@ -19,7 +19,7 @@ class Publisher:
             self.rmq_host, self.rmq_port = os.getenv('{}_SERVICE_HOST'.format(rmqServiceName)), os.getenv('{}_SERVICE_PORT'.format(rmqServiceName))
         else:
             log.info("pointing to local")
-            self.rmq_host, self.rmq_port = os.getenv('rmq_host') or '149.165.157.38', os.getenv('rmq_port') or '30006'
+            self.rmq_host, self.rmq_port = os.getenv('rmq_host') or '149.165.155.17', os.getenv('rmq_port') or '30006'
         log.info('rmq_host: {} and rmq_port: {}'.format(self.rmq_host, self.rmq_port))
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
         self.connection.channel().exchange_declare(exchange='elvesExchange', exchange_type='direct', durable=True)
