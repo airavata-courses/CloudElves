@@ -1,0 +1,69 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ingestor
+  namespace: elves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ingestor
+      app: ingestor
+  template:
+    metadata:
+      labels:
+        run: ingestor
+        app: ingestor
+    spec:
+      containers:
+        - name: ingestor
+          image: "cloudelves/ingestor:latest"
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /data
+            name: ingestor-volume
+          env:
+          - name: rmq_host
+            value: "149.165.155.17"
+          - name: rmq_port
+            value: "30006"
+          - name: rmq_user
+            value: "guest"
+          - name: rmq_password
+            value: "guest"
+          - name: download_loc
+            value: "/data"
+          - name: redis_host
+            value: "149.165.155.17"
+          - name: redis_port
+            value: "30011"
+          - name: registry_host
+            value: "http://149.165.155.17:30001"
+          - name: s3_endpoint_url
+            value: "http://149.165.155.17:30042"
+          ports:
+          - name: ingestor
+            containerPort: 8083
+            protocol: TCP
+      volumes:
+      - name: ingestor-volume
+        hostPath:
+          # directory location on host
+          path: /
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingestor-service
+  namespace: elves
+spec:
+  selector:
+    app: ingestor
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+      nodePort: 30002

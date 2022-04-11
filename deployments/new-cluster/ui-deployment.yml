@@ -1,0 +1,46 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ui
+  namespace: elves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ui
+      app: ui
+  template:
+    metadata:
+      labels:
+        run: ui
+        app: ui
+    spec:
+      containers:
+        - name: ui
+          image: cloudelves/ui:latest
+          imagePullPolicy: Always
+          env:
+          - name: REACT_APP_gateway_host
+            value: "149.165.155.17"
+          - name: REACT_APP_gateway_port
+            value: "30005"
+          ports:
+          - name: ui
+            containerPort: 3001
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-service
+  namespace: elves
+spec:
+  type: NodePort
+  selector:
+    app: ui
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+      nodePort: 30010
