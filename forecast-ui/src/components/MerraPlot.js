@@ -29,7 +29,7 @@ function MerraPlot() {
                         console.log(state["status_img"][id]["status"], state["status_img"][id]["img_url"]);
                         let image = `data:image/png;base64, ${state["status_img"][id]["img_url"]}`;
                         if (state["status_img"][id]["status"] === 1) return <img src={image} alt="Merra plots" />
-                        else return <div>Error in gettig image</div>
+                        else return <div>Error in getting image</div>
                     })}
                 </div>     
             )

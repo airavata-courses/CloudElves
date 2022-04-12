@@ -10,17 +10,13 @@ import { UserContext } from "./Context";
 const NavbarStatic = ({page}) => {
     let navigate = useNavigate();
     const { userAuthDetails, setUser } = useContext(UserContext);
-    
-    const onSignoutSuccess = async () => {
+    const navigateTo = (page) => (navigate('/'+page));
+
+    async function onSignoutSuccess() {
         alert("You have been logged out successfully");
         await setUser(null);
-    };
-    
-    const navigateTo = (page) => {
-        console.log('Page: /'+page);
-        navigate('/'+page);
-        return;
     }
+    
     return (
         <Navbar bg="light">
             <Container>

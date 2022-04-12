@@ -12,12 +12,8 @@ import { UserContext } from "./Context";
 const Home = () => {
     let navigate = useNavigate();
     const { userAuthDetails } = useContext(UserContext);
+    const navigateTo = (page) => (navigate('/'+page));
 
-    const navigateTo = (page) => {
-        console.log('Page: /'+page);
-        navigate('/'+page);
-        return;
-    }
     return (
         <div className="home">
             <Navbar page = "home"/>

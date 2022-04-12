@@ -1,9 +1,8 @@
 import React, {useState, useContext} from "react";
-import {Button} from "react-bootstrap";
-import {TextField, Select, MenuItem, InputLabel, FormControl} from '@mui/material';
+// import {Button} from "react-bootstrap";
+import {Button, TextField, Select, MenuItem, InputLabel, FormControl} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {TimePicker, DatePicker, LocalizationProvider} from '@mui/lab';
-import "react-datepicker/dist/react-datepicker.css";
+import {DatePicker, LocalizationProvider} from '@mui/lab';
 // Import required components.
 import { StateContext } from "./Context";
 
@@ -21,9 +20,10 @@ const Input = (props) => {
     }
 
     return (
-        <div style={{display:"flex"}}>
-            <form  style={{ border: "1px solid black",display: "flex", flexDirection:"row", width:"100%"}} onSubmit={inputHandler}>
+        <div>
+            <form  style={{ border: "1px solid black", display: "flex", flexDirection:"row", verticalAlign:"center" , justifyContent:"center"}} onSubmit={inputHandler}>
                 <div style={{flex: '1 !important', padding:"30px", width:"20%"}}>
+                    <FormControl style={{width:"60%"}}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                         label="Select Date"
@@ -31,20 +31,19 @@ const Input = (props) => {
                         onChange={(newValue) => { setDate(new Date(newValue));}}
                         maxDate={new Date()}
                         required
-                        renderInput={(params) => <TextField {...params} />} />
+                        renderInput={(params) => <TextField {...params} />}
+                    />
                     </LocalizationProvider>
+                    </FormControl>
                 </div>
 
                 <div style={{flex: '1 !important', padding:"30px", width:"20%"}}>
                     <FormControl style={{width:"60%"}}>    
                     <InputLabel id="demo-simple-select-label">Select Plot</InputLabel>
                     <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={plot}
-                    label="Select Station"
-                    onChange={(event)=>setPlot(event.target.value)}
-                    >
+                        value={plot}
+                        label="Select Plot"
+                        onChange={(event)=>setPlot(event.target.value)}>
                         {["reflectivity", "velocity"].map((x)=><MenuItem key={x} value={x}>{x}</MenuItem>)}
                     </Select>
                     </FormControl>
@@ -66,7 +65,7 @@ const Input = (props) => {
                 </div>
 
                 <div style={{flex: '1 !important', padding:"30px", width:"20%"}}>
-                    <Button disabled={state["loading"]} variant="outline-success" type="submit" style={{ padding:"15px", width:"40%"}}> Find </Button>
+                    <Button disabled={state["loading"]} variant="contained" type="submit" style={{ padding:"15px", width:"50%"}}>Find</Button>
                 </div>
             </form>
         </div>

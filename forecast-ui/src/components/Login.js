@@ -7,10 +7,10 @@ import { UserContext } from "./Context";
 // This function handles Sign in with Google.
 const Login = () => {
 	
-	const { userAuthDetails, setUser } = useContext(UserContext);
+	const { setUser } = useContext(UserContext);
 	async function onLoginSuccess(res) {
 
-		console.log("Login Success:",res);
+		console.log("Login Success!");
 		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getUser`;
 		await setUser({ "id_token": res.accessToken, "name": res.profileObj["givenName"], "email": res.profileObj["email"] });
 		fetch(url, {

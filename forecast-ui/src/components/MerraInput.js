@@ -1,41 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, TextField, Select, MenuItem, InputLabel,Checkbox, ListItemText, OutlinedInput, FormControlLabel} from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { BugReportOutlined, BugReport } from '@mui/icons-material';
-
+import {defaultParams} from "./constants";
+import { formatVariables, formatDate } from "./helper";
+import { MerraContext } from './Context';
 function MerraInput (props) {
-    const params = props.params;
+    const params = defaultParams;
     const [product, setProduct] = useState(params[0]["productName"]);
     const [variableList, setVariableList] = useState(params[0]["variableNames"]);
     const [variables, setVariables] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const [debug, setDebug] = useState(false);
+    const [outputType, setOutputType] = useState("image");
+    // const [debug, setDebug] = useState(false);
+
+    const { state } = useContext(MerraContext);
+
 
     function inputHandler(event) {
         event.preventDefault();
-        function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
         
-            if (month.length < 2) 
-                month = '0' + month;
-            if (day.length < 2) 
-                day = '0' + day;
-        
-            return [year, month, day].join('-');
-        }
         props.inputCollector({
             "product": product,
-            "varNames": variables,
+            "varNames": formatVariables(variables, variableList),
             "startDate": formatDate(startDate),
             "endDate": formatDate(endDate),
             // "debug": debug,
-            "outputType": "image"
+            "outputType": outputType
         });
+    }
+
+    function initInputs(event) {
+        const index = params.findIndex( x => x["productName"] === event.target.value);
+        setProduct(params[index]["productName"]);
+        setVariableList(params[index]["variableNames"]);
+        setVariables([]);
+        return;
     }
 
     return (
@@ -49,14 +51,7 @@ function MerraInput (props) {
                 value={product}
                 name="product"
                 label="Select Product"
-                onChange={(event)=>{
-                    const index = params.findIndex( x => x["productName"] === event.target.value);
-                    setProduct(params[index]["productName"]);
-                    setVariableList(params[index]["variableNames"]);
-                    setVariables([]);
-                    return;
-                    }
-                }>
+                onChange={(event)=>initInputs(event)}>
                 {params.map((x, idx)=><MenuItem key={idx} value={x["productName"]}>{x["productName"]}</MenuItem>)}
                 </Select>
 
@@ -71,18 +66,9 @@ function MerraInput (props) {
                 multiple
                 value={variables}
                 name="variables"
-                onChange={
-                    (event) => {
-                        const {
-                        target: { value },
-                        } = event;
-                        setVariables(
-                        // On autofill we get a stringified value.
-                        typeof value === 'string' ? value.split(',') : value,
-                        );
-                }}
+                onChange={(event) => setVariables(event.target.value)}
                 input={<OutlinedInput label="Tag" />}
-                renderValue={(selected) => selected.join(', ')}
+                renderValue={(selected) => (selected.join(','))}
                 MenuProps={{PaperProps: {
                     style: {
                         maxHeight: 48 * 4.5 + 8,
@@ -92,12 +78,12 @@ function MerraInput (props) {
                 sx={{width:300}}
                 required
                 >
-                {variableList.map((x, idx) => (
-                    <MenuItem key={idx} value={x[Object.keys(x)[0]]}>
-                    <Checkbox checked={variables.indexOf(x[Object.keys(x)[0]]) > -1} />
-                    <ListItemText primary={x[Object.keys(x)[0]]} />
+                {Object.keys(variableList).map((x, idx) => {return (
+                    <MenuItem key={idx} value={x}>
+                    <Checkbox checked={variables.indexOf(x) > -1} />
+                    <ListItemText primary={x} />
                     </MenuItem>
-                ))}
+                )})}
                 </Select>
 
             </div>
@@ -133,13 +119,22 @@ function MerraInput (props) {
                 </LocalizationProvider>
 
             </div>
-            {/* <div style={{ "flexDirection":"row", margin:"15px" }}>
-                <FormControlLabel control={<Checkbox onClick={() => setDebug(!debug)} name="debug" icon={<BugReportOutlined />} checkedIcon={<BugReport />} />} label="Debug" />
-                
-            </div> */}
+            <div style={{ "flexDirection":"row", margin:"15px" }}>
+                {/* <FormControlLabel control={<Checkbox onClick={() => setDebug(!debug)} name="debug" icon={<BugReportOutlined />} checkedIcon={<BugReport />} />} label="Debug" /> */}
+                <InputLabel id="demo-simple-select-label">Output Type</InputLabel>
+                <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={outputType}
+                name="outputType"
+                label="Output Type"
+                onChange={(event)=>setOutputType(event.target.value)}>
+                {["image", "gif"].map((x, idx)=><MenuItem key={idx} value={x}>{x}</MenuItem>)}
+                </Select>
+            </div>
             <div style={{ "flexDirection":"row", margin:"15px" }}>
                 
-                <Button variant="contained" type="submit">Find</Button>
+                <Button disabled={state["loading"]} variant="contained" type="submit">Find</Button>
 
             </div>
         </form>

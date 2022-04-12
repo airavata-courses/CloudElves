@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import { MerraContext, UserContext } from "./Context";
 
 // Import required components.
-import {defaultParams} from "./constants";
 import Navbar from "./Navbar";
 import Login from "./Login";
 import MerraInput from "./MerraInput";
@@ -13,7 +12,6 @@ function MerraDashboard () {
     const { userAuthDetails } = useContext(UserContext);
     const { state, setState }  = useContext(MerraContext);
     // const [params, setParams] = useState(defaultParams);
-    const params = defaultParams;
     const sleep = (ms) => (new Promise(resolve => setTimeout(resolve, ms)));
 
     // useEffect(() => {
@@ -23,7 +21,8 @@ function MerraDashboard () {
 
     useEffect(() => {
         console.log("State changed:", state);
-        if (state["loading"] && state["status_id"] && Object.keys(state["status_img"]).length > 0) getS3keys(state["status_img"]);
+        if (state["loading"] && state["status_id"] && Object.keys(state["status_img"]).length > 0)
+            getS3Key(state["status_img"]);
 
     }, [state]);
 
@@ -73,7 +72,7 @@ function MerraDashboard () {
         }).then(response => (response.json()))
             .then(response => {
                 if (response["error"]) return {"status_id":-1, "error":response["error"]}
-                else return {"status_id":1, "id_list":response["id"]}})
+                else return {"status_id":1, "id_list":response["id"]};})
             .catch( error => ({"status_id":-1, "error":error}));
 
         if (response["status_id"] === -1){
@@ -108,9 +107,9 @@ function MerraDashboard () {
         return;
     }
 
-    async function getS3keys(id_map) {
+    async function getS3Key(id_map) {
         
-        let counter = 5;
+        let counter = 30;
         let url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/status?id=`;
         console.log("Fetching keys for:", id_map);
         while (counter--) {
@@ -168,7 +167,7 @@ function MerraDashboard () {
             else {
                 console.log("Counter:",counter);
                 if (counter>0){
-                    await sleep(10000);
+                    await sleep(3000);
                     console.log("still loading");
                 }
                 else{
@@ -223,12 +222,12 @@ function MerraDashboard () {
 
                         {/* Merra Input Pane */}   
                         <div className = "merra-input" style={{"flex":1, flexDirection:"column", "border": "1px solid black"}}>
-                        <MerraInput inputCollector = {inputProcessor} params={params} />
+                        <MerraInput inputCollector = {inputProcessor} />
                         </div>
                         
 
                         {/*  Merra Display Pane */}
-                        <div style={{"flex":3, "border": "1px solid black"}}>display
+                        <div style={{"flex":3, "border": "1px solid black"}}>
                         <MerraPlot />
                         </div>
 

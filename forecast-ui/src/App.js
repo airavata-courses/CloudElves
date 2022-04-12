@@ -20,7 +20,6 @@ function App() {
         <div className="App">
             <Router>
                 <Routes>
-
                     <Route path="/" element={<Navigate replace to="/home" />} />
                     <Route path="/home" element={<UserContextProvider><Home /></UserContextProvider>} />
                     <Route path="/nexrad" element={<UserContextProvider><SessionContextProvider><NexradDashboard /></SessionContextProvider></UserContextProvider>} />
