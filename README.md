@@ -23,3 +23,5 @@ https://github.com/airavata-courses/CloudElves/wiki/Homework-2-Scalability
 Accessing application and Artchitectural Changes: https://github.com/airavata-courses/CloudElves/wiki/Homework-3:-Architectural-Changes-and-Merra-Service
 
 CI CD & Deployment: https://github.com/airavata-courses/CloudElves/wiki/Homework-3:-CI-CD,-Kubernetes,-and-other-components
+
+Merra Service details: https://github.com/airavata-courses/CloudElves/wiki/Homework-3:-Merra2-Pipeline
