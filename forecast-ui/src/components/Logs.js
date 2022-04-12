@@ -14,7 +14,6 @@ const Logs = () => {
 	const { userAuthDetails } = useContext(UserContext);
 
   	const getLogs = async () => {
-        // http://149.165.157.38:30005/getEvents?numItems=5
 		const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/getEvents?numItems=10`;
 		await fetch(url, {
 			method: "GET",
