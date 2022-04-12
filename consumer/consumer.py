@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s  %(name)s  %(lev
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-
 class Consumer(threading.Thread):
     def __init__(self, queue, l1CacheMutex, plotMutex) -> None:
         threading.Thread.__init__(self)
@@ -29,7 +28,9 @@ class Consumer(threading.Thread):
             log.info("is this from log? pointing to local")
             rmq_host, rmq_port = os.getenv('rmq_host') or '149.165.157.38', os.getenv('rmq_port') or '30006'
         log.info('rmq_url: {}:{}'.format(rmq_host, rmq_port))
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=rmq_host, port=rmq_port, credentials=self.credentials))
+
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=rmq_host, port=rmq_port, credentials=self.credentials, heartbeat=600,
+                                                                            blocked_connection_timeout=300))
         self.channel = self.connection.channel()
         self.channel.basic_qos(prefetch_count=10)
         self.queue = queue

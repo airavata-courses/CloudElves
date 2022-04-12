@@ -8,8 +8,8 @@ import pyart
 from datetime import datetime
 # import tkinter
 import matplotlib
-matplotlib.use('Agg')
-import pylab
+# matplotlib.use('Agg')
+# import pylab
 
 from matplotlib import pyplot as plt
 
@@ -193,6 +193,7 @@ class NexradService:
                 display.plot(plot_type, plot_num, ax=ax)
                 display.set_limits((-150, 150), (-150, 150), ax=ax)
             fig.savefig(image_loc)
+            plt.close(fig)
             log.info('successfully plotted figure at {}'.format(image_loc))
             return image_loc
         except Exception as e:
@@ -220,6 +221,7 @@ class NexradService:
                 display.set_limits((-150, 150), (-150, 150), ax=ax)
 
             fig.savefig(image_loc)
+            plt.close(fig)
             log.info('successfully plotted figure at {}'.format(image_loc))
             return image_loc
         except Exception as e:
