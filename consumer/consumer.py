@@ -26,7 +26,7 @@ class Consumer(threading.Thread):
             rmq_host, rmq_port = os.getenv('{}_SERVICE_HOST'.format(rmqServiceName)), os.getenv('{}_SERVICE_PORT'.format(rmqServiceName))
         else:
             log.info("is this from log? pointing to local")
-            rmq_host, rmq_port = os.getenv('rmq_host') or '149.165.157.38', os.getenv('rmq_port') or '30006'
+            rmq_host, rmq_port = os.getenv('rmq_host') or '149.165.155.17', os.getenv('rmq_port') or '30006'
         log.info('rmq_url: {}:{}'.format(rmq_host, rmq_port))
 
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=rmq_host, port=rmq_port, credentials=self.credentials, heartbeat=600,

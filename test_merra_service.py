@@ -1,6 +1,7 @@
 import shutil
 from unittest import TestCase
 import os
+import threading
 from services.merra_services import MerraService
 
 class TestMerraService(TestCase):
@@ -11,13 +12,29 @@ class TestMerraService(TestCase):
             "startDate": "2022-01-01",
             "endDate": "2022-01-02",
             "varNames": ["T2M"],
-            "outputType": "gif",
+            "outputType": "image",
             "userId": "asangar"
         }
         self.id = "test_id"
         os.environ["merra_download_loc"] = "pytest_merra"
         os.environ["l1_cache_loc"] = "pytest_cache"
-        self.merraService = MerraService()
+        self.l1CacheMutex = threading.Lock()
+        self.plotMutex = threading.Lock()
+        self.merraService = MerraService(self.l1CacheMutex,self.plotMutex)
+
+    def test_generateFileName(self):
+      shortName = self.data['product'].split('_')[0]
+      dateStr = '20220101'
+      varName = self.data['varNames'][0]
+      result_to_check = "MERRA2.M2T1NXSLV.20220101.T2M"
+      result = self.merraService.generateFileName(shortName,dateStr,varName)
+      self.assertEqual(result, result_to_check)
+
+    def test_createDateFromFileName(self):
+      fileNameStr = "MERRA2_400.tavg1_2d_slv_Nx.20220202.SUB.nc"
+      result_to_check = "2022-02-02"
+      result = self.merraService.createDateFromFileName(fileNameStr)
+      self.assertEqual(result, result_to_check)
 
     def test_CompleteFlowZarrFormat_Positive(self):        
         self.id = self.id + '1'
@@ -29,7 +46,7 @@ class TestMerraService(TestCase):
         if os.path.exists(cur_download_loc):
           fileListToCheck = []
           convertedFilesToCheck = [f'{cache_loc}/MERRA2.M2T1NXSLV.20220101.T2M', f'{cache_loc}/MERRA2.M2T1NXSLV.20220102.T2M']
-          imageFileNameToCheck = f'{image_loc}/test_id1/animation.T2M.'
+          imageFileNameToCheck = f'{image_loc}/test_id1/image.T2M.'
 
           self.assertEqual(fileListToCheck, fileList)
           self.assertEqual(convertedFilesToCheck, convertedFiles)
@@ -51,7 +68,7 @@ class TestMerraService(TestCase):
         if os.path.exists(cur_download_loc):
           fileListToCheck = []
           convertedFilesToCheck = [f'{cache_loc}/MERRA2.M2T1NXSLV.20220101.T2M.tif', f'{cache_loc}/MERRA2.M2T1NXSLV.20220102.T2M.tif']
-          imageFileNameToCheck = f'{image_loc}/test_id2/animation.T2M.'
+          imageFileNameToCheck = f'{image_loc}/test_id2/image.T2M.'
 
           self.assertEqual(fileListToCheck, fileList)
           self.assertEqual(convertedFilesToCheck, convertedFiles)
@@ -64,16 +81,21 @@ class TestMerraService(TestCase):
           pass
 
 if __name__ == '__main__':
-    os.environ["data_conversion_format"] = "zarr"
     merra_test1 = TestMerraService()
-    merra_test1.test_CompleteFlowZarrFormat_Positive()
-    os.environ.pop('data_conversion_format', None)
+    merra_test1.test_generateFileName()
 
-    os.environ["data_conversion_format"] = "COG"
     merra_test2 = TestMerraService()
-    merra_test2.test_CompleteFlowCOGFormat_Positive()
-    os.environ.pop('data_conversion_format', None)
+    merra_test2.test_createDateFromFileName()
 
-    os.environ.pop('merra_download_loc', None)
-    os.environ.pop('l1_cache_loc', None)
-    
+    # os.environ["data_conversion_format"] = "zarr"
+    # merra_test3 = TestMerraService()
+    # merra_test3.test_CompleteFlowZarrFormat_Positive()
+    # os.environ.pop('data_conversion_format', None)
+
+    # os.environ["data_conversion_format"] = "COG"
+    # merra_test4 = TestMerraService()
+    # merra_test4.test_CompleteFlowCOGFormat_Positive()
+    # os.environ.pop('data_conversion_format', None)
+
+    # os.environ.pop('merra_download_loc', None)
+    # os.environ.pop('l1_cache_loc', None)

@@ -32,17 +32,15 @@ pipeline {
                 sh 'pip3 install -r requirements.txt'
             }
         }
-
-//         stage('Unit Test') {
-//             // Testing the application.
-//             steps {
-//                 echo 'Application Testing'
-//                 sh 'pwd'
-//                 sh 'python3 test_merra_service.py'
-//                 sh 'python3 test_nexrad_service.py'
-//             }
-//         }
-
+        stage('Unit Test') {
+            // Testing the application.
+            steps {
+                echo 'Application Testing'
+                sh 'pwd'
+                sh 'python3 test_merra_service.py'
+                // sh 'python3 test_nexrad_service.py'
+            }
+        }
         stage ('Build docker image') {
             // Build docker image.
             environment {
