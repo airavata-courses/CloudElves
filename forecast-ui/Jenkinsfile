@@ -20,7 +20,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "Checkout to Develop-ui"
-                git branch: 'ci/ui',
+                git branch: 'Develop-ui',
                 url: 'https://github.com/airavata-courses/CloudElves',
                 credentialsId: 'MyGitHub'
             }
