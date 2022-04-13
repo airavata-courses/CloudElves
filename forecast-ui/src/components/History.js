@@ -14,6 +14,7 @@ const History = () => {
 	const [image, setImage] = useState("");
 	const { userAuthDetails } = useContext(UserContext);
 	useEffect(() => {
+		console.log(image);
 	  
 	}, [image])
 	
@@ -64,6 +65,7 @@ const History = () => {
 				if (img_url_response["image"]) {
 					console.log("img_url_response recv");
 					records[i]["img_url"] = img_url_response["image"];
+					console.log(records[i]["parameters"]);
 				}
                 else{
 					console.log("error");
@@ -87,11 +89,11 @@ const History = () => {
 						<Table sx={{ margin:"20px", width: "98%", border: "2px solid black" }} aria-label="simple table">
 							<TableHead>
 							<TableRow >
-								<TableCell align="center" sx={{ width: "22%", border:"1px solid black"}}><b>Search ID</b></TableCell>
+								<TableCell align="center" sx={{ width: "18%", border:"1px solid black"}}><b>Search ID</b></TableCell>
 								<TableCell align="center" sx={{ width: "8%", border:"1px solid black"}}><b>Source</b></TableCell>
 								<TableCell align="center" sx={{ width: "8%", border:"1px solid black"}}><b>Status</b></TableCell>
-								<TableCell align="center" sx={{ width: "32%", border:"1px solid black"}}><b>Image</b></TableCell>
-								<TableCell align="center" sx={{ width: "5%", border:"1px solid black"}}><b>Comments</b></TableCell>
+								<TableCell align="center" sx={{ width: "18%", border:"1px solid black"}}><b>Image</b></TableCell>
+								<TableCell align="center" sx={{ width: "18%", border:"1px solid black"}}><b>Parameters</b></TableCell>
 								<TableCell align="center" sx={{ width: "10%", border:"1px solid black"}}><b>Timestamp</b></TableCell>
 							</TableRow>
 							</TableHead>
@@ -105,11 +107,11 @@ const History = () => {
 								<TableCell  align="center" sx={{ border:"1px solid black"}} >{row.status}</TableCell>
 								<TableCell  align="center" sx={{ border:"1px solid black"}} >
 									{row.img_url ?
-										<Button variant="contained" onClick={() => setImage(image)}>View Image</Button>
+										<Button variant="contained" onClick={() => setImage(row.img_url)}>View Image</Button>
 										: <div>Nan</div>
 									}
 								</TableCell>
-								<TableCell align='center' sx={{ border:"1px solid black"}} >{row.comments}</TableCell>
+								<TableCell align='center' sx={{ border:"1px solid black"}} >{row.parameters}</TableCell>
 								<TableCell  align="center" sx={{ border:"1px solid black"}} >{row.timestamp}</TableCell>
 								</TableRow>
 								))}
