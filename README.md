@@ -16,7 +16,7 @@ https://github.com/airavata-courses/CloudElves/wiki/Homework-1---Weather-Forecas
 
 **Project 2 Scalability:**
 
-https://github.com/airavata-courses/CloudElves/wiki/Homework-2-Scalability
+https://github.com/airavata-courses/CloudElves/wiki/Homework-2:-Scalability
 
 **Project 3:**
 
