@@ -6,10 +6,6 @@ import nexradaws
 import pyart
 
 from datetime import datetime
-# import tkinter
-import matplotlib
-# matplotlib.use('Agg')
-# import pylab
 
 from matplotlib import pyplot as plt
 

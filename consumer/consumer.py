@@ -36,14 +36,20 @@ class Consumer(threading.Thread):
         self.queue = queue
         self.nexradService = NexradService()
         self.merraService = MerraService(l1CacheMutex, plotMutex)
+        self.threads = []
 
     def getMessage(self, ch, method, properties, body):
         try:
             payload = json.loads(body.decode('utf8'))
+
             if 'nexrad' in self.queue:
-                self.nexradService.download_and_plot(payload['id'], payload['data'])
+                t = threading.Thread(target=self.nexradService.download_and_plot, args= (payload['id'], payload['data']))
+                t.start()
+                self.threads.append(t)
             else:
-                self.merraService.startMerraService(payload['id'], payload['data'])
+                t = threading.Thread(target=self.merraService.startMerraService, args=(payload['id'], payload['data']))
+                t.start()
+                self.threads.append(t)
         except Exception as e:
             log.info('error while processing message: ', e)
 
@@ -52,6 +58,8 @@ class Consumer(threading.Thread):
         self.channel.queue_declare(queue=self.queue, durable=True)
         self.channel.basic_consume(queue=self.queue, auto_ack=True, on_message_callback=self.getMessage)
         self.channel.start_consuming()
+        for thread in self.threads:
+            thread.join()
 
     def run(self):
         self.consume()
