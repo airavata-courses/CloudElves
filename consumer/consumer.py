@@ -23,16 +23,14 @@ class Consumer(threading.Thread):
         if os.getenv('rmq_service_name'):
             log.info("pointing to kubernetes cluster")
             rmqServiceName = os.getenv('rmq_service_name')
-            rmq_host, rmq_port = os.getenv('{}_SERVICE_HOST'.format(rmqServiceName)), os.getenv('{}_SERVICE_PORT'.format(rmqServiceName))
+            self.rmq_host, self.rmq_port = os.getenv('{}_SERVICE_HOST'.format(rmqServiceName)), os.getenv('{}_SERVICE_PORT'.format(rmqServiceName))
         else:
             log.info("is this from log? pointing to local")
-            rmq_host, rmq_port = os.getenv('rmq_host') or '149.165.155.17', os.getenv('rmq_port') or '30006'
-        log.info('rmq_url: {}:{}'.format(rmq_host, rmq_port))
-
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=rmq_host, port=rmq_port, credentials=self.credentials, heartbeat=0,
-                                                                            blocked_connection_timeout=300))
+            self.rmq_host, self.rmq_port = os.getenv('rmq_host') or '149.165.155.17', os.getenv('rmq_port') or '30006'
+        log.info('rmq_url: {}:{}'.format(self.rmq_host, self.rmq_port))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
         self.channel = self.connection.channel()
-        self.channel.basic_qos(prefetch_count=10)
+        # self.channel.basic_qos(prefetch_count=10)
         self.queue = queue
         self.nexradService = NexradService()
         self.merraService = MerraService(l1CacheMutex, plotMutex)
@@ -56,10 +54,25 @@ class Consumer(threading.Thread):
     def consume(self):
         log.info('starting consumer')
         self.channel.queue_declare(queue=self.queue, durable=True)
-        self.channel.basic_consume(queue=self.queue, auto_ack=True, on_message_callback=self.getMessage)
-        self.channel.start_consuming()
-        for thread in self.threads:
-            thread.join()
+        while True:
+            try:
+                self.channel.basic_consume(queue=self.queue, auto_ack=True, on_message_callback=self.getMessage)
+                self.channel.start_consuming()
+            except Exception as e:
+                log.error('connection error: {}'.format(e))
+                log.critical(e, exc_info=True)
+            finally:
+                for thread in self.threads:
+                    thread.join()
+                try:
+                    self.channel.stop_consuming()
+                    self.connection.close()
+                    log.info("stopped consuming and closed channel.")
+                    log.info("creating new connection and opening new channel")
+                    self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
+                    self.channel = self.connection.channel()
+                except Exception as e1:
+                    log.error("error while closing channel or connection: {}".format(e1))
 
     def run(self):
         self.consume()
