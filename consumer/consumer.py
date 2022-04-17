@@ -68,11 +68,13 @@ class Consumer(threading.Thread):
                     self.channel.stop_consuming()
                     self.connection.close()
                     log.info("stopped consuming and closed channel.")
-                    log.info("creating new connection and opening new channel")
-                    self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
-                    self.channel = self.connection.channel()
                 except Exception as e1:
                     log.error("error while closing channel or connection: {}".format(e1))
+                finally:
+                    self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rmq_host, port=self.rmq_port, credentials=self.credentials))
+                    self.channel = self.connection.channel()
+                    log.info("creating new connection and opening new channel")
+
 
     def run(self):
         self.consume()
