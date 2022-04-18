@@ -46,11 +46,11 @@ function NexradDashboard() {
                         .catch(error => ({"status_id":-1,"error":error}));
 
         if (response["status_id"] === -1){
-            console.log("XXX ERROR:",response);
+            console.log("XXX ERROR");
             setState({...state,...response,"status_img":0});
         }
         else{
-            console.log("--> Request Complete:",response);
+            console.log("--> Request Complete");
             setState({...state, ...response,"status_img":0,"loading":true});
         }
         return;
@@ -77,13 +77,13 @@ function NexradDashboard() {
                         .catch(error => ({"status_img": -1, "resultS3Key":"","error":error}));
 
             if (response["status_img"] === 1){
-                console.log("--> SUCCESS S3Key:",response);
+                console.log("--> SUCCESS S3Key");
                 const img_url = await getImage(response, id);
                 setState({...state,...response,"img_url": img_url, "loading":false});
                 break;
             }
             else if (response["status_img" === -1]){
-                console.log("XXX ERROR S3Key:",response);
+                console.log("XXX ERROR S3Key");
                 setState({...state,...response, "img_url":"", "loading":false});
                 break;
             }
@@ -94,7 +94,7 @@ function NexradDashboard() {
                     console.log("Still loading...");
                 }
                 else{
-                    console.log("XXX ERROR S3Key:",response);
+                    console.log("XXX ERROR S3Key");
                     setState({...state,...response, "status_img": -1, "img_url":"", "loading":false});
                     break;
                 }

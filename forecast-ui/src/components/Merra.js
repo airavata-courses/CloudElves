@@ -56,7 +56,6 @@ function MerraDashboard () {
     }
 
     async function getId(data) {
-        console.log(JSON.stringify(data));
         const url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/mera/data`;
         const response = await fetch(url, {
             method: "POST",
@@ -94,7 +93,6 @@ function MerraDashboard () {
             for (let key in response["id_list"]){
                 id_map[response["id_list"][key]] = {"status": 0, "resultS3Key": ""}
             }
-            console.log("id_list",id_map);
             /* Example id_map
                 {
                     "123-asd": {"status": 0, "resultS3key": null},
@@ -102,7 +100,7 @@ function MerraDashboard () {
                     "345-dfg": {"status": 0, "resultS3key": null}
                 }
             */
-            setState({...state, "status_id":1, "status_img":id_map,"loading":true});
+            setState({...state, "status_id":1, "status_img":id_map,"loading":true, "outputType": data["outputType"]});
         }
         return;
     }
@@ -128,7 +126,6 @@ function MerraDashboard () {
                         })
                         .then(response => response.json())
                         .then(response => {
-                            console.log(response);
                             if (response["status"] === -1 || response["error"]) {
                                 return {"status": -1, "resultS3Key": "", "comments":response["error"]}
                             }
@@ -158,7 +155,6 @@ function MerraDashboard () {
                 if (!id_map[id]["status"]) completed = false; 
             }
             if (completed) {
-                console.log("Completed");
                 console.log(id_map);
                 let id_map1 = await getImage(id_map);
                 setState({...state, "status_img":id_map1, "loading":false});
@@ -180,11 +176,8 @@ function MerraDashboard () {
     }
 
     async function getImage(id_map) {
-        console.log("in getImage");
         let url = `http://${process.env.REACT_APP_gateway_host || "localhost"}:${process.env.REACT_APP_gateway_port || "8082"}/image?id=`;
         for (const id in id_map) {
-
-            console.log("id",id,":",id_map[id]);
             if (id_map[id]["status"] === 1){
                 let img_url_response = await fetch( url+id_map[id]["resultS3Key"],
                                 {   method: "GET",
@@ -199,7 +192,6 @@ function MerraDashboard () {
                                 }).then(response => response.json())
                                     .then(response => (response))
                                     .catch(error => (error));
-                console.log( img_url_response );
                 if (img_url_response["image"]) id_map[id]["img_url"] = img_url_response["image"]
                 else{
                     id_map[id]["status"] = -1;
@@ -218,7 +210,7 @@ function MerraDashboard () {
                     <Navbar page="merra"/>
 
                     {/*  Merra Dashboard */}
-                    <div className = "MerraDashboard" style = {{display:"flex", height: "93.9vh"}}>
+                    <div className = "MerraDashboard" style = {{display:"flex"}}>
 
                         {/* Merra Input Pane */}   
                         <div className = "merra-input" style={{"flex":1, flexDirection:"column", "border": "1px solid black"}}>

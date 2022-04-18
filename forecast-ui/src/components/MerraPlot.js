@@ -22,12 +22,19 @@ function MerraPlot() {
             return (<div>Please provide some inputs to get weather forecast.</div>)
         }
         else if (state["status_id"] === 1) {
-            console.log("Image retrieval complete:",state["status_img"]);
+            console.log("Image retrieval complete!");
             return (
                 <div>
                     {Object.keys(state["status_img"]).map((id) => {
-                        console.log(state["status_img"][id]["status"], state["status_img"][id]["img_url"]);
-                        let image = `data:image/png;base64, ${state["status_img"][id]["img_url"]}`;
+                        console.log(id,state["status_img"][id]["status"]);
+                        let image = '';
+                        if (state["outputType"] === "image") {
+                            image = `data:image/png;base64, ${state["status_img"][id]["img_url"]}`;
+                        }
+                        else{
+                            image = `data:image/gif;base64, ${state["status_img"][id]["img_url"]}`;
+                        } 
+                        
                         if (state["status_img"][id]["status"] === 1) return <img src={image} alt="Merra plots" />
                         else return <div>Error in getting image</div>
                     })}
