@@ -4,10 +4,16 @@
 
 ### Kubernetes Cluster
 
+**Platform:** Jetstream1
+
 **Cluster Size:** Kubernetes cluster with 3 worker nodes - This can be 1 Master (with scheduling) + 2 Worker or 1 Master (W/o scheduling) + 3 Workers
+
 **Node Size:** Each node is a medium vm on Jetstream 1 i.e 16 Gb RAM and 60 Gb Storage
+
 **Kuberentes Version:** v1.19.*
+
 **Deployment Type:** Using Rancher - Pleae [refer](https://github.com/airavata-courses/terra/wiki/Installing-Rancher---Step--1) this guide to deploy
+
 
 Once we have the kubernetes cluster, the validity can be established by running the following commands:
 
@@ -353,22 +359,25 @@ image:
 
 #### Modify custos-configuration-service pom.xml
 
-path: *./airavata-custos/custos-core-services/utility-services/custos-configuration-service/pom.xml*
+**path:** *./airavata-custos/custos-core-services/utility-services/custos-configuration-service/pom.xml*
 
-Modify <skip>true</skip> to <skip>false</skip> under maven-antrun-plugins configuration
+Modify **<skip>true</skip> to <skip>false</skip> under maven-antrun-plugins configuration**
 
 #### Modify all dev and staging properties in custos-configuration-service
 
-path: _.airavata-custos/custos-core-services/utility-services/custos-configuration-service/src/main/resources/*-dev.properties_ and _.airavata-custos/custos-core-services/utility-services/custos-configuration-service/src/main/resources/*-staging.properties_
+**path:**
+1. _.airavata-custos/custos-core-services/utility-services/custos-configuration-service/src/main/resources/*-dev.properties_ 
 
-Modify iam.server.url=https://{hostname}:{nodeport}/auth/
+2. _.airavata-custos/custos-core-services/utility-services/custos-configuration-service/src/main/resources/*-staging.properties_
+
+Modify **iam.server.url=https://{hostname}:{nodeport}/auth/**
 
 
 #### Comment out the some code to avoid errors
 
-path: _.airavata-custos/custos-integration-services/tenant-management-service-parent/tenant-management-service/src/main/java/tasks/TenantActivationTask.java_
+**path:** _.airavata-custos/custos-integration-services/tenant-management-service-parent/tenant-management-service/src/main/java/tasks/TenantActivationTask.java_
 
-action: *comment lines 225-249*
+**action:** *comment lines 225-249*
 
 
 ### Prepare the master node
@@ -441,8 +450,8 @@ helm install cluster-management-core-service cluster-management-core-service-1.1
 
 #### Register new tenant
 
-API: https://{hostname}:{nodeport}/tenant-management/v1.0.0/oauth2/tenant
-Request:
+**API:** https://{hostname}:{nodeport}/tenant-management/v1.0.0/oauth2/tenant
+**Request:**
 ```
 {
     "client_name":"cloudelves",
