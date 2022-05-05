@@ -12,7 +12,7 @@
 
 **Kuberentes Version:** v1.19.*
 
-**Deployment Type:** Using Rancher - Pleae [refer](https://github.com/airavata-courses/terra/wiki/Installing-Rancher---Step--1) this guide to deploy
+**Deployment Type:** Using Rancher - Please [refer](https://github.com/airavata-courses/terra/wiki/Installing-Rancher---Step--1) this guide to deploy
 
 
 Once we have the kubernetes cluster, the validity can be established by running the following commands:
@@ -490,6 +490,10 @@ Request:
 
 1. Thanks to [Isuru Ranawaka](https://github.com/isururanawaka) for continuous support throughout the deployment process 
 
-2. Also thanks to [Shubam Mohapatra](https://github.com/shubhpatr) from team scapsulators for help with custos deployment.
+2. Thanks to [Shubam Mohapatra](https://github.com/shubhpatr) from team scapsulators for help with custos deployment.
 
-3. All source deployment files are from [Source Custos Repository](https://github.com/apache/airavata-custos.git)
+3. Thanks to [GowthamChowta](https://github.com/GowthamChowta) from team terra for Kubernetes cluster deployment using rancher.
+
+4. All deployment files are from [Source Custos Repository](https://github.com/apache/airavata-custos.git)
+
+5. Setting up vault on kuberntes - [devopskube](https://devopscube.com/vault-in-kubernetes/)
