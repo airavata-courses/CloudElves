@@ -486,4 +486,10 @@ Request:
 }
 ```
 
+## References and Credits
 
+1. Thanks to (Isuru Ranawaka)[https://github.com/isururanawaka] for continuous support throughout the deployment process 
+
+2. Also thanks to (Shubam)[https://github.com/shubhpatr] from team scapsulators for help with custos deployment.
+
+3. All source deployment files are from (Source Custos Repository)[https://github.com/apache/airavata-custos.git]
