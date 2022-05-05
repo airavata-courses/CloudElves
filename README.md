@@ -14,11 +14,16 @@
 
 **Deployment Type:** Using Rancher - Please [refer](https://github.com/airavata-courses/terra/wiki/Installing-Rancher---Step--1) this guide to deploy
 
+#### Before anything, alias
+
+```
+alias k=kubectl
+```
 
 Once we have the kubernetes cluster, the validity can be established by running the following commands:
 
 ```
-kubectl get nodes
+k get nodes
 ```
 
 ![](./images/kube-nodes.png)
@@ -26,7 +31,7 @@ kubectl get nodes
 All the pods in kube-system namespace must be in read/completed state
 
 ```
-kubectl get pods -n kube-sytem
+k get pods -n kube-sytem
 ```
 
 ![](./images/kubesystem-pods.png)
