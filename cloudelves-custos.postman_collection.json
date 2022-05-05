@@ -1,0 +1,672 @@
+{
+	"info": {
+		"_postman_id": "d2658891-ef95-4ccb-b3da-0d9c313a186f",
+		"name": "cloudelves-custos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "check user status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/user-management/v1.0.0/user/activation/status?user.username=UserA",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"user-management",
+						"v1.0.0",
+						"user",
+						"activation",
+						"status"
+					],
+					"query": [
+						{
+							"key": "user.username",
+							"value": "UserA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create groups",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tenantId\": \"10000104\",\n    \"clientId\": \"custos-elvjqfo7bvpbq4oflw1p-10000104\",\n    \"performedBy\": \"madhkr\",\n    \"id\": \"sample-id\",\n    \"groups\": [\n        {\n            \"name\": \"sample-group-1\",\n            \"ownerId\": \"madhkr\",\n            \"description\": \"sample group 1\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/keycloak/groups",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"keycloak",
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/user-management/v1.0.0/users?offset=0&limit=10",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"user-management",
+						"v1.0.0",
+						"users"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user availability",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/user-management/v1.0.0/user/availability?user.username=custosuser6000",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"user-management",
+						"v1.0.0",
+						"user",
+						"availability"
+					],
+					"query": [
+						{
+							"key": "user.username",
+							"value": "custosuser6000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user password",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\":\"custosuser6000\",\n\"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/user-management/v1.0.0/user/password",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"user-management",
+						"v1.0.0",
+						"user",
+						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user profile",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\":\"custosuser6000\",\n\"first_name\":\"Jhon\",\n\"last_name\":\"Saturday\",\n\"email\":\"jhon@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/user-management/v1.0.0/user/profile",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"user-management",
+						"v1.0.0",
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get access token - grant_type password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\":\"custosuser6000\",\n\"password\":\"password\",\n\"grant_type\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/identity-management/v1.0.0/token",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"identity-management",
+						"v1.0.0",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "openID configuration",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/identity-management/v1.0.0/.well-known/openid-configuration?client_id=custos-elvjqfo7bvpbq4oflw1p-10000104",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"identity-management",
+						"v1.0.0",
+						".well-known",
+						"openid-configuration"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "custos-elvjqfo7bvpbq4oflw1p-10000104"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a single group",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/group?group.name=sample-group&group.id=7cfe93d5-5a99-4a55-9308-9b3b6dcac280",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"group"
+					],
+					"query": [
+						{
+							"key": "group.name",
+							"value": "sample-group"
+						},
+						{
+							"key": "group.id",
+							"value": "7cfe93d5-5a99-4a55-9308-9b3b6dcac280"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all groups",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/groups",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all child groups",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/groups/memberships/child?group.id=7cfe93d5-5a99-4a55-9308-9b3b6dcac280",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"groups",
+						"memberships",
+						"child"
+					],
+					"query": [
+						{
+							"key": "group.id",
+							"value": "7cfe93d5-5a99-4a55-9308-9b3b6dcac280"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get groups of user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/groups/memberships/child?group.id=7cfe93d5-5a99-4a55-9308-9b3b6dcac280",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"groups",
+						"memberships",
+						"child"
+					],
+					"query": [
+						{
+							"key": "group.id",
+							"value": "7cfe93d5-5a99-4a55-9308-9b3b6dcac280"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add user to group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"group_id\":\"7cfe93d5-5a99-4a55-9308-9b3b6dcac280\",\n\"username\":\"custosuser6000\",\n\"membership_type\":\"MEMBER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/user/group/membership",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"user",
+						"group",
+						"membership"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add child group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"parent_id\":\"7cfe93d5-5a99-4a55-9308-9b3b6dcac280\",\n\"child_id\": \"3a132033-5b80-497f-aa60-a4741c425f9b\",\n\"membership_type\":\"MEMBER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/group/membership",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"group",
+						"membership"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove child group",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"parent_id\":\"7cfe93d5-5a99-4a55-9308-9b3b6dcac280\",\n\"child_id\": \"3a132033-5b80-497f-aa60-a4741c425f9b\",\n\"membership_type\":\"MEMBER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/group/membership",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"group",
+						"membership"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove user from group",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3VzdG9zLWVsdmpxZm83YnZwYnE0b2ZsdzFwLTEwMDAwMTA0OnRhdTlhR3pwY1JERmhBaloyd1ZoR3FHVllOOEdxMjBrdUNxWFh2SjU=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"group_id\":\"7cfe93d5-5a99-4a55-9308-9b3b6dcac280\",\n\"username\":\"custosuser6000\",\n\"membership_type\":\"MEMBER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://js-157-36.jetstream-cloud.org:32036/group-management/v1.0.0/user/group/membership",
+					"protocol": "https",
+					"host": [
+						"js-157-36",
+						"jetstream-cloud",
+						"org"
+					],
+					"port": "32036",
+					"path": [
+						"group-management",
+						"v1.0.0",
+						"user",
+						"group",
+						"membership"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
