@@ -1,0 +1,24 @@
+clone cloudman
+create virtualenv
+activate virtualenv
+pip install ansible
+get rid of "rke" tag in playbook.yml
+
+ansible-playbook -i inventory/sample.ini playbook.yml --extra-vars “ansible_sudo_pass=jet-stream-vm-password”
+ 
+modify inventory/sample.ini as follows
+[controllers]
+kb8.ranchertest.scigap.org -- this will be given to us for our ip
+
+[agents]
+kb8.ranchertest.scigap.org
+
+[rke_cluster:children]
+controllers
+agents
+
+[all:vars]
+ansible_ssh_port=22
+ansible_user='exouser'
+ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+ansible_ssh_private_key_file=/Users/abhinav/.ssh/id_rsa 
