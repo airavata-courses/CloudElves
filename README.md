@@ -33,3 +33,13 @@ https://github.com/airavata-courses/CloudElves/wiki/Homework-3:-CI-CD,-Kubernete
 Merra Service Details: 
 
 https://github.com/airavata-courses/CloudElves/wiki/Homework-3:-Merra2-Pipeline
+
+## Project 4
+
+Custos Deployment:
+
+https://github.com/airavata-courses/CloudElves/wiki/Homework-4:-Custos-deployment
+
+Custos Testing:
+
+https://github.com/airavata-courses/CloudElves/wiki/Homework-4:-Custos-Testing
